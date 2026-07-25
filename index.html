@@ -265,7 +265,7 @@
     /* STICKY BOTTOM CALL BUTTON */
     .sticky-bottom-btn { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 380px; z-index: 80; }
 
-    /* MODAL POPUPS (DISPLAY NONE WHEN INACTIVE TO PREVENT TOUCH BLOCKING) */
+    /* MODAL POPUPS (SINGLE CLEAN SCROLL CONTAINER) */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.6);
       backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
@@ -277,8 +277,8 @@
     .modal-box {
       background: var(--bg-color); border: 1px solid var(--card-border); border-radius: 24px;
       padding: 24px 20px 30px 20px; width: 100%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      max-height: 85vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
-      position: relative; z-index: 10000;
+      max-height: 88vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
+      position: relative;
     }
 
     .modal-title { font-size: 1.2rem; margin-bottom: 12px; text-align: center; font-weight: 700; }
@@ -292,10 +292,23 @@
 
     .form-group { margin-bottom: 12px; text-align: left; }
     .form-group label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-sub); margin-bottom: 4px; }
-    .form-group input, .form-group textarea, .form-group select {
+    
+    .form-group input, .form-group textarea {
       width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--card-border);
       background: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
-      box-sizing: border-box; display: block; -webkit-appearance: none;
+      box-sizing: border-box; display: block;
+    }
+
+    /* DROPDOWN SELECT STYLING WITH VISIBLE ARROW INDICATOR */
+    .form-group select {
+      width: 100%; padding: 10px 36px 10px 12px; border-radius: 12px; border: 1px solid var(--card-border);
+      background-color: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
+      box-sizing: border-box; display: block; cursor: pointer;
+      appearance: none; -webkit-appearance: none; -moz-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2064748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
     }
 
     .toggle-switch-wrapper {
@@ -599,7 +612,7 @@
         </div>
       </div>
 
-      <!-- 10 PASTEL COLOR OPTIONS (DEFAULT: CLEAN WHITE) -->
+      <!-- 10 PASTEL COLOR OPTIONS WITH DROPDOWN ARROW INDICATOR -->
       <div class="form-group">
         <label>Color Theme</label>
         <select id="editTheme" onchange="changeTheme(this.value)">
@@ -617,7 +630,7 @@
         </select>
       </div>
 
-      <!-- 8 FONT OPTIONS -->
+      <!-- 8 FONT OPTIONS WITH DROPDOWN ARROW INDICATOR -->
       <div class="form-group">
         <label>Typography Font Style</label>
         <select id="editFont" onchange="changeFont(this.value)">
@@ -739,19 +752,19 @@
         </div>
       </div>
 
-      <!-- LOCATION SEARCH WITH WORKING INPUT & BUTTON -->
+      <!-- LOCATION SEARCH WITH DIRECT WORKING BUTTON -->
       <div class="form-section">
         <div class="form-section-title">📍 Search & Pin Location</div>
         <div class="form-group">
           <label>Address / City Name</label>
           <input type="text" id="editAddress" placeholder="e.g. Quezon City, Metro Manila">
         </div>
-        <button type="button" onclick="updateMapLocation(event)" class="btn-submit" style="background:var(--accent-light); color:var(--text-main); margin-top:0;">
+        <button type="button" id="btnMapSearch" onclick="updateMapLocation(event)" class="btn-submit" style="background:var(--accent-light); color:var(--text-main); margin-top:0;">
           <i class="fa-solid fa-magnifying-glass-location"></i> Search Map Location
         </button>
       </div>
 
-      <div style="display: flex; gap: 8px; margin-top: 15px;">
+      <div style="display: flex; gap: 8px; margin-top: 18px;">
         <button type="button" onclick="closeModal('editorModal')" class="btn-submit" style="background:var(--accent-light); color:var(--text-main);">Cancel</button>
         <button type="button" onclick="savePetDetails()" class="btn-submit">Save Changes</button>
       </div>
