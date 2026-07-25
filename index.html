@@ -1,1 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Tag - Digital ID</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background-color: #f4f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      max-width: 400px;
+      width: 100%;
+      overflow: hidden;
+      text-align: center;
+    }
+    .header {
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      padding: 30px 20px;
+      color: white;
+    }
+    .pet-photo {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 4px solid white;
+      object-fit: cover;
+      margin-bottom: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .pet-name {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    .breed {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+    .content {
+      padding: 25px 20px;
+    }
+    .info-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .info-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .info-value {
+      font-size: 1rem;
+      color: #333;
+      font-weight: 500;
+    }
+    .call-btn {
+      display: block;
+      width: 100%;
+      background-color: #25d366;
+      color: white;
+      text-decoration: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-top: 15px;
+      transition: background 0.3s ease;
+    }
+    .call-btn:hover {
+      background-color: #1ebd59;
+    }
+    .medical-note {
+      background-color: #fff3cd;
+      color: #856404;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      margin-top: 15px;
+      text-align: left;
+      border-left: 4px solid #ffeeba;
+    }
+  </style>
+</head>
+<body>
 
+  <div class="card">
+    <!-- Header Section -->
+    <div class="header">
+      <!-- Pwede itong palitan ng actual photo URL ng alaga -->
+      <img src="https://via.placeholder.com/150" alt="Pet Photo" class="pet-photo">
+      <h1 class="pet-name">Milo</h1>
+      <p class="breed">Golden Retriever</p>
+    </div>
+
+    <!-- Details Section -->
+    <div class="content">
+      <div class="info-group">
+        <div class="info-label">Owner Name</div>
+        <div class="info-value">Maria Perez</div>
+      </div>
+
+      <div class="info-group">
+        <div class="info-label">Address / Location</div>
+        <div class="info-value">Quezon City, Metro Manila</div>
+      </div>
+
+      <!-- Emergency Medical Note (Optional) -->
+      <div class="medical-note">
+        <strong>⚠️ Note:</strong> Friendly, but easily scared by loud noises. Requires daily medication.
+      </div>
+
+      <!-- Quick Call Button -->
+      <a href="tel:+639123456789" class="call-btn">📞 Call Owner Now</a>
+    </div>
+  </div>
+
+</body>
+</html>
