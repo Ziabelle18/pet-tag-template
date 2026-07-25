@@ -8,15 +8,15 @@
   <!-- Google Fonts & Custom Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Fredoka:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&family=Poppins:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Sacramento&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* CUSTOM FONT DECLARATIONS WITH FALLBACKS */
+    /* CUSTOM FONT DECLARATIONS WITH RELIABLE FALLBACKS */
     @font-face { font-family: 'Brown Sugar'; src: local('Brown Sugar'), local('BrownSugar'), url('https://fonts.cdnfonts.com/s/93121/BrownSugar.woff') format('woff'); }
-    @font-face { font-family: 'Quiche'; src: local('Quiche Sans'), local('Quiche'), url('https://fonts.cdnfonts.com/s/29424/QuicheSans-Regular.woff') format('woff'); }
+    @font-face { font-family: 'Quiche Real'; src: local('Quiche Sans'), url('https://fonts.cdnfonts.com/s/29424/QuicheSans-Bold.woff') format('woff'); }
     @font-face { font-family: 'Safira March'; src: local('Safira March'), url('https://fonts.cdnfonts.com/s/85631/SafiraMarch.woff') format('woff'); }
     @font-face { font-family: 'The Seasons'; src: local('The Seasons'), local('TheSeasons'), url('https://fonts.cdnfonts.com/s/72813/TheSeasons-Regular.woff') format('woff'); }
     @font-face { font-family: 'Alta'; src: local('Alta'), url('https://fonts.cdnfonts.com/s/29224/Alta-Regular.woff') format('woff'); }
@@ -48,15 +48,25 @@
     body.theme-pastel-sage   { --bg-color: #f4f7f4; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #c8d6af; --accent-main: #7c9473; --accent-light: #e8efe8; --blob-shadow: rgba(124, 148, 115, 0.12); }
     body.theme-pastel-red    { --bg-color: #fff5f5; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #fecaca; --accent-main: #f87171; --accent-light: #fef2f2; --blob-shadow: rgba(248, 113, 113, 0.12); }
 
-    /* FONT CLASSES */
+    /* FONT CLASSES (ORIGINAL + NEW CITIES) */
     body.font-poppins      { --font-family: 'Poppins', sans-serif; }
     body.font-brown-sugar  { --font-family: 'Brown Sugar', 'Playfair Display', serif; }
-    body.font-quiche       { --font-family: 'Quiche', 'Quicksand', sans-serif; }
+    body.font-quiche       { --font-family: 'Quiche Real', 'Fredoka', sans-serif; }
     body.font-caveat       { --font-family: 'Caveat', cursive; }
     body.font-quicksand    { --font-family: 'Quicksand', sans-serif; }
     body.font-safira-march { --font-family: 'Safira March', serif; }
     body.font-the-seasons  { --font-family: 'The Seasons', serif; }
     body.font-alta         { --font-family: 'Alta', sans-serif; }
+
+    /* 8 NEW CITY FONTS */
+    body.font-paris   { --font-family: 'Playfair Display', serif; }
+    body.font-moscow  { --font-family: 'Syne', sans-serif; }
+    body.font-venice  { --font-family: 'Great Vibes', cursive; }
+    body.font-vienna  { --font-family: 'Cinzel', serif; }
+    body.font-dublin  { --font-family: 'Sacramento', cursive; }
+    body.font-athens  { --font-family: 'Montserrat', sans-serif; }
+    body.font-genoa   { --font-family: 'Fredoka', sans-serif; }
+    body.font-london  { --font-family: 'Cormorant Garamond', serif; }
 
     /* DARK MODE OVERRIDES (HIGH READABILITY TEXT) */
     body.dark-mode {
@@ -152,7 +162,6 @@
       border: 2px solid var(--card-border);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      /* S-Curve wavy flowing border radius shape */
       border-radius: 42px 18px 45px 20px / 20px 45px 18px 42px;
       padding: 22px 20px;
       margin-bottom: 18px;
@@ -432,12 +441,10 @@
       user-select: none;
     }
 
-    /* Hide standard blue input */
     .custom-checkbox-label input[type="checkbox"] {
       display: none;
     }
 
-    /* Custom Aesthetic Checkbox Box */
     .custom-check-box {
       width: 22px;
       height: 22px;
@@ -466,7 +473,7 @@
       border-color: #f1f5f9;
     }
 
-    /* Custom Toggle Switch for Microchip & PIN Protection */
+    /* Custom Toggle Switch */
     .custom-toggle-switch {
       position: relative;
       display: inline-block;
@@ -816,7 +823,7 @@
         </select>
       </div>
 
-      <!-- FONT OPTIONS -->
+      <!-- 16 FONT OPTIONS (ORIGINALS FIXED + 8 NEW CITIES) -->
       <div class="form-group">
         <label>Typography Font Style</label>
         <select id="editFont" onchange="changeFont(this.value)">
@@ -828,6 +835,14 @@
           <option value="font-safira-march">Safira March (Luxury Serif)</option>
           <option value="font-the-seasons">The Seasons (Classic Vintage)</option>
           <option value="font-alta">Alta (Minimalist High Fashion)</option>
+          <option value="font-paris">Paris (Romantic Serif)</option>
+          <option value="font-moscow">Moscow (Bold Modern)</option>
+          <option value="font-venice">Venice (Artistic Calligraphy)</option>
+          <option value="font-vienna">Vienna (Classic Heritage)</option>
+          <option value="font-dublin">Dublin (Charming Cursive)</option>
+          <option value="font-athens">Athens (Geometric Clean)</option>
+          <option value="font-genoa">Genoa (Playful Round)</option>
+          <option value="font-london">London (Editorial Fashion)</option>
         </select>
       </div>
 
