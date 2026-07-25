@@ -5,57 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Digital NFC Pet Profile Tag</title>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts & Custom Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
+    /* CUSTOM FONT DECLARATIONS WITH FALLBACKS */
+    @font-face { font-family: 'Brown Sugar'; src: local('Brown Sugar'), local('BrownSugar'), url('https://fonts.cdnfonts.com/s/93121/BrownSugar.woff') format('woff'); }
+    @font-face { font-family: 'Quiche'; src: local('Quiche Sans'), local('Quiche'), url('https://fonts.cdnfonts.com/s/29424/QuicheSans-Regular.woff') format('woff'); }
+    @font-face { font-family: 'Safira March'; src: local('Safira March'), url('https://fonts.cdnfonts.com/s/85631/SafiraMarch.woff') format('woff'); }
+    @font-face { font-family: 'The Seasons'; src: local('The Seasons'), local('TheSeasons'), url('https://fonts.cdnfonts.com/s/72813/TheSeasons-Regular.woff') format('woff'); }
+    @font-face { font-family: 'Alta'; src: local('Alta'), url('https://fonts.cdnfonts.com/s/29224/Alta-Regular.woff') format('woff'); }
+
     :root {
-      /* DEFAULT THEME: PASTEL PEACH & CREAM */
-      --bg-color: #fffaf5;
-      --card-bg: rgba(255, 255, 255, 0.85);
-      --card-border: rgba(255, 224, 204, 0.6);
+      /* DEFAULT THEME: PASTEL ORANGE / PEACH */
+      --bg-color: #fff8f5;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(255, 224, 204, 0.7);
       --text-main: #2d2623;
       --text-sub: #786c66;
       --accent-main: #ff8e6e;
       --accent-light: #fff0eb;
       --accent-badge: #4ade80;
       --shadow-soft: 0 10px 25px rgba(255, 142, 110, 0.12);
-      --font-title: 'Fredoka', cursive;
-      --font-body: 'Poppins', sans-serif;
+      --font-family: 'Poppins', sans-serif;
     }
 
-    /* THEME PRESETS */
-    body.theme-mint {
-      --bg-color: #f4fbf7;
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --card-border: rgba(187, 247, 208, 0.6);
-      --accent-main: #10b981;
-      --accent-light: #e6f9f0;
-      --shadow-soft: 0 10px 25px rgba(16, 185, 129, 0.12);
-    }
+    /* --- PASTEL COLOR THEMES --- */
+    body.theme-pastel-orange { --bg-color: #fff8f5; --card-border: #ffe2d1; --accent-main: #ff8e6e; --accent-light: #fff0eb; }
+    body.theme-pastel-blue   { --bg-color: #f0f8ff; --card-border: #cbe5ff; --accent-main: #3b82f6; --accent-light: #eff6ff; }
+    body.theme-pastel-yellow { --bg-color: #fefde8; --card-border: #fef08a; --accent-main: #eab308; --accent-light: #fefce8; }
+    body.theme-pastel-pink   { --bg-color: #fdf2f8; --card-border: #fbcfe8; --accent-main: #ec4899; --accent-light: #fce7f3; }
+    body.theme-pastel-beige  { --bg-color: #fdfbf7; --card-border: #e6dfd5; --accent-main: #b09e80; --accent-light: #f5f0eb; }
+    body.theme-pastel-gray   { --bg-color: #f8fafc; --card-border: #e2e8f0; --accent-main: #64748b; --accent-light: #f1f5f9; }
+    body.theme-pastel-black  { --bg-color: #262626; --card-bg: rgba(38, 38, 38, 0.9); --card-border: #404040; --text-main: #f5f5f5; --text-sub: #a3a3a3; --accent-main: #525252; --accent-light: #333333; }
+    body.theme-pastel-purple { --bg-color: #faf5ff; --card-border: #e9d5ff; --accent-main: #a855f7; --accent-light: #f3e8ff; }
+    body.theme-pastel-sage   { --bg-color: #f4f7f4; --card-border: #c8d6af; --accent-main: #7c9473; --accent-light: #e8efe8; }
+    body.theme-pastel-red    { --bg-color: #fff5f5; --card-border: #fecaca; --accent-main: #f87171; --accent-light: #fef2f2; }
 
-    body.theme-skyblue {
-      --bg-color: #f0f9ff;
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --card-border: rgba(186, 230, 253, 0.6);
-      --accent-main: #0284c7;
-      --accent-light: #e0f2fe;
-      --shadow-soft: 0 10px 25px rgba(2, 132, 199, 0.12);
-    }
-
-    body.theme-lavender {
-      --bg-color: #faf5ff;
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --card-border: rgba(233, 213, 255, 0.6);
-      --accent-main: #a855f7;
-      --accent-light: #f3e8ff;
-      --shadow-soft: 0 10px 25px rgba(168, 85, 247, 0.12);
-    }
+    /* FONT CLASSES */
+    body.font-poppins      { --font-family: 'Poppins', sans-serif; }
+    body.font-brown-sugar  { --font-family: 'Brown Sugar', 'Playfair Display', serif; }
+    body.font-quiche       { --font-family: 'Quiche', 'Quicksand', sans-serif; }
+    body.font-caveat       { --font-family: 'Caveat', cursive; }
+    body.font-quicksand    { --font-family: 'Quicksand', sans-serif; }
+    body.font-safira-march { --font-family: 'Safira March', serif; }
+    body.font-the-seasons  { --font-family: 'The Seasons', serif; }
+    body.font-alta         { --font-family: 'Alta', sans-serif; }
 
     body.dark-mode {
       --bg-color: #121110;
@@ -67,17 +67,11 @@
       --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-      outline: none;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; outline: none; }
 
     body {
       background-color: var(--bg-color);
-      font-family: var(--font-body);
+      font-family: var(--font-family);
       color: var(--text-main);
       display: flex;
       justify-content: center;
@@ -85,24 +79,15 @@
       min-height: 100vh;
       padding: 15px 10px 90px 10px;
       transition: all 0.3s ease;
-      background-image: radial-gradient(rgba(255, 142, 110, 0.08) 1.5px, transparent 0);
+      background-image: radial-gradient(rgba(150, 150, 150, 0.1) 1.5px, transparent 0);
       background-size: 20px 20px;
     }
 
     /* MAIN CONTAINER */
-    .app-container {
-      width: 100%;
-      max-width: 420px;
-      position: relative;
-    }
+    .app-container { width: 100%; max-width: 420px; position: relative; }
 
     /* TOP ACTION BAR */
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
 
     .badge-nfc {
       background: var(--card-bg);
@@ -114,21 +99,16 @@
       color: var(--accent-main);
       backdrop-filter: blur(10px);
       box-shadow: var(--shadow-soft);
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      display: flex; align-items: center; gap: 6px;
     }
 
     .btn-icon {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      width: 36px;
-      height: 36px;
+      width: 36px; height: 36px;
       border-radius: 50%;
       color: var(--text-main);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       cursor: pointer;
       box-shadow: var(--shadow-soft);
       backdrop-filter: blur(10px);
@@ -151,48 +131,22 @@
     }
 
     /* PROFILE HEADER CARD */
-    .profile-card {
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
+    .profile-card { text-align: center; position: relative; overflow: hidden; }
 
-    .avatar-wrapper {
-      position: relative;
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 12px auto;
-    }
+    .avatar-wrapper { position: relative; width: 120px; height: 120px; margin: 0 auto 12px auto; }
 
     .pet-avatar {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       border-radius: 50%;
       object-fit: cover;
       border: 4px solid var(--accent-main);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
 
-    .pet-name {
-      font-family: var(--font-title);
-      font-size: 2rem;
-      color: var(--text-main);
-      line-height: 1.1;
-    }
+    .pet-name { font-size: 2rem; color: var(--text-main); line-height: 1.1; font-weight: 700; }
+    .pet-sub { font-size: 0.85rem; color: var(--text-sub); margin-top: 4px; font-weight: 500; }
 
-    .pet-sub {
-      font-size: 0.85rem;
-      color: var(--text-sub);
-      margin-top: 4px;
-      font-weight: 500;
-    }
-
-    .status-badges {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 10px;
-    }
+    .status-badges { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
 
     .status-badge {
       background: var(--accent-light);
@@ -206,235 +160,102 @@
     }
 
     /* QUICK CALL & MESSAGE BUTTONS */
-    .quick-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
+    .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
 
     .btn-action {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px;
-      border-radius: 16px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px; border-radius: 16px; text-decoration: none;
+      font-weight: 600; font-size: 0.9rem;
       transition: transform 0.2s ease, filter 0.2s ease;
       box-shadow: var(--shadow-soft);
     }
 
     .btn-action:active { transform: scale(0.96); }
-
     .btn-call { background-color: var(--accent-main); color: #ffffff !important; }
     .btn-msg { background-color: var(--accent-light); color: var(--accent-main) !important; border: 1px solid var(--card-border); }
 
     /* SECTION TITLES */
-    .section-title {
-      font-family: var(--font-title);
-      font-size: 1.1rem;
-      color: var(--text-main);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .section-title { font-size: 1.1rem; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
     .section-title i { color: var(--accent-main); }
 
     /* EMERGENCY CARD (RED ACCENT) */
-    .emergency-card {
-      background: rgba(254, 242, 242, 0.9);
-      border: 1px solid rgba(254, 202, 202, 0.8);
-    }
-    body.dark-mode .emergency-card {
-      background: rgba(45, 20, 20, 0.85);
-      border-color: rgba(127, 29, 29, 0.6);
-    }
+    .emergency-card { background: rgba(254, 242, 242, 0.9); border: 1px solid rgba(254, 202, 202, 0.8); }
+    body.dark-mode .emergency-card { background: rgba(45, 20, 20, 0.85); border-color: rgba(127, 29, 29, 0.6); }
 
     .emergency-title { color: #dc2626 !important; }
     .emergency-title i { color: #dc2626 !important; }
 
-    .info-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .info-item {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      padding-bottom: 6px;
-      border-bottom: 1px dashed var(--card-border);
-    }
-
+    .info-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .info-item { display: flex; justify-content: space-between; font-size: 0.85rem; padding-bottom: 6px; border-bottom: 1px dashed var(--card-border); }
     .info-item:last-child { border-bottom: none; }
     .info-label { color: var(--text-sub); font-weight: 500; }
     .info-val { color: var(--text-main); font-weight: 600; text-align: right; }
 
     /* GRID INFO CARDS */
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-    .grid-box {
-      background: var(--accent-light);
-      padding: 12px;
-      border-radius: 16px;
-      text-align: center;
-      border: 1px solid var(--card-border);
-    }
-
+    .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .grid-box { background: var(--accent-light); padding: 12px; border-radius: 16px; text-align: center; border: 1px solid var(--card-border); }
     .grid-box i { font-size: 1.2rem; color: var(--accent-main); margin-bottom: 4px; }
     .grid-box .lbl { font-size: 0.7rem; color: var(--text-sub); font-weight: 500; }
     .grid-box .val { font-size: 0.85rem; color: var(--text-main); font-weight: 700; }
 
     /* CHECKLIST / VACCINATIONS */
-    .check-list {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .check-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text-main);
-    }
-
+    .check-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .check-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 600; color: var(--text-main); }
     .check-item i { color: var(--accent-badge); }
 
     /* LOST PET BANNER */
-    .lost-banner {
-      background: #fef9c3;
-      border: 1px solid #fef08a;
-      text-align: center;
-    }
-    body.dark-mode .lost-banner {
-      background: #3f3c11;
-      border-color: #713f12;
-    }
+    .lost-banner { background: #fef9c3; border: 1px solid #fef08a; text-align: center; }
+    body.dark-mode .lost-banner { background: #3f3c11; border-color: #713f12; }
 
-    .lost-title { color: #ca8a04; font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 4px; }
+    .lost-title { color: #ca8a04; font-size: 1.2rem; margin-bottom: 4px; font-weight: 700; }
     .lost-desc { font-size: 0.8rem; color: var(--text-sub); margin-bottom: 12px; }
 
     /* PHOTO GALLERY */
-    .gallery-scroll {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      scrollbar-width: none;
-    }
+    .gallery-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
     .gallery-scroll::-webkit-scrollbar { display: none; }
 
-    .gallery-img {
-      width: 90px;
-      height: 90px;
-      border-radius: 16px;
-      object-fit: cover;
-      flex-shrink: 0;
-      cursor: pointer;
-      border: 2px solid var(--card-border);
-      transition: transform 0.2s ease;
-    }
+    .gallery-img { width: 90px; height: 90px; border-radius: 16px; object-fit: cover; flex-shrink: 0; cursor: pointer; border: 2px solid var(--card-border); transition: transform 0.2s ease; }
     .gallery-img:hover { transform: scale(1.05); }
 
     /* MAP PLACEHOLDER */
-    .map-box {
-      width: 100%;
-      height: 140px;
-      border-radius: 16px;
-      overflow: hidden;
-      margin-bottom: 10px;
-      border: 1px solid var(--card-border);
-    }
+    .map-box { width: 100%; height: 140px; border-radius: 16px; overflow: hidden; margin-bottom: 10px; border: 1px solid var(--card-border); }
     .map-box iframe { width: 100%; height: 100%; border: 0; }
 
     /* STICKY BOTTOM CALL BUTTON */
-    .sticky-bottom-btn {
-      position: fixed;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 380px;
-      z-index: 80;
-    }
+    .sticky-bottom-btn { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 380px; z-index: 80; }
 
     /* MODAL POPUPS */
     .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(6px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      padding: 15px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center;
+      z-index: 100; padding: 15px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
     .modal-box {
-      background: var(--bg-color);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 24px;
-      width: 100%;
-      max-width: 380px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      max-height: 85vh;
-      overflow-y: auto;
+      background: var(--bg-color); border: 1px solid var(--card-border); border-radius: 24px;
+      padding: 24px; width: 100%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      max-height: 85vh; overflow-y: auto;
     }
 
-    .modal-title { font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 12px; text-align: center; }
+    .modal-title { font-size: 1.2rem; margin-bottom: 12px; text-align: center; font-weight: 700; }
 
     .form-group { margin-bottom: 10px; text-align: left; }
     .form-group label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-sub); margin-bottom: 4px; }
     .form-group input, .form-group textarea, .form-group select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 12px;
-      border: 1px solid var(--card-border);
-      background: var(--card-bg);
-      color: var(--text-main);
-      font-family: var(--font-body);
-      font-size: 0.85rem;
+      width: 100%; padding: 10px; border-radius: 12px; border: 1px solid var(--card-border);
+      background: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
     }
 
     .btn-submit {
-      width: 100%;
-      padding: 12px;
-      background: var(--accent-main);
-      color: white;
-      border: none;
-      border-radius: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 10px;
+      width: 100%; padding: 12px; background: var(--accent-main); color: white;
+      border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 10px;
     }
 
-    /* LIGHTBOX IMAGE POPUP */
     .lightbox-img { max-width: 90vw; max-height: 80vh; border-radius: 16px; }
-
-    .hidden { display: none !important; }
   </style>
 </head>
-<body id="bodyTag">
+<body id="bodyTag" class="theme-pastel-orange font-poppins">
 
   <div class="app-container">
 
@@ -456,7 +277,7 @@
       </div>
     </div>
 
-    <!-- 1. LIVE PET DASHBOARD VIEW (Naka-display by Default) -->
+    <!-- 1. LIVE PET DASHBOARD VIEW (Naka-lock at Naka-display by Default) -->
     <div id="petDashboard">
 
       <!-- PROFILE HEADER -->
@@ -634,18 +455,40 @@
     </div>
   </div>
 
-  <!-- PET DETAILS EDITOR MODAL -->
+  <!-- PET DETAILS EDITOR MODAL (ANG EDIT PANEL LANG ANG MAPAPALITAN) -->
   <div id="editorModal" class="modal-overlay">
     <div class="modal-box">
       <h3 class="modal-title">✏️ Edit Pet Tag Details</h3>
 
+      <!-- 10 PASTEL COLOR OPTIONS -->
       <div class="form-group">
-        <label>Color Theme</label>
+        <label>Color Theme (10 Pastel Colors)</label>
         <select id="editTheme" onchange="changeTheme(this.value)">
-          <option value="theme-peach">Pastel Peach (Default)</option>
-          <option value="theme-mint">Pastel Mint Green</option>
-          <option value="theme-skyblue">Pastel Sky Blue</option>
-          <option value="theme-lavender">Pastel Lavender</option>
+          <option value="theme-pastel-orange">Pastel Orange</option>
+          <option value="theme-pastel-blue">Pastel Blue</option>
+          <option value="theme-pastel-yellow">Pastel Yellow</option>
+          <option value="theme-pastel-pink">Pastel Pink</option>
+          <option value="theme-pastel-beige">Pastel Beige</option>
+          <option value="theme-pastel-gray">Pastel Gray</option>
+          <option value="theme-pastel-black">Pastel Black</option>
+          <option value="theme-pastel-purple">Pastel Purple</option>
+          <option value="theme-pastel-sage">Pastel Sage Green</option>
+          <option value="theme-pastel-red">Pastel Red</option>
+        </select>
+      </div>
+
+      <!-- 8 FONT OPTIONS -->
+      <div class="form-group">
+        <label>Typography Font Style</label>
+        <select id="editFont" onchange="changeFont(this.value)">
+          <option value="font-poppins">Poppins (Clean Modern)</option>
+          <option value="font-brown-sugar">Brown Sugar (Aesthetic Elegance)</option>
+          <option value="font-quiche">Quiche (Chic Soft)</option>
+          <option value="font-caveat">Caveat (Cute Handwritten)</option>
+          <option value="font-quicksand">Quicksand (Soft Rounded)</option>
+          <option value="font-safira-march">Safira March (Luxury Serif)</option>
+          <option value="font-the-seasons">The Seasons (Classic Vintage)</option>
+          <option value="font-alta">Alta (Minimalist High Fashion)</option>
         </select>
       </div>
 
@@ -708,16 +551,14 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    const SECURITY_PIN = "1234"; // Default Passcode
+    const SECURITY_PIN = "1234";
 
-    // 1. EDIT BUTTON CLICK / PIN CHECK
     function handleEditClick() {
       document.getElementById('inputPin').value = '';
       document.getElementById('pinError').style.display = 'none';
       openModal('passcodeModal');
     }
 
-    // 2. VERIFY SECURITY PIN
     function verifyPin() {
       const enteredPin = document.getElementById('inputPin').value.trim();
       if (enteredPin === SECURITY_PIN) {
@@ -729,7 +570,6 @@
       }
     }
 
-    // 3. POPULATE EDITOR FORM WITH CURRENT VALUES
     function populateEditorForm() {
       document.getElementById('editAvatar').value = document.getElementById('displayAvatar').src;
       document.getElementById('editName').value = document.getElementById('displayName').innerText;
@@ -742,7 +582,6 @@
       document.getElementById('editAbout').value = document.getElementById('displayAbout').innerText;
     }
 
-    // 4. SAVE CHANGES & LOCK BACK TO DASHBOARD
     function savePetDetails() {
       const newPhone = document.getElementById('editPhone').value.trim();
 
@@ -751,7 +590,6 @@
       document.getElementById('displayBreed').innerText = document.getElementById('editBreed').value;
       document.getElementById('displayAge').innerText = document.getElementById('editAge').value;
       
-      // Update Action Links
       document.getElementById('linkCall').href = "tel:" + newPhone;
       document.getElementById('linkSms').href = "sms:" + newPhone;
       document.getElementById('linkCallLost').href = "tel:" + newPhone;
@@ -766,7 +604,6 @@
       alert("🐾 Pet details successfully saved!");
     }
 
-    // UTILITY FUNCTIONS: MODALS & LIGHTBOX
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
@@ -788,6 +625,11 @@
     function changeTheme(themeClass) {
       document.body.className = document.body.className.replace(/theme-\S+/g, '').trim();
       document.body.classList.add(themeClass);
+    }
+
+    function changeFont(fontClass) {
+      document.body.className = document.body.className.replace(/font-\S+/g, '').trim();
+      document.body.classList.add(fontClass);
     }
   </script>
 
