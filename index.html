@@ -211,7 +211,7 @@
     .lost-title { color: #ca8a04; font-size: 1.2rem; margin-bottom: 4px; font-weight: 700; }
     .lost-desc { font-size: 0.8rem; color: var(--text-sub); margin-bottom: 12px; }
 
-    /* CENTERED PHOTO GALLERY (MAX 3 PHOTOS) */
+    /* CENTERED PHOTO GALLERY */
     .gallery-container {
       display: flex;
       justify-content: center;
@@ -268,11 +268,32 @@
       background: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
     }
 
-    .checkbox-group {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px;
+    .file-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .checkbox-item {
-      display: flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+
+    .btn-file-custom {
+      background: var(--accent-light);
+      color: var(--accent-main);
+      border: 1px solid var(--card-border);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toggle-switch-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
     }
 
     .btn-submit {
@@ -369,11 +390,14 @@
             <div class="lbl">Weight</div>
             <div id="displayWeight" class="val">28 kg</div>
           </div>
+
+          <!-- MICROCHIP WITH AUTOMATIC ON/OFF STATUS -->
           <div class="grid-box">
             <i class="fa-solid fa-microchip"></i>
             <div class="lbl">Microchip ID</div>
             <div id="displayChip" class="val">985141002341</div>
           </div>
+
           <div class="grid-box">
             <i class="fa-solid fa-bone"></i>
             <div class="lbl">Favorite Treat</div>
@@ -398,7 +422,7 @@
         </p>
       </div>
 
-      <!-- VACCINATION STATUS (EDITABLE VIA EDITOR) -->
+      <!-- VACCINATION STATUS -->
       <div class="glass-card">
         <div class="section-title">
           <i class="fa-solid fa-shield-cat"></i>
@@ -422,7 +446,7 @@
         </a>
       </div>
 
-      <!-- PHOTO GALLERY (CENTERED - EXACTLY 3 PHOTOS) -->
+      <!-- PHOTO GALLERY (CENTERED 3 PHOTOS) -->
       <div class="glass-card">
         <div class="section-title" style="justify-content: center;">
           <i class="fa-solid fa-camera"></i>
@@ -435,7 +459,7 @@
         </div>
       </div>
 
-      <!-- LOCATION / HOME AREA MAP (EDITABLE VIA EDITOR) -->
+      <!-- LOCATION / HOME AREA MAP -->
       <div class="glass-card">
         <div class="section-title">
           <i class="fa-solid fa-location-dot"></i>
@@ -483,10 +507,18 @@
     </div>
   </div>
 
-  <!-- PET DETAILS EDITOR MODAL (ANG 3 REQUESTED SECTIONS LANG ANG BAGO) -->
+  <!-- PET DETAILS EDITOR MODAL -->
   <div id="editorModal" class="modal-overlay">
     <div class="modal-box">
       <h3 class="modal-title">✏️ Edit Pet Tag Details</h3>
+
+      <!-- PIN CODE PROTECTION TOGGLE (ON / OFF) -->
+      <div class="form-section" style="margin-top: 0; padding-top: 0; border-top: none;">
+        <div class="toggle-switch-wrapper">
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-main);">🔒 Passcode Lock Protection</span>
+          <label><input type="checkbox" id="togglePinProtection" checked></label>
+        </div>
+      </div>
 
       <!-- 10 PASTEL COLOR OPTIONS -->
       <div class="form-group">
@@ -521,11 +553,6 @@
       </div>
 
       <div class="form-group">
-        <label>Pet Photo URL</label>
-        <input type="text" id="editAvatar">
-      </div>
-
-      <div class="form-group">
         <label>Pet Name</label>
         <input type="text" id="editName">
       </div>
@@ -545,6 +572,17 @@
         <input type="text" id="editPhone">
       </div>
 
+      <!-- MICROCHIP ID TOGGLE (ON / OFF) -->
+      <div class="form-section">
+        <div class="toggle-switch-wrapper">
+          <span class="form-section-title" style="margin-bottom:0;">Microchip Status</span>
+          <label><input type="checkbox" id="toggleMicrochip" onchange="handleChipToggleChange()" checked> Has Microchip</label>
+        </div>
+        <div class="form-group" id="chipInputBox">
+          <input type="text" id="editChip" placeholder="Enter Microchip Number">
+        </div>
+      </div>
+
       <div class="form-group">
         <label>Medical Conditions</label>
         <input type="text" id="editMedical">
@@ -556,62 +594,37 @@
       </div>
 
       <div class="form-group">
-        <label>Microchip ID</label>
-        <input type="text" id="editChip">
-      </div>
-
-      <div class="form-group">
         <label>About Pet</label>
         <textarea id="editAbout" rows="2"></textarea>
       </div>
 
-      <!-- NEWLY ADDED EDITABLE 1: VACCINATION STATUS CHECKBOXES -->
+      <!-- PHOTO GALLERY EASY IMAGE FILE UPLOAD -->
       <div class="form-section">
-        <div class="form-section-title">💉 Vaccination Status</div>
-        <div class="checkbox-group">
-          <label class="checkbox-item">
-            <input type="checkbox" id="editVaxRabies"> Rabies
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" id="editVaxDhpp"> DHPP
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" id="editVaxDeworm"> Dewormed
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" id="editVaxFlea"> Flea & Tick
-          </label>
+        <div class="form-section-title">📷 Easy Gallery Photo Picker (Max 3)</div>
+        <div class="form-group">
+          <label>Photo 1</label>
+          <input type="file" id="fileGallery1" accept="image/*" onchange="previewLocalImage(this, 'displayGallery1')">
+        </div>
+        <div class="form-group">
+          <label>Photo 2</label>
+          <input type="file" id="fileGallery2" accept="image/*" onchange="previewLocalImage(this, 'displayGallery2')">
+        </div>
+        <div class="form-group">
+          <label>Photo 3</label>
+          <input type="file" id="fileGallery3" accept="image/*" onchange="previewLocalImage(this, 'displayGallery3')">
         </div>
       </div>
 
-      <!-- NEWLY ADDED EDITABLE 2: 3 PHOTO GALLERY URLS -->
+      <!-- INTERACTIVE LOCATION SEARCH & GOOGLE MAPS PIN -->
       <div class="form-section">
-        <div class="form-section-title">🖼️ Photo Gallery (Up to 3 Photos)</div>
+        <div class="form-section-title">📍 Search & Pin Location</div>
         <div class="form-group">
-          <label>Photo 1 URL</label>
-          <input type="text" id="editGallery1">
+          <label>Address / City Name</label>
+          <input type="text" id="editAddress" placeholder="e.g. Quezon City, Metro Manila">
         </div>
-        <div class="form-group">
-          <label>Photo 2 URL</label>
-          <input type="text" id="editGallery2">
-        </div>
-        <div class="form-group">
-          <label>Photo 3 URL</label>
-          <input type="text" id="editGallery3">
-        </div>
-      </div>
-
-      <!-- NEWLY ADDED EDITABLE 3: HOME LOCATION & MAP EMBED -->
-      <div class="form-section">
-        <div class="form-section-title">📍 Home Location & Map</div>
-        <div class="form-group">
-          <label>Location Text / Address</label>
-          <input type="text" id="editAddress">
-        </div>
-        <div class="form-group">
-          <label>Google Maps Embed iFrame Link / Search Term</label>
-          <input type="text" id="editMapSearch" placeholder="e.g. Quezon City">
-        </div>
+        <button type="button" onclick="updateMapLocation()" class="btn-file-custom" style="width: 100%; justify-content: center; margin-bottom: 8px;">
+          <i class="fa-solid fa-magnifying-glass-location"></i> Search Map Location
+        </button>
       </div>
 
       <div style="display: flex; gap: 8px; margin-top: 15px;">
@@ -629,11 +642,18 @@
   <!-- JAVASCRIPT LOGIC -->
   <script>
     const SECURITY_PIN = "1234";
+    let isPinProtectionActive = true;
 
+    // 1. PIN PROTECTION CHECK
     function handleEditClick() {
-      document.getElementById('inputPin').value = '';
-      document.getElementById('pinError').style.display = 'none';
-      openModal('passcodeModal');
+      if (!isPinProtectionActive) {
+        populateEditorForm();
+        openModal('editorModal');
+      } else {
+        document.getElementById('inputPin').value = '';
+        document.getElementById('pinError').style.display = 'none';
+        openModal('passcodeModal');
+      }
     }
 
     function verifyPin() {
@@ -647,36 +667,70 @@
       }
     }
 
+    // 2. MICROCHIP ON / OFF TOGGLE LOGIC
+    function handleChipToggleChange() {
+      const isChecked = document.getElementById('toggleMicrochip').checked;
+      const chipInput = document.getElementById('editChip');
+      if (isChecked) {
+        chipInput.disabled = false;
+        chipInput.placeholder = "Enter Microchip Number";
+      } else {
+        chipInput.disabled = true;
+        chipInput.value = "";
+        chipInput.placeholder = "Disabled (N/A)";
+      }
+    }
+
+    // 3. EASY FILE IMAGE PREVIEW (NO URL NEEDED)
+    function previewLocalImage(input, targetImgId) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById(targetImgId).src = e.target.result;
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    // 4. MAP SEARCH & PIN FUNCTION
+    function updateMapLocation() {
+      const address = document.getElementById('editAddress').value.trim();
+      if(address !== "") {
+        const encoded = encodeURIComponent(address);
+        document.getElementById('displayMapIframe').src = `https://maps.google.com/maps?q=${encoded}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+        document.getElementById('displayAddress').innerText = address;
+      }
+    }
+
     function populateEditorForm() {
-      document.getElementById('editAvatar').value = document.getElementById('displayAvatar').src;
+      document.getElementById('togglePinProtection').checked = isPinProtectionActive;
       document.getElementById('editName').value = document.getElementById('displayName').innerText;
       document.getElementById('editBreed').value = document.getElementById('displayBreed').innerText;
       document.getElementById('editAge').value = document.getElementById('displayAge').innerText;
       document.getElementById('editPhone').value = document.getElementById('linkCall').href.replace('tel:', '');
       document.getElementById('editMedical').value = document.getElementById('displayMedical').innerText;
       document.getElementById('editAllergies').value = document.getElementById('displayAllergies').innerText;
-      document.getElementById('editChip').value = document.getElementById('displayChip').innerText;
       document.getElementById('editAbout').value = document.getElementById('displayAbout').innerText;
-
-      // Populate 1: Vaccinations Checkboxes
-      document.getElementById('editVaxRabies').checked = document.getElementById('vaxRabiesIcon').classList.contains('active');
-      document.getElementById('editVaxDhpp').checked = document.getElementById('vaxDhppIcon').classList.contains('active');
-      document.getElementById('editVaxDeworm').checked = document.getElementById('vaxDewormIcon').classList.contains('active');
-      document.getElementById('editVaxFlea').checked = document.getElementById('vaxFleaIcon').classList.contains('active');
-
-      // Populate 2: Gallery Photos
-      document.getElementById('editGallery1').value = document.getElementById('displayGallery1').src;
-      document.getElementById('editGallery2').value = document.getElementById('displayGallery2').src;
-      document.getElementById('editGallery3').value = document.getElementById('displayGallery3').src;
-
-      // Populate 3: Location Details
       document.getElementById('editAddress').value = document.getElementById('displayAddress').innerText;
+
+      // Microchip Status Check
+      const currentChipText = document.getElementById('displayChip').innerText;
+      if (currentChipText === "None" || currentChipText === "N/A" || currentChipText === "") {
+        document.getElementById('toggleMicrochip').checked = false;
+        handleChipToggleChange();
+      } else {
+        document.getElementById('toggleMicrochip').checked = true;
+        handleChipToggleChange();
+        document.getElementById('editChip').value = currentChipText;
+      }
     }
 
     function savePetDetails() {
       const newPhone = document.getElementById('editPhone').value.trim();
 
-      document.getElementById('displayAvatar').src = document.getElementById('editAvatar').value;
+      // Save PIN Protection Toggle
+      isPinProtectionActive = document.getElementById('togglePinProtection').checked;
+
       document.getElementById('displayName').innerText = document.getElementById('editName').value;
       document.getElementById('displayBreed').innerText = document.getElementById('editBreed').value;
       document.getElementById('displayAge').innerText = document.getElementById('editAge').value;
@@ -688,41 +742,23 @@
 
       document.getElementById('displayMedical').innerText = document.getElementById('editMedical').value;
       document.getElementById('displayAllergies').innerText = document.getElementById('editAllergies').value;
-      document.getElementById('displayChip').innerText = document.getElementById('editChip').value;
       document.getElementById('displayAbout').innerText = document.getElementById('editAbout').value;
 
-      // Save 1: Vaccinations Status
-      updateVaxIcon('vaxRabiesIcon', document.getElementById('editVaxRabies').checked);
-      updateVaxIcon('vaxDhppIcon', document.getElementById('editVaxDhpp').checked);
-      updateVaxIcon('vaxDewormIcon', document.getElementById('editVaxDeworm').checked);
-      updateVaxIcon('vaxFleaIcon', document.getElementById('editVaxFlea').checked);
+      // Save Microchip Status
+      const hasChip = document.getElementById('toggleMicrochip').checked;
+      const chipVal = document.getElementById('editChip').value.trim();
 
-      // Save 2: Gallery Photos (Up to 3)
-      if(document.getElementById('editGallery1').value.trim() !== "") document.getElementById('displayGallery1').src = document.getElementById('editGallery1').value;
-      if(document.getElementById('editGallery2').value.trim() !== "") document.getElementById('displayGallery2').src = document.getElementById('editGallery2').value;
-      if(document.getElementById('editGallery3').value.trim() !== "") document.getElementById('displayGallery3').src = document.getElementById('editGallery3').value;
-
-      // Save 3: Location Details & Dynamic Map
-      const newAddress = document.getElementById('editAddress').value.trim();
-      const newMapSearch = document.getElementById('editMapSearch').value.trim();
-      document.getElementById('displayAddress').innerText = newAddress;
-
-      if(newMapSearch !== "") {
-        const encodedLoc = encodeURIComponent(newMapSearch);
-        document.getElementById('displayMapIframe').src = `https://maps.google.com/maps?q=${encodedLoc}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+      if (hasChip && chipVal !== "") {
+        document.getElementById('displayChip').innerText = chipVal;
+      } else {
+        document.getElementById('displayChip').innerText = "None"; // Aesthetic fallback
       }
+
+      // Save Location Address & Search
+      updateMapLocation();
 
       closeModal('editorModal');
       alert("🐾 Pet details successfully saved!");
-    }
-
-    function updateVaxIcon(iconId, isChecked) {
-      const icon = document.getElementById(iconId);
-      if(isChecked) {
-        icon.className = "fa-solid fa-circle-check active";
-      } else {
-        icon.className = "fa-solid fa-circle-xmark inactive";
-      }
     }
 
     function openModal(id) { document.getElementById(id).classList.add('active'); }
