@@ -38,7 +38,7 @@
     }
 
     /* --- COLOR THEMES --- */
-    body.theme-white         { --bg-color: #ffffff; --card-bg: rgba(248, 250, 252, 0.95); --card-border: #e2e8f0; --accent-main: #0f172a; --accent-light: #f1f5f9; --blob-shadow: rgba(15, 23, 42, 0.06); }
+    body.theme-white          { --bg-color: #ffffff; --card-bg: rgba(248, 250, 252, 0.95); --card-border: #e2e8f0; --accent-main: #0f172a; --accent-light: #f1f5f9; --blob-shadow: rgba(15, 23, 42, 0.06); }
     body.theme-pastel-orange { --bg-color: #fff8f5; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #ffd3bd; --accent-main: #ff8e6e; --accent-light: #fff0eb; --blob-shadow: rgba(255, 142, 110, 0.12); }
     body.theme-pastel-blue   { --bg-color: #f0f8ff; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #bfe0ff; --accent-main: #3b82f6; --accent-light: #eff6ff; --blob-shadow: rgba(59, 130, 246, 0.12); }
     body.theme-pastel-yellow { --bg-color: #fefde8; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #fef08a; --accent-main: #eab308; --accent-light: #fefce8; --blob-shadow: rgba(234, 179, 8, 0.12); }
@@ -170,6 +170,19 @@
 
     .btn-icon:active { transform: scale(0.92); }
 
+    /* WIGGLE ANIMATION KEYFRAMES */
+    @keyframes wigglyCard {
+      0% { transform: scale(0.98) rotate(0deg); }
+      25% { transform: scale(1.02) rotate(-2.5deg); }
+      50% { transform: scale(1.02) rotate(2.5deg); }
+      75% { transform: scale(1.01) rotate(-1.2deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    .wiggle-effect {
+      animation: wigglyCard 0.42s ease-in-out !important;
+    }
+
     /* SMOOTH S-CURVE WAVY CARDS */
     .glass-card {
       background: var(--card-bg);
@@ -184,6 +197,8 @@
       transform: translate3d(0, 0, 0);
       will-change: transform;
       animation: floatWavyCard 6s ease-in-out infinite alternate;
+      cursor: pointer;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
     .glass-card:nth-child(even) {
@@ -275,6 +290,7 @@
       font-weight: 600; font-size: calc(0.9rem * var(--font-scale));
       transition: transform 0.2s ease, filter 0.2s ease;
       box-shadow: 0 6px 15px var(--blob-shadow);
+      cursor: pointer;
     }
 
     .btn-action:active { transform: scale(0.96); }
@@ -313,6 +329,7 @@
       transform: translate3d(0,0,0);
       will-change: transform;
       animation: floatWavyGrid 5s ease-in-out infinite alternate;
+      cursor: pointer;
     }
     .grid-box:nth-child(even) {
       border-radius: 14px 28px 14px 28px / 28px 14px 28px 14px;
@@ -1335,8 +1352,23 @@
       document.body.className = document.body.className.replace(/fsize-\S+/g, '').trim();
       document.body.classList.add(sizeClass);
     }
+
+    /* CLICK/TAP TO TRIGGER WIGGLE EFFECT ON CARDS AND BOXES */
+    function triggerWiggle(element) {
+      element.classList.remove('wiggle-effect');
+      void element.offsetWidth; // Trigger reflow for animation reset
+      element.classList.add('wiggle-effect');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const clickableCards = document.querySelectorAll('.glass-card, .grid-box, .btn-action');
+      clickableCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+          triggerWiggle(this);
+        });
+      });
+    });
   </script>
 
 </body>
 </html>
-
