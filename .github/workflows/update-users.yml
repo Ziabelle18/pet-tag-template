@@ -1,0 +1,30 @@
+name: Sync Master Pet Tag Code to All User Folders
+
+on:
+  push:
+    paths:
+      - 'master-index.html'
+
+jobs:
+  copy-master-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Copy master-index.html to all user directories
+        run: |
+          for dir in */; do
+            if [ -d "$dir" ] && [[ "$dir" != .github* ]]; then
+              echo "Updating $dir"
+              cp master-index.html "${dir}index.html"
+            fi
+          done
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "Auto-update pet tag index.html across all user folders"
+          git push
