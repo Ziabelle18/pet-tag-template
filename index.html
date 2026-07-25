@@ -35,7 +35,7 @@
       --font-family: 'Poppins', sans-serif;
     }
 
-    /* --- COLOR THEMES (CLEAN PASTEL COLORS, NO BLACK THEME) --- */
+    /* --- COLOR THEMES (CLEAN SOFT COLORS, NO BLACK THEME) --- */
     body.theme-white         { --bg-color: #ffffff; --card-bg: rgba(248, 250, 252, 0.95); --card-border: #e2e8f0; --accent-main: #0f172a; --accent-light: #f1f5f9; }
     body.theme-pastel-orange { --bg-color: #fff8f5; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #ffe2d1; --accent-main: #ff8e6e; --accent-light: #fff0eb; }
     body.theme-pastel-blue   { --bg-color: #f0f8ff; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #cbe5ff; --accent-main: #3b82f6; --accent-light: #eff6ff; }
@@ -260,7 +260,7 @@
     .check-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 600; color: var(--text-main); }
     body.dark-mode .check-item { color: #f1f5f9; }
     .check-item i.active { color: var(--accent-badge); }
-    .check-item i.inactive { color: #cbd5e1; }
+    .check-item i.inactive { color: #94a3b8; }
 
     /* LOST PET BANNER */
     .lost-banner { background: #fef9c3; border: 1px solid #fef08a; text-align: center; }
@@ -325,7 +325,9 @@
     .form-group { margin-bottom: 12px; text-align: left; }
     .form-group label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-sub); margin-bottom: 4px; }
     
-    .form-group input, .form-group textarea {
+    .form-group input[type="text"], 
+    .form-group input[type="password"], 
+    .form-group textarea {
       width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--card-border);
       background: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
       box-sizing: border-box; display: block;
@@ -348,6 +350,23 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 8px;
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .checkbox-item-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
     }
 
     .btn-submit {
@@ -512,7 +531,7 @@
         </p>
       </div>
 
-      <!-- VACCINATION STATUS -->
+      <!-- VACCINATION STATUS DISPLAY -->
       <div class="glass-card">
         <div class="section-title">
           <i class="fa-solid fa-shield-cat"></i>
@@ -645,7 +664,7 @@
         </div>
       </div>
 
-      <!-- 9 COLOR OPTIONS (REMOVED BLACK, REMOVED 'PASTEL' IN NAMES) -->
+      <!-- COLOR OPTIONS (SOFT CLEAN NAMES) -->
       <div class="form-group">
         <label>Color Theme</label>
         <select id="editTheme" onchange="changeTheme(this.value)">
@@ -662,7 +681,7 @@
         </select>
       </div>
 
-      <!-- 8 FONT OPTIONS WITH WORKING DROPDOWN ARROW INDICATOR -->
+      <!-- FONT OPTIONS -->
       <div class="form-group">
         <label>Typography Font Style</label>
         <select id="editFont" onchange="changeFont(this.value)">
@@ -765,6 +784,25 @@
       <div class="form-group">
         <label>About Pet</label>
         <textarea id="editAbout" rows="2"></textarea>
+      </div>
+
+      <!-- VACCINATION STATUS EDITABLE SECTION -->
+      <div class="form-section">
+        <div class="form-section-title">💉 Vaccination Status</div>
+        <div class="checkbox-grid">
+          <label class="checkbox-item-label">
+            <input type="checkbox" id="editVaxRabies" checked> Rabies
+          </label>
+          <label class="checkbox-item-label">
+            <input type="checkbox" id="editVaxDhpp" checked> DHPP
+          </label>
+          <label class="checkbox-item-label">
+            <input type="checkbox" id="editVaxDeworm" checked> Dewormed
+          </label>
+          <label class="checkbox-item-label">
+            <input type="checkbox" id="editVaxFlea" checked> Flea & Tick
+          </label>
+        </div>
       </div>
 
       <!-- GALLERY PHOTOS EASY UPLOAD -->
@@ -956,6 +994,12 @@
       document.getElementById('editAbout').value = document.getElementById('displayAbout').innerText;
       document.getElementById('editAddress').value = document.getElementById('displayAddress').innerText;
 
+      /* POPULATE VACCINATION STATUS CHECKBOXES */
+      document.getElementById('editVaxRabies').checked = document.getElementById('vaxRabiesIcon').classList.contains('active');
+      document.getElementById('editVaxDhpp').checked = document.getElementById('vaxDhppIcon').classList.contains('active');
+      document.getElementById('editVaxDeworm').checked = document.getElementById('vaxDewormIcon').classList.contains('active');
+      document.getElementById('editVaxFlea').checked = document.getElementById('vaxFleaIcon').classList.contains('active');
+
       const currentChipText = document.getElementById('displayChip').innerText;
       if (currentChipText === "None" || currentChipText === "N/A" || currentChipText === "") {
         document.getElementById('toggleMicrochip').checked = false;
@@ -964,6 +1008,15 @@
         document.getElementById('toggleMicrochip').checked = true;
         handleChipToggleChange();
         document.getElementById('editChip').value = currentChipText;
+      }
+    }
+
+    function updateVaxIcon(iconId, isChecked) {
+      const icon = document.getElementById(iconId);
+      if (isChecked) {
+        icon.className = "fa-solid fa-circle-check active";
+      } else {
+        icon.className = "fa-solid fa-circle-xmark inactive";
       }
     }
 
@@ -997,6 +1050,12 @@
       document.getElementById('displayMedical').innerText = document.getElementById('editMedical').value;
       document.getElementById('displayAllergies').innerText = document.getElementById('editAllergies').value;
       document.getElementById('displayAbout').innerText = document.getElementById('editAbout').value;
+
+      /* SAVE VACCINATION STATUS */
+      updateVaxIcon('vaxRabiesIcon', document.getElementById('editVaxRabies').checked);
+      updateVaxIcon('vaxDhppIcon', document.getElementById('editVaxDhpp').checked);
+      updateVaxIcon('vaxDewormIcon', document.getElementById('editVaxDeworm').checked);
+      updateVaxIcon('vaxFleaIcon', document.getElementById('editVaxFlea').checked);
 
       const hasChip = document.getElementById('toggleMicrochip').checked;
       const chipVal = document.getElementById('editChip').value.trim();
