@@ -1,30 +1,280 @@
-<!-- Floating / Top Action Bar -->
-<div class="action-bar">
-  <button id="toggleEditBtn" class="btn-lock">
-    🔒 Edit Card
-  </button>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Tag Dashboard</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
 
-<!-- 1. LIVE PET DASHBOARD VIEW (Ito lang nakikita by default) -->
-<div id="petDashboard" class="card-container">
-  <img id="displayPhoto" src="default-pet.png" alt="Pet Photo" />
-  <h2 id="displayName">Milo</h2>
-  <p id="displayBreed">Golden Retriever</p>
-  <p id="displayOwner">Owner: Maria Perez</p>
-  <p id="displayAddress">Quezon City, Metro Manila</p>
-  <a id="displayPhone" href="tel:+639123456789">📞 Call Owner</a>
-</div>
+    .container {
+      width: 100%;
+      max-width: 450px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      padding: 25px;
+      box-sizing: border-box;
+    }
 
-<!-- 2. EDITOR PANEL (Naka-hide by default) -->
-<div id="editorPanel" class="editor-container hidden">
-  <h3>✏️ Pet Details Editor</h3>
-  
-  <!-- Form Inputs -->
-  <input type="text" id="inputName" value="Milo" placeholder="Pet Name" />
-  <input type="text" id="inputBreed" value="Golden Retriever" placeholder="Breed" />
-  <input type="text" id="inputOwner" value="Maria Perez" placeholder="Owner Name" />
-  <input type="text" id="inputPhone" value="+639123456789" placeholder="Phone Number" />
-  
-  <!-- Save Button -->
-  <button id="saveBtn" class="btn-save">💾 Save Changes</button>
-</div>
+    /* Top Action Bar (Lock/Unlock) */
+    .action-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+    }
+
+    .btn-toggle {
+      background-color: #e2e8f0;
+      color: #334155;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-toggle:hover {
+      background-color: #cbd5e1;
+    }
+
+    /* CLEAN PET DASHBOARD DISPLAY */
+    .pet-dashboard {
+      text-align: center;
+    }
+
+    .pet-photo {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #4f46e5;
+      margin-bottom: 15px;
+    }
+
+    .pet-name {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #1e293b;
+    }
+
+    .pet-breed {
+      margin: 5px 0 15px 0;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .info-card {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+
+    .info-label {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    .info-value {
+      margin-top: 4px;
+      color: #334155;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    /* EDITOR PANEL */
+    .editor-panel {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px dashed #e2e8f0;
+    }
+
+    .editor-title {
+      font-size: 1.1rem;
+      color: #1e293b;
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      box-sizing: border-box;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: #4f46e5;
+    }
+
+    .btn-save {
+      width: 100%;
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-save:hover {
+      background-color: #4338ca;
+    }
+
+    /* Utility Class para sa pag-hide ng Editor */
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Top Action / Lock Toggle Button -->
+    <div class="action-bar">
+      <button id="toggleEditBtn" class="btn-toggle">🔒 Edit Details</button>
+    </div>
+
+    <!-- 1. CLEAN PET DASHBOARD VIEW (Ito lang nakikita by default) -->
+    <div id="petDashboard" class="pet-dashboard">
+      <img id="displayPhoto" class="pet-photo" src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=300" alt="Pet Photo">
+      <h2 id="displayName" class="pet-name">Milo</h2>
+      <p id="displayBreed" class="pet-breed">Golden Retriever</p>
+
+      <div class="info-card">
+        <div class="info-label">Owner Name</div>
+        <div id="displayOwner" class="info-value">Maria Perez</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-label">Address</div>
+        <div id="displayAddress" class="info-value">Quezon City, Metro Manila</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-label">Emergency Phone</div>
+        <div id="displayPhone" class="info-value">+639123456789</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-label">Notes / Medical Info</div>
+        <div id="displayNotes" class="info-value">Friendly, but easily scared by loud noises.</div>
+      </div>
+    </div>
+
+    <!-- 2. PET DETAILS EDITOR PANEL (Naka-hide by default) -->
+    <div id="editorPanel" class="editor-panel hidden">
+      <h3 class="editor-title">✏️ Pet Details Editor</h3>
+      
+      <div class="form-group">
+        <label for="inputPhoto">Photo URL</label>
+        <input type="text" id="inputPhoto" value="https://images.unsplash.com/photo-1552053831-71594a27632d?w=300">
+      </div>
+
+      <div class="form-group">
+        <label for="inputName">Pet Name</label>
+        <input type="text" id="inputName" value="Milo">
+      </div>
+
+      <div class="form-group">
+        <label for="inputBreed">Breed</label>
+        <input type="text" id="inputBreed" value="Golden Retriever">
+      </div>
+
+      <div class="form-group">
+        <label for="inputOwner">Owner Name</label>
+        <input type="text" id="inputOwner" value="Maria Perez">
+      </div>
+
+      <div class="form-group">
+        <label for="inputAddress">Address</label>
+        <input type="text" id="inputAddress" value="Quezon City, Metro Manila">
+      </div>
+
+      <div class="form-group">
+        <label for="inputPhone">Phone Number</label>
+        <input type="text" id="inputPhone" value="+639123456789">
+      </div>
+
+      <div class="form-group">
+        <label for="inputNotes">Notes / Medical Info</label>
+        <textarea id="inputNotes" rows="2">Friendly, but easily scared by loud noises.</textarea>
+      </div>
+
+      <button id="saveBtn" class="btn-save">💾 Save Changes</button>
+    </div>
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    const toggleEditBtn = document.getElementById('toggleEditBtn');
+    const editorPanel = document.getElementById('editorPanel');
+    const saveBtn = document.getElementById('saveBtn');
+
+    // 1. Toggle Lock/Unlock (Show/Hide Editor)
+    toggleEditBtn.addEventListener('click', () => {
+      const isHidden = editorPanel.classList.toggle('hidden');
+      
+      if (isHidden) {
+        toggleEditBtn.innerHTML = '🔒 Edit Details';
+      } else {
+        toggleEditBtn.innerHTML = '🔓 Close Editor';
+      }
+    });
+
+    // 2. Save Changes & Return to Dashboard View
+    saveBtn.addEventListener('click', () => {
+      // Update Dashboard Display Values
+      document.getElementById('displayPhoto').src = document.getElementById('inputPhoto').value;
+      document.getElementById('displayName').innerText = document.getElementById('inputName').value;
+      document.getElementById('displayBreed').innerText = document.getElementById('inputBreed').value;
+      document.getElementById('displayOwner').innerText = document.getElementById('inputOwner').value;
+      document.getElementById('displayAddress').innerText = document.getElementById('inputAddress').value;
+      document.getElementById('displayPhone').innerText = document.getElementById('inputPhone').value;
+      document.getElementById('displayNotes').innerText = document.getElementById('inputNotes').value;
+
+      // Automatically hide the editor panel and lock it again
+      editorPanel.classList.add('hidden');
+      toggleEditBtn.innerHTML = '🔒 Edit Details';
+    });
+  </script>
+
+</body>
+</html>
