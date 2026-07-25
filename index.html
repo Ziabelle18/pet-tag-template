@@ -265,20 +265,21 @@
     /* STICKY BOTTOM CALL BUTTON */
     .sticky-bottom-btn { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 380px; z-index: 80; }
 
-    /* MODAL POPUPS (SINGLE CLEAN SCROLL CONTAINER) */
+    /* MODAL POPUPS (CLEAN SINGLE SCROLL CONTAINER & TOUCH FIX) */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.6);
       backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
       display: none; align-items: center; justify-content: center;
       z-index: 9999; padding: 15px; opacity: 0; transition: opacity 0.25s ease;
+      pointer-events: none;
     }
-    .modal-overlay.active { display: flex !important; opacity: 1; }
+    .modal-overlay.active { display: flex !important; opacity: 1; pointer-events: auto; }
 
     .modal-box {
       background: var(--bg-color); border: 1px solid var(--card-border); border-radius: 24px;
       padding: 24px 20px 30px 20px; width: 100%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
       max-height: 88vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
-      position: relative;
+      position: relative; pointer-events: auto;
     }
 
     .modal-title { font-size: 1.2rem; margin-bottom: 12px; text-align: center; font-weight: 700; }
@@ -299,13 +300,13 @@
       box-sizing: border-box; display: block;
     }
 
-    /* DROPDOWN SELECT STYLING WITH VISIBLE ARROW INDICATOR */
+    /* DROPDOWN SELECT STYLING WITH WORKING ARROW INDICATOR */
     .form-group select {
       width: 100%; padding: 10px 36px 10px 12px; border-radius: 12px; border: 1px solid var(--card-border);
       background-color: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
       box-sizing: border-box; display: block; cursor: pointer;
       appearance: none; -webkit-appearance: none; -moz-appearance: none;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2064748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 12px center;
       background-size: 16px;
@@ -322,6 +323,7 @@
       width: 100%; padding: 12px; background: var(--accent-main); color: white;
       border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 12px;
       display: flex; align-items: center; justify-content: center; gap: 8px;
+      position: relative; z-index: 10; pointer-events: auto;
     }
 
     .btn-link-flat {
@@ -612,7 +614,7 @@
         </div>
       </div>
 
-      <!-- 10 PASTEL COLOR OPTIONS WITH DROPDOWN ARROW INDICATOR -->
+      <!-- 10 PASTEL COLOR OPTIONS WITH WORKING DROPDOWN ARROW INDICATOR -->
       <div class="form-group">
         <label>Color Theme</label>
         <select id="editTheme" onchange="changeTheme(this.value)">
@@ -630,7 +632,7 @@
         </select>
       </div>
 
-      <!-- 8 FONT OPTIONS WITH DROPDOWN ARROW INDICATOR -->
+      <!-- 8 FONT OPTIONS WITH WORKING DROPDOWN ARROW INDICATOR -->
       <div class="form-group">
         <label>Typography Font Style</label>
         <select id="editFont" onchange="changeFont(this.value)">
@@ -752,7 +754,7 @@
         </div>
       </div>
 
-      <!-- LOCATION SEARCH WITH DIRECT WORKING BUTTON -->
+      <!-- LOCATION SEARCH WITH FULLY WORKING BUTTON -->
       <div class="form-section">
         <div class="form-section-title">📍 Search & Pin Location</div>
         <div class="form-group">
