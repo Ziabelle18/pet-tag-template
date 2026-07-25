@@ -35,7 +35,7 @@
       --font-family: 'Poppins', sans-serif;
     }
 
-    /* --- COLOR THEMES --- */
+    /* --- COLOR THEMES (CLEAN PASTEL COLORS, NO BLACK THEME) --- */
     body.theme-white         { --bg-color: #ffffff; --card-bg: rgba(248, 250, 252, 0.95); --card-border: #e2e8f0; --accent-main: #0f172a; --accent-light: #f1f5f9; }
     body.theme-pastel-orange { --bg-color: #fff8f5; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #ffe2d1; --accent-main: #ff8e6e; --accent-light: #fff0eb; }
     body.theme-pastel-blue   { --bg-color: #f0f8ff; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #cbe5ff; --accent-main: #3b82f6; --accent-light: #eff6ff; }
@@ -43,7 +43,6 @@
     body.theme-pastel-pink   { --bg-color: #fdf2f8; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #fbcfe8; --accent-main: #ec4899; --accent-light: #fce7f3; }
     body.theme-pastel-beige  { --bg-color: #fdfbf7; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #e6dfd5; --accent-main: #b09e80; --accent-light: #f5f0eb; }
     body.theme-pastel-gray   { --bg-color: #f8fafc; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #e2e8f0; --accent-main: #64748b; --accent-light: #f1f5f9; }
-    body.theme-pastel-black  { --bg-color: #262626; --card-bg: rgba(38, 38, 38, 0.9); --card-border: #404040; --text-main: #f5f5f5; --text-sub: #a3a3a3; --accent-main: #525252; --accent-light: #333333; }
     body.theme-pastel-purple { --bg-color: #faf5ff; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #e9d5ff; --accent-main: #a855f7; --accent-light: #f3e8ff; }
     body.theme-pastel-sage   { --bg-color: #f4f7f4; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #c8d6af; --accent-main: #7c9473; --accent-light: #e8efe8; }
     body.theme-pastel-red    { --bg-color: #fff5f5; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #fecaca; --accent-main: #f87171; --accent-light: #fef2f2; }
@@ -58,14 +57,39 @@
     body.font-the-seasons  { --font-family: 'The Seasons', serif; }
     body.font-alta         { --font-family: 'Alta', sans-serif; }
 
+    /* DARK MODE OVERRIDES (HIGH READABILITY TEXT) */
     body.dark-mode {
       --bg-color: #121110;
       --card-bg: rgba(28, 25, 23, 0.85);
       --card-border: rgba(68, 64, 60, 0.6);
-      --text-main: #f5f5f4;
-      --text-sub: #a8a29e;
+      --text-main: #f1f5f9;
+      --text-sub: #cbd5e1;
       --accent-light: #292524;
       --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    body.dark-mode .pet-name,
+    body.dark-mode .section-title,
+    body.dark-mode .val,
+    body.dark-mode .info-val,
+    body.dark-mode label,
+    body.dark-mode .form-section-title {
+      color: #f1f5f9 !important;
+    }
+
+    body.dark-mode .pet-sub,
+    body.dark-mode .info-label,
+    body.dark-mode .lbl,
+    body.dark-mode p {
+      color: #cbd5e1 !important;
+    }
+
+    body.dark-mode input,
+    body.dark-mode textarea,
+    body.dark-mode select {
+      background-color: #1c1917 !important;
+      color: #f1f5f9 !important;
+      border-color: #44403c !important;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -102,6 +126,7 @@
       box-shadow: var(--shadow-soft);
       display: flex; align-items: center; gap: 6px;
     }
+    body.dark-mode .badge-nfc { color: #f1f5f9; }
 
     .btn-icon {
       background: var(--card-bg);
@@ -159,6 +184,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
+    body.dark-mode .status-badge { color: #f1f5f9; }
 
     /* SOCIAL MEDIA LINKS SECTION */
     .social-links-bar {
@@ -184,6 +210,7 @@
       transition: transform 0.2s ease, background 0.2s ease;
       box-shadow: var(--shadow-soft);
     }
+    body.dark-mode .social-icon-btn { color: #f1f5f9; }
     .social-icon-btn:hover { transform: scale(1.1); }
 
     /* QUICK CALL & MESSAGE BUTTONS */
@@ -200,10 +227,12 @@
     .btn-action:active { transform: scale(0.96); }
     .btn-call { background-color: var(--accent-main); color: #ffffff !important; }
     .btn-msg { background-color: var(--accent-light); color: var(--accent-main) !important; border: 1px solid var(--card-border); }
+    body.dark-mode .btn-msg { color: #f1f5f9 !important; }
 
     /* SECTION TITLES */
     .section-title { font-size: 1.1rem; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
     .section-title i { color: var(--accent-main); }
+    body.dark-mode .section-title i { color: #f1f5f9; }
 
     /* EMERGENCY CARD (RED ACCENT) */
     .emergency-card { background: rgba(254, 242, 242, 0.9); border: 1px solid rgba(254, 202, 202, 0.8); }
@@ -222,12 +251,14 @@
     .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .grid-box { background: var(--accent-light); padding: 12px; border-radius: 16px; text-align: center; border: 1px solid var(--card-border); }
     .grid-box i { font-size: 1.2rem; color: var(--accent-main); margin-bottom: 4px; }
+    body.dark-mode .grid-box i { color: #f1f5f9; }
     .grid-box .lbl { font-size: 0.7rem; color: var(--text-sub); font-weight: 500; }
     .grid-box .val { font-size: 0.85rem; color: var(--text-main); font-weight: 700; }
 
     /* CHECKLIST / VACCINATIONS */
     .check-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .check-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 600; color: var(--text-main); }
+    body.dark-mode .check-item { color: #f1f5f9; }
     .check-item i.active { color: var(--accent-badge); }
     .check-item i.inactive { color: #cbd5e1; }
 
@@ -329,6 +360,7 @@
       background: none; border: none; color: var(--accent-main);
       font-size: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: underline; margin-top: 8px; display: inline-block;
     }
+    body.dark-mode .btn-link-flat { color: #f1f5f9; }
 
     .pin-input-container {
       position: relative;
@@ -613,21 +645,20 @@
         </div>
       </div>
 
-      <!-- 10 PASTEL COLOR OPTIONS WITH WORKING DROPDOWN ARROW INDICATOR -->
+      <!-- 9 COLOR OPTIONS (REMOVED BLACK, REMOVED 'PASTEL' IN NAMES) -->
       <div class="form-group">
         <label>Color Theme</label>
         <select id="editTheme" onchange="changeTheme(this.value)">
           <option value="theme-white" selected>Clean White (Default)</option>
-          <option value="theme-pastel-orange">Pastel Orange</option>
-          <option value="theme-pastel-blue">Pastel Blue</option>
-          <option value="theme-pastel-yellow">Pastel Yellow</option>
-          <option value="theme-pastel-pink">Pastel Pink</option>
-          <option value="theme-pastel-beige">Pastel Beige</option>
-          <option value="theme-pastel-gray">Pastel Gray</option>
-          <option value="theme-pastel-black">Pastel Black</option>
-          <option value="theme-pastel-purple">Pastel Purple</option>
-          <option value="theme-pastel-sage">Pastel Sage Green</option>
-          <option value="theme-pastel-red">Pastel Red</option>
+          <option value="theme-pastel-orange">Soft Orange</option>
+          <option value="theme-pastel-blue">Soft Blue</option>
+          <option value="theme-pastel-yellow">Soft Yellow</option>
+          <option value="theme-pastel-pink">Soft Pink</option>
+          <option value="theme-pastel-beige">Soft Beige</option>
+          <option value="theme-pastel-gray">Soft Gray</option>
+          <option value="theme-pastel-purple">Soft Purple</option>
+          <option value="theme-pastel-sage">Soft Sage Green</option>
+          <option value="theme-pastel-red">Soft Red</option>
         </select>
       </div>
 
@@ -753,7 +784,7 @@
         </div>
       </div>
 
-      <!-- SIMPLE ADDRESS INPUT ONLY (UPDATES AUTOMATICALLY ON SAVE) -->
+      <!-- SIMPLE ADDRESS INPUT ONLY -->
       <div class="form-section">
         <div class="form-section-title">📍 Address & Map Location</div>
         <div class="form-group">
