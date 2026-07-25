@@ -34,9 +34,10 @@
       --blob-shadow: rgba(15, 23, 42, 0.06);
       --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.05);
       --font-family: 'Poppins', sans-serif;
+      --font-scale: 1; /* DYNAMIC FONT SIZE SCALE */
     }
 
-    /* --- COLOR THEMES (SOFT COLOR PALETTES) --- */
+    /* --- COLOR THEMES --- */
     body.theme-white         { --bg-color: #ffffff; --card-bg: rgba(248, 250, 252, 0.95); --card-border: #e2e8f0; --accent-main: #0f172a; --accent-light: #f1f5f9; --blob-shadow: rgba(15, 23, 42, 0.06); }
     body.theme-pastel-orange { --bg-color: #fff8f5; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #ffd3bd; --accent-main: #ff8e6e; --accent-light: #fff0eb; --blob-shadow: rgba(255, 142, 110, 0.12); }
     body.theme-pastel-blue   { --bg-color: #f0f8ff; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #bfe0ff; --accent-main: #3b82f6; --accent-light: #eff6ff; --blob-shadow: rgba(59, 130, 246, 0.12); }
@@ -48,7 +49,7 @@
     body.theme-pastel-sage   { --bg-color: #f4f7f4; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #c8d6af; --accent-main: #7c9473; --accent-light: #e8efe8; --blob-shadow: rgba(124, 148, 115, 0.12); }
     body.theme-pastel-red    { --bg-color: #fff5f5; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #fecaca; --accent-main: #f87171; --accent-light: #fef2f2; --blob-shadow: rgba(248, 113, 113, 0.12); }
 
-    /* FONT CLASSES (ORIGINAL + NEW CITIES) */
+    /* FONT CLASSES */
     body.font-poppins      { --font-family: 'Poppins', sans-serif; }
     body.font-brown-sugar  { --font-family: 'Brown Sugar', 'Playfair Display', serif; }
     body.font-quiche       { --font-family: 'Quiche Real', 'Fredoka', sans-serif; }
@@ -58,7 +59,7 @@
     body.font-the-seasons  { --font-family: 'The Seasons', serif; }
     body.font-alta         { --font-family: 'Alta', sans-serif; }
 
-    /* 8 NEW CITY FONTS */
+    /* CITY FONTS */
     body.font-paris   { --font-family: 'Playfair Display', serif; }
     body.font-moscow  { --font-family: 'Syne', sans-serif; }
     body.font-venice  { --font-family: 'Great Vibes', cursive; }
@@ -68,7 +69,20 @@
     body.font-genoa   { --font-family: 'Fredoka', sans-serif; }
     body.font-london  { --font-family: 'Cormorant Garamond', serif; }
 
-    /* DARK MODE OVERRIDES (HIGH READABILITY TEXT) */
+    /* FONT SIZING OPTIONS */
+    body.fsize-normal { --font-scale: 1; }
+    body.fsize-medium { --font-scale: 1.15; }
+    body.fsize-large  { --font-scale: 1.3; }
+
+    /* AUTO SCALING FOR INTRINSICALLY SMALL FONTS */
+    body.font-caveat,
+    body.font-dublin,
+    body.font-venice,
+    body.font-london {
+      font-size: calc(1.12 * var(--font-scale));
+    }
+
+    /* DARK MODE OVERRIDES */
     body.dark-mode {
       --bg-color: #121110;
       --card-bg: rgba(28, 25, 23, 0.92);
@@ -132,7 +146,7 @@
       border: 2px solid var(--card-border);
       padding: 6px 14px;
       border-radius: 20px;
-      font-size: 0.72rem;
+      font-size: calc(0.72rem * var(--font-scale));
       font-weight: 700;
       color: var(--accent-main);
       backdrop-filter: blur(10px);
@@ -156,7 +170,7 @@
 
     .btn-icon:active { transform: scale(0.92); }
 
-    /* SMOOTH S-CURVE WAVY WIGGLY CARDS (GPU ACCELERATED - ZERO BLINK / NO LAG) */
+    /* SMOOTH S-CURVE WAVY CARDS */
     .glass-card {
       background: var(--card-bg);
       border: 2px solid var(--card-border);
@@ -188,7 +202,6 @@
 
     .avatar-wrapper { position: relative; width: 124px; height: 124px; margin: 0 auto 12px auto; }
 
-    /* PROFILE AVATAR DYNAMIC BLOB */
     .pet-avatar {
       width: 100%; height: 100%;
       border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
@@ -206,15 +219,15 @@
       100% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; transform: rotate(-3deg); }
     }
 
-    .pet-name { font-size: 2rem; color: var(--text-main); line-height: 1.1; font-weight: 700; }
-    .pet-sub { font-size: 0.85rem; color: var(--text-sub); margin-top: 4px; font-weight: 500; }
+    .pet-name { font-size: calc(2rem * var(--font-scale)); color: var(--text-main); line-height: 1.1; font-weight: 700; }
+    .pet-sub { font-size: calc(0.85rem * var(--font-scale)); color: var(--text-sub); margin-top: 4px; font-weight: 500; }
 
     .status-badges { display: flex; justify-content: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
 
     .status-badge {
       background: var(--accent-light);
       color: var(--accent-main);
-      font-size: 0.7rem;
+      font-size: calc(0.72rem * var(--font-scale));
       font-weight: 700;
       padding: 6px 14px;
       border-radius: 25px 12px 25px 12px / 12px 25px 12px 25px;
@@ -259,7 +272,7 @@
       padding: 12px;
       border-radius: 28px 14px 28px 14px / 14px 28px 14px 28px;
       text-decoration: none;
-      font-weight: 600; font-size: 0.9rem;
+      font-weight: 600; font-size: calc(0.9rem * var(--font-scale));
       transition: transform 0.2s ease, filter 0.2s ease;
       box-shadow: 0 6px 15px var(--blob-shadow);
     }
@@ -270,11 +283,11 @@
     body.dark-mode .btn-msg { color: #f1f5f9 !important; }
 
     /* SECTION TITLES */
-    .section-title { font-size: 1.1rem; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
+    .section-title { font-size: calc(1.1rem * var(--font-scale)); color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
     .section-title i { color: var(--accent-main); }
     body.dark-mode .section-title i { color: #f1f5f9; }
 
-    /* EMERGENCY CARD (RED ACCENT WAVY S-CURVE) */
+    /* EMERGENCY CARD */
     .emergency-card { background: rgba(254, 242, 242, 0.92); border: 2px solid rgba(254, 202, 202, 0.9); }
     body.dark-mode .emergency-card { background: rgba(45, 20, 20, 0.85); border-color: rgba(127, 29, 29, 0.6); }
 
@@ -282,12 +295,12 @@
     .emergency-title i { color: #dc2626 !important; }
 
     .info-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .info-item { display: flex; justify-content: space-between; font-size: 0.85rem; padding-bottom: 6px; border-bottom: 1px dashed var(--card-border); }
+    .info-item { display: flex; justify-content: space-between; font-size: calc(0.85rem * var(--font-scale)); padding-bottom: 6px; border-bottom: 1px dashed var(--card-border); }
     .info-item:last-child { border-bottom: none; }
     .info-label { color: var(--text-sub); font-weight: 500; }
     .info-val { color: var(--text-main); font-weight: 600; text-align: right; }
 
-    /* GRID INFO CARDS WITH SMOOTH S-CURVE BLOB */
+    /* GRID INFO CARDS WITH DYNAMIC FONT SIZING */
     .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
     
     .grid-box {
@@ -313,12 +326,12 @@
 
     .grid-box i { font-size: 1.2rem; color: var(--accent-main); margin-bottom: 4px; }
     body.dark-mode .grid-box i { color: #f1f5f9; }
-    .grid-box .lbl { font-size: 0.7rem; color: var(--text-sub); font-weight: 500; }
-    .grid-box .val { font-size: 0.85rem; color: var(--text-main); font-weight: 700; }
+    .grid-box .lbl { font-size: calc(0.72rem * var(--font-scale)); color: var(--text-sub); font-weight: 500; }
+    .grid-box .val { font-size: calc(0.88rem * var(--font-scale)); color: var(--text-main); font-weight: 700; word-break: break-word; }
 
     /* CHECKLIST / VACCINATIONS */
     .check-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .check-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 600; color: var(--text-main); }
+    .check-item { display: flex; align-items: center; gap: 8px; font-size: calc(0.85rem * var(--font-scale)); font-weight: 600; color: var(--text-main); }
     body.dark-mode .check-item { color: #f1f5f9; }
     .check-item i.active { color: var(--accent-badge); }
     .check-item i.inactive { color: #94a3b8; }
@@ -331,8 +344,8 @@
     }
     body.dark-mode .lost-banner { background: #3f3c11; border-color: #713f12; }
 
-    .lost-title { color: #ca8a04; font-size: 1.2rem; margin-bottom: 4px; font-weight: 700; }
-    .lost-desc { font-size: 0.8rem; color: var(--text-sub); margin-bottom: 12px; }
+    .lost-title { color: #ca8a04; font-size: calc(1.2rem * var(--font-scale)); margin-bottom: 4px; font-weight: 700; }
+    .lost-desc { font-size: calc(0.8rem * var(--font-scale)); color: var(--text-sub); margin-bottom: 12px; }
 
     /* CENTERED PHOTO GALLERY */
     .gallery-container {
@@ -403,7 +416,7 @@
       box-sizing: border-box; display: block;
     }
 
-    /* DROPDOWN SELECT STYLING WITH WORKING ARROW INDICATOR */
+    /* DROPDOWN SELECT STYLING */
     .form-group select {
       width: 100%; padding: 10px 36px 10px 12px; border-radius: 16px; border: 1.5px solid var(--card-border);
       background-color: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
@@ -543,7 +556,7 @@
     .hidden { display: none !important; }
   </style>
 </head>
-<body id="bodyTag" class="theme-white font-poppins">
+<body id="bodyTag" class="theme-white font-poppins fsize-normal">
 
   <div class="app-container">
 
@@ -665,7 +678,7 @@
           <i class="fa-solid fa-heart"></i>
           <span>About Me</span>
         </div>
-        <p id="displayAbout" style="font-size:0.85rem; color:var(--text-sub); line-height:1.5;">
+        <p id="displayAbout" style="font-size:calc(0.85rem * var(--font-scale)); color:var(--text-sub); line-height:1.5;">
           Hi! I am Milo. I am super friendly and love belly rubs. If you found me wandering around, please contact my family immediately so I can go back home!
         </p>
       </div>
@@ -716,7 +729,7 @@
         <div class="map-box">
           <iframe id="displayMapIframe" src="https://maps.google.com/maps?q=Quezon%20City&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
         </div>
-        <p id="displayAddress" style="font-size:0.8rem; color:var(--text-sub); text-align:center;">Quezon City, Metro Manila, Philippines</p>
+        <p id="displayAddress" style="font-size:calc(0.8rem * var(--font-scale)); color:var(--text-sub); text-align:center;">Quezon City, Metro Manila, Philippines</p>
       </div>
 
       <!-- FOOTER -->
@@ -843,6 +856,16 @@
           <option value="font-athens">Athens (Geometric Clean)</option>
           <option value="font-genoa">Genoa (Playful Round)</option>
           <option value="font-london">London (Editorial Fashion)</option>
+        </select>
+      </div>
+
+      <!-- FONT SIZE OPTION SELECTOR -->
+      <div class="form-group">
+        <label>Font Size Scaling</label>
+        <select id="editFontSize" onchange="changeFontSize(this.value)">
+          <option value="fsize-normal" selected>Normal Size (Default)</option>
+          <option value="fsize-medium">Medium (+15% Larger)</option>
+          <option value="fsize-large">Large (+30% Extra Large)</option>
         </select>
       </div>
 
@@ -1304,8 +1327,13 @@
     }
 
     function changeFont(fontClass) {
-      document.body.className = document.body.className.replace(/font-\S+/g, '').trim();
+      document.body.className = document.body.className.replace(/font-(?!poppins|brown-sugar|quiche|caveat|quicksand|safira-march|the-seasons|alta|paris|moscow|venice|vienna|dublin|athens|genoa|london)\S+/g, '').replace(/\bfont-\S+/g, '').trim();
       document.body.classList.add(fontClass);
+    }
+
+    function changeFontSize(sizeClass) {
+      document.body.className = document.body.className.replace(/fsize-\S+/g, '').trim();
+      document.body.classList.add(sizeClass);
     }
   </script>
 
