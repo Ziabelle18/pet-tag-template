@@ -152,7 +152,11 @@
       backdrop-filter: blur(10px);
       box-shadow: 0 4px 15px var(--blob-shadow);
       display: flex; align-items: center; gap: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease, background-color 0.2s ease;
     }
+    .badge-nfc:hover { transform: scale(1.04); }
     body.dark-mode .badge-nfc { color: #f1f5f9; }
 
     .btn-icon {
@@ -415,6 +419,24 @@
 
     .modal-title { font-size: 1.2rem; margin-bottom: 12px; text-align: center; font-weight: 700; }
 
+    /* NFC INSTRUCTION STYLES */
+    .nfc-step-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      margin-bottom: 12px; text-align: left;
+      background: var(--accent-light); padding: 10px 12px;
+      border-radius: 16px; border: 1.5px solid var(--card-border);
+    }
+    .nfc-step-num {
+      background: var(--accent-main); color: #fff;
+      width: 26px; height: 26px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 2px;
+    }
+    body.dark-mode .nfc-step-num { color: #121110; background: #f1f5f9; }
+    .nfc-step-text { font-size: 0.82rem; color: var(--text-main); line-height: 1.35; }
+    .nfc-step-text strong { display: block; font-weight: 700; margin-bottom: 2px; color: var(--accent-main); }
+    body.dark-mode .nfc-step-text strong { color: #f1f5f9; }
+
     .form-section {
       border-top: 1px dashed var(--card-border);
       padding-top: 12px;
@@ -579,9 +601,11 @@
 
     <!-- TOP ACTION BAR -->
     <div class="top-bar">
-      <div class="badge-nfc">
+      <!-- CLICKABLE NFC BADGE FOR TAP INSTRUCTIONS -->
+      <div class="badge-nfc" onclick="openModal('nfcInfoModal')" title="Click for NFC Tap Instructions">
         <i class="fa-solid fa-wifi"></i>
         <span>NFC PET TAG</span>
+        <i class="fa-solid fa-circle-info" style="font-size: 0.75rem; opacity: 0.8; margin-left: 2px;"></i>
       </div>
 
       <div style="display: flex; gap: 8px;">
@@ -764,6 +788,45 @@
       </a>
     </div>
 
+  </div>
+
+  <!-- HOW TO TAP NFC KEYCHAIN INSTRUCTION MODAL -->
+  <div id="nfcInfoModal" class="modal-overlay">
+    <div class="modal-box" style="text-align: center;">
+      <i class="fa-solid fa-wifi" style="font-size: 2.2rem; color: var(--accent-main); margin-bottom: 8px;"></i>
+      <h3 class="modal-title">📱 How to Tap NFC Tag</h3>
+      <p style="font-size: 0.78rem; color: var(--text-sub); margin-bottom: 16px;">Easy steps to tap & scan this pet keychain using your phone!</p>
+
+      <div class="nfc-step-item">
+        <div class="nfc-step-num">1</div>
+        <div class="nfc-step-text">
+          <strong>iPhone Users:</strong>
+          Unlock phone & tap the top back near the camera against the NFC keychain.
+        </div>
+      </div>
+
+      <div class="nfc-step-item">
+        <div class="nfc-step-num">2</div>
+        <div class="nfc-step-text">
+          <strong>Android Users:</strong>
+          Turn ON 'NFC' in Quick Settings, then tap the center back of phone to keychain.
+        </div>
+      </div>
+
+      <div class="nfc-step-item">
+        <div class="nfc-step-num">3</div>
+        <div class="nfc-step-text">
+          <strong>Open Notification:</strong>
+          Tap the website pop-up link that instantly appears on screen!
+        </div>
+      </div>
+
+      <div style="background: var(--accent-light); padding: 8px 12px; border-radius: 12px; font-size: 0.72rem; color: var(--text-sub); margin-top: 10px; margin-bottom: 14px;">
+        💡 <em>Tip: Remove thick phone cases if it doesn't scan right away.</em>
+      </div>
+
+      <button type="button" onclick="closeModal('nfcInfoModal')" class="btn-submit">Got It! 🐾</button>
+    </div>
   </div>
 
   <!-- PASSCODE UNLOCK MODAL WITH SHOW/HIDE EYE ICON -->
@@ -1361,7 +1424,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      const clickableCards = document.querySelectorAll('.glass-card, .grid-box, .btn-action');
+      const clickableCards = document.querySelectorAll('.glass-card, .grid-box, .btn-action, .badge-nfc');
       clickableCards.forEach(card => {
         card.addEventListener('click', function(e) {
           triggerWiggle(this);
