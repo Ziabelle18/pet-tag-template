@@ -276,7 +276,8 @@
     .modal-box {
       background: var(--bg-color); border: 1px solid var(--card-border); border-radius: 24px;
       padding: 24px; width: 100%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      max-height: 85vh; overflow-y: auto; position: relative; z-index: 101;
+      max-height: 85vh; overflow-y: auto; position: relative; z-index: 105;
+      -webkit-overflow-scrolling: touch; pointer-events: auto;
     }
 
     .modal-title { font-size: 1.2rem; margin-bottom: 12px; text-align: center; font-weight: 700; }
@@ -285,15 +286,17 @@
       border-top: 1px dashed var(--card-border);
       padding-top: 12px;
       margin-top: 12px;
+      position: relative;
+      z-index: 102;
     }
     .form-section-title { font-size: 0.8rem; font-weight: 700; color: var(--accent-main); margin-bottom: 8px; text-transform: uppercase; }
 
-    .form-group { margin-bottom: 10px; text-align: left; }
+    .form-group { margin-bottom: 10px; text-align: left; position: relative; z-index: 103; }
     .form-group label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-sub); margin-bottom: 4px; }
     .form-group input, .form-group textarea, .form-group select {
       width: 100%; padding: 10px; border-radius: 12px; border: 1px solid var(--card-border);
       background: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
-      position: relative; z-index: 102;
+      position: relative; z-index: 104;
     }
 
     .toggle-switch-wrapper {
@@ -306,12 +309,29 @@
     .btn-submit {
       width: 100%; padding: 12px; background: var(--accent-main); color: white;
       border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 15px;
-      position: relative; z-index: 102;
+      position: relative; z-index: 105;
     }
 
     .btn-link-flat {
       background: none; border: none; color: var(--accent-main);
       font-size: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: underline; margin-top: 8px; display: inline-block;
+    }
+
+    .pin-input-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .pin-eye-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: var(--text-sub);
+      cursor: pointer;
+      font-size: 0.9rem;
+      z-index: 106;
     }
 
     .lightbox-img { max-width: 90vw; max-height: 80vh; border-radius: 16px; }
@@ -512,15 +532,18 @@
 
   </div>
 
-  <!-- PASSCODE UNLOCK MODAL -->
+  <!-- PASSCODE UNLOCK MODAL WITH SHOW/HIDE EYE ICON -->
   <div id="passcodeModal" class="modal-overlay">
     <div class="modal-box" style="text-align: center;">
       <i class="fa-solid fa-lock" style="font-size: 2rem; color: var(--accent-main); margin-bottom: 10px;"></i>
       <h3 class="modal-title">Enter Passcode</h3>
       <p style="font-size: 0.78rem; color: var(--text-sub); margin-bottom: 15px;">Enter 4-digit security PIN to edit pet details.</p>
 
-      <div class="form-group">
-        <input type="password" id="inputPin" maxlength="4" placeholder="Default PIN: 1234" style="text-align: center; letter-spacing: 5px; font-size: 1.1rem;">
+      <div class="form-group pin-input-container">
+        <input type="password" id="inputPin" maxlength="4" placeholder="Default PIN: 1234" style="text-align: center; letter-spacing: 5px; font-size: 1.1rem; padding-right: 40px;">
+        <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('inputPin', 'eyeIconLogin')">
+          <i id="eyeIconLogin" class="fa-solid fa-eye"></i>
+        </button>
       </div>
       <p id="pinError" style="color:#ef4444; font-size:0.75rem; display:none; margin-bottom:10px; font-weight:600;">Invalid Security PIN!</p>
 
@@ -532,15 +555,18 @@
     </div>
   </div>
 
-  <!-- RESET PASSCODE MODAL -->
+  <!-- RESET PASSCODE MODAL WITH SHOW/HIDE EYE ICON -->
   <div id="resetModal" class="modal-overlay">
     <div class="modal-box" style="text-align: center;">
       <i class="fa-solid fa-key" style="font-size: 2rem; color: var(--accent-main); margin-bottom: 10px;"></i>
       <h3 class="modal-title">Reset Security PIN</h3>
       <p style="font-size: 0.78rem; color: var(--text-sub); margin-bottom: 15px;">Enter Master Reset Code to reset PIN to default (1234).</p>
 
-      <div class="form-group">
-        <input type="text" id="inputResetKey" placeholder="Enter Reset Code" style="text-align: center; font-size: 0.9rem;">
+      <div class="form-group pin-input-container">
+        <input type="password" id="inputResetKey" placeholder="Enter Reset Code" style="text-align: center; font-size: 0.9rem; padding-right: 40px;">
+        <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('inputResetKey', 'eyeIconReset')">
+          <i id="eyeIconReset" class="fa-solid fa-eye"></i>
+        </button>
       </div>
       <p id="resetError" style="color:#ef4444; font-size:0.75rem; display:none; margin-bottom:10px; font-weight:600;">Invalid Master Reset Code!</p>
 
@@ -556,7 +582,7 @@
     <div class="modal-box">
       <h3 class="modal-title">✏️ Edit Pet Tag Details</h3>
 
-      <!-- PIN PROTECTION TOGGLE & CUSTOM PIN CHANGE -->
+      <!-- PIN PROTECTION TOGGLE & CUSTOM PIN CHANGE WITH EYE ICON -->
       <div class="form-section" style="margin-top: 0; padding-top: 0; border-top: none;">
         <div class="toggle-switch-wrapper">
           <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-main);">🔒 Passcode Lock Protection</span>
@@ -564,7 +590,12 @@
         </div>
         <div class="form-group" style="margin-top: 6px;">
           <label>Set Custom 4-Digit PIN</label>
-          <input type="password" id="editCustomPin" maxlength="4" placeholder="Change PIN (Current: 1234)" style="text-align: center; letter-spacing: 4px;">
+          <div class="pin-input-container">
+            <input type="password" id="editCustomPin" maxlength="4" placeholder="Change PIN (Current: 1234)" style="text-align: center; letter-spacing: 4px; padding-right: 40px;">
+            <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('editCustomPin', 'eyeIconCustomPin')">
+              <i id="eyeIconCustomPin" class="fa-solid fa-eye"></i>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -708,7 +739,7 @@
         </div>
       </div>
 
-      <!-- LOCATION SEARCH WITH FULLY WORKING CLICKABLE INPUT & PIN BUTTON -->
+      <!-- LOCATION SEARCH (INIAYOS ANG CLICKABILITY) -->
       <div class="form-section">
         <div class="form-section-title">📍 Search & Pin Location</div>
         <div class="form-group">
@@ -770,13 +801,28 @@
     function verifyResetKey() {
       const enteredKey = document.getElementById('inputResetKey').value.trim();
       if (enteredKey === MASTER_RESET_KEY) {
-        securityPin = "1234"; // Reset to default PIN
+        securityPin = "1234";
         closeModal('resetModal');
         alert("🔓 PIN reset successful! Default PIN is now 1234.");
         populateEditorForm();
         openModal('editorModal');
       } else {
         document.getElementById('resetError').style.display = 'block';
+      }
+    }
+
+    /* SHOW / HIDE PIN VISIBILITY TOGGLE */
+    function togglePinVisibility(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
       }
     }
 
@@ -833,7 +879,6 @@
       }
     }
 
-    /* INIAYOS ANG ADDRESS INPUT & SEARCH MAP FUNCTION */
     function updateMapLocation(evt) {
       if(evt) evt.preventDefault();
       const addressInput = document.getElementById('editAddress');
@@ -854,12 +899,10 @@
       document.getElementById('editBreed').value = document.getElementById('displayBreed').innerText;
       document.getElementById('editAge').value = document.getElementById('displayAge').innerText;
 
-      // Badges
       document.getElementById('editBadge1').value = document.getElementById('displayBadge1').innerText;
       document.getElementById('editBadge2').value = document.getElementById('displayBadge2').innerText;
       document.getElementById('editBadge3').value = document.getElementById('displayBadge3').innerText;
 
-      // Social Media
       document.getElementById('editFacebook').value = document.getElementById('linkFacebook').dataset.raw || '';
       document.getElementById('editInstagram').value = document.getElementById('linkInstagram').dataset.raw || '';
       document.getElementById('editViber').value = document.getElementById('linkViber').dataset.raw || '';
@@ -885,7 +928,6 @@
     function savePetDetails() {
       const newPhone = document.getElementById('editPhone').value.trim();
 
-      // Save Custom PIN & PIN Protection Toggle
       isPinProtectionActive = document.getElementById('togglePinProtection').checked;
       const newPinInput = document.getElementById('editCustomPin').value.trim();
       if (newPinInput.length === 4) {
@@ -896,18 +938,15 @@
       document.getElementById('displayBreed').innerText = document.getElementById('editBreed').value;
       document.getElementById('displayAge').innerText = document.getElementById('editAge').value;
 
-      // Save Badges
       document.getElementById('displayBadge1').innerText = document.getElementById('editBadge1').value || 'SAFE';
       document.getElementById('displayBadge2').innerText = document.getElementById('editBadge2').value || 'FRIENDLY';
       document.getElementById('displayBadge3').innerText = document.getElementById('editBadge3').value || 'PET';
 
-      // Save Social Media Links
       updateSocialLink('linkFacebook', document.getElementById('editFacebook').value, 'https://facebook.com/');
       updateSocialLink('linkInstagram', document.getElementById('editInstagram').value, 'https://instagram.com/');
       updateSocialLink('linkViber', document.getElementById('editViber').value, 'viber://chat?number=');
       updateSocialLink('linkWhatsapp', document.getElementById('editWhatsapp').value, 'https://wa.me/');
 
-      // Action Links
       document.getElementById('linkCall').href = "tel:" + newPhone;
       document.getElementById('linkSms').href = "sms:" + newPhone;
       document.getElementById('linkCallLost').href = "tel:" + newPhone;
@@ -917,7 +956,6 @@
       document.getElementById('displayAllergies').innerText = document.getElementById('editAllergies').value;
       document.getElementById('displayAbout').innerText = document.getElementById('editAbout').value;
 
-      // Microchip
       const hasChip = document.getElementById('toggleMicrochip').checked;
       const chipVal = document.getElementById('editChip').value.trim();
       document.getElementById('displayChip').innerText = (hasChip && chipVal !== "") ? chipVal : "None";
