@@ -265,7 +265,7 @@
     /* STICKY BOTTOM CALL BUTTON */
     .sticky-bottom-btn { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 380px; z-index: 80; }
 
-    /* MODAL POPUPS (CLEAN SINGLE SCROLL CONTAINER & TOUCH FIX) */
+    /* MODAL POPUPS (CLEAN TOUCH SCROLL CONTAINER) */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.6);
       backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
@@ -323,7 +323,6 @@
       width: 100%; padding: 12px; background: var(--accent-main); color: white;
       border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 12px;
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      position: relative; z-index: 10; pointer-events: auto;
     }
 
     .btn-link-flat {
@@ -754,16 +753,18 @@
         </div>
       </div>
 
-      <!-- LOCATION SEARCH WITH FULLY WORKING BUTTON -->
+      <!-- REAL-TIME AUTO-UPDATING LOCATION INPUT (NO EXTRA BLOCKING BUTTON) -->
       <div class="form-section">
-        <div class="form-section-title">📍 Search & Pin Location</div>
-        <div class="form-group">
+        <div class="form-section-title">📍 Address & Map Location</div>
+        <div class="form-group" style="margin-bottom:0;">
           <label>Address / City Name</label>
-          <input type="text" id="editAddress" placeholder="e.g. Quezon City, Metro Manila">
+          <div class="pin-input-container">
+            <input type="text" id="editAddress" placeholder="e.g. Quezon City, Metro Manila" oninput="updateMapLocation()" style="padding-right: 40px;">
+            <button type="button" class="pin-eye-btn" onclick="updateMapLocation()" title="Update Map">
+              <i class="fa-solid fa-magnifying-glass-location"></i>
+            </button>
+          </div>
         </div>
-        <button type="button" id="btnMapSearch" onclick="updateMapLocation(event)" class="btn-submit" style="background:var(--accent-light); color:var(--text-main); margin-top:0;">
-          <i class="fa-solid fa-magnifying-glass-location"></i> Search Map Location
-        </button>
       </div>
 
       <div style="display: flex; gap: 8px; margin-top: 18px;">
@@ -894,11 +895,8 @@
       }
     }
 
-    function updateMapLocation(evt) {
-      if(evt) {
-        evt.preventDefault();
-        evt.stopPropagation();
-      }
+    /* REAL-TIME AUTO MAP LOCATION UPDATE FUNCTION */
+    function updateMapLocation() {
       const addressInput = document.getElementById('editAddress');
       if(!addressInput) return;
 
@@ -1029,4 +1027,3 @@
 
 </body>
 </html>
-
