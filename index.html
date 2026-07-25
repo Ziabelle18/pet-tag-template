@@ -22,30 +22,31 @@
     @font-face { font-family: 'Alta'; src: local('Alta'), url('https://fonts.cdnfonts.com/s/29224/Alta-Regular.woff') format('woff'); }
 
     :root {
-      /* DEFAULT THEME: PASTEL ORANGE / PEACH */
-      --bg-color: #fff8f5;
-      --card-bg: rgba(255, 255, 255, 0.88);
-      --card-border: rgba(255, 224, 204, 0.7);
-      --text-main: #2d2623;
-      --text-sub: #786c66;
-      --accent-main: #ff8e6e;
-      --accent-light: #fff0eb;
-      --accent-badge: #4ade80;
-      --shadow-soft: 0 10px 25px rgba(255, 142, 110, 0.12);
+      /* DEFAULT THEME: CLEAN WHITE */
+      --bg-color: #ffffff;
+      --card-bg: rgba(248, 250, 252, 0.95);
+      --card-border: rgba(226, 232, 240, 0.8);
+      --text-main: #1e293b;
+      --text-sub: #64748b;
+      --accent-main: #0f172a;
+      --accent-light: #f1f5f9;
+      --accent-badge: #22c55e;
+      --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.05);
       --font-family: 'Poppins', sans-serif;
     }
 
-    /* --- PASTEL COLOR THEMES --- */
-    body.theme-pastel-orange { --bg-color: #fff8f5; --card-border: #ffe2d1; --accent-main: #ff8e6e; --accent-light: #fff0eb; }
-    body.theme-pastel-blue   { --bg-color: #f0f8ff; --card-border: #cbe5ff; --accent-main: #3b82f6; --accent-light: #eff6ff; }
-    body.theme-pastel-yellow { --bg-color: #fefde8; --card-border: #fef08a; --accent-main: #eab308; --accent-light: #fefce8; }
-    body.theme-pastel-pink   { --bg-color: #fdf2f8; --card-border: #fbcfe8; --accent-main: #ec4899; --accent-light: #fce7f3; }
-    body.theme-pastel-beige  { --bg-color: #fdfbf7; --card-border: #e6dfd5; --accent-main: #b09e80; --accent-light: #f5f0eb; }
-    body.theme-pastel-gray   { --bg-color: #f8fafc; --card-border: #e2e8f0; --accent-main: #64748b; --accent-light: #f1f5f9; }
+    /* --- COLOR THEMES --- */
+    body.theme-white         { --bg-color: #ffffff; --card-bg: rgba(248, 250, 252, 0.95); --card-border: #e2e8f0; --accent-main: #0f172a; --accent-light: #f1f5f9; }
+    body.theme-pastel-orange { --bg-color: #fff8f5; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #ffe2d1; --accent-main: #ff8e6e; --accent-light: #fff0eb; }
+    body.theme-pastel-blue   { --bg-color: #f0f8ff; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #cbe5ff; --accent-main: #3b82f6; --accent-light: #eff6ff; }
+    body.theme-pastel-yellow { --bg-color: #fefde8; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #fef08a; --accent-main: #eab308; --accent-light: #fefce8; }
+    body.theme-pastel-pink   { --bg-color: #fdf2f8; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #fbcfe8; --accent-main: #ec4899; --accent-light: #fce7f3; }
+    body.theme-pastel-beige  { --bg-color: #fdfbf7; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #e6dfd5; --accent-main: #b09e80; --accent-light: #f5f0eb; }
+    body.theme-pastel-gray   { --bg-color: #f8fafc; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #e2e8f0; --accent-main: #64748b; --accent-light: #f1f5f9; }
     body.theme-pastel-black  { --bg-color: #262626; --card-bg: rgba(38, 38, 38, 0.9); --card-border: #404040; --text-main: #f5f5f5; --text-sub: #a3a3a3; --accent-main: #525252; --accent-light: #333333; }
-    body.theme-pastel-purple { --bg-color: #faf5ff; --card-border: #e9d5ff; --accent-main: #a855f7; --accent-light: #f3e8ff; }
-    body.theme-pastel-sage   { --bg-color: #f4f7f4; --card-border: #c8d6af; --accent-main: #7c9473; --accent-light: #e8efe8; }
-    body.theme-pastel-red    { --bg-color: #fff5f5; --card-border: #fecaca; --accent-main: #f87171; --accent-light: #fef2f2; }
+    body.theme-pastel-purple { --bg-color: #faf5ff; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #e9d5ff; --accent-main: #a855f7; --accent-light: #f3e8ff; }
+    body.theme-pastel-sage   { --bg-color: #f4f7f4; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #c8d6af; --accent-main: #7c9473; --accent-light: #e8efe8; }
+    body.theme-pastel-red    { --bg-color: #fff5f5; --card-bg: rgba(255, 255, 255, 0.88); --card-border: #fecaca; --accent-main: #f87171; --accent-light: #fef2f2; }
 
     /* FONT CLASSES */
     body.font-poppins      { --font-family: 'Poppins', sans-serif; }
@@ -275,7 +276,7 @@
     .modal-box {
       background: var(--bg-color); border: 1px solid var(--card-border); border-radius: 24px;
       padding: 24px; width: 100%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      max-height: 85vh; overflow-y: auto;
+      max-height: 85vh; overflow-y: auto; position: relative; z-index: 101;
     }
 
     .modal-title { font-size: 1.2rem; margin-bottom: 12px; text-align: center; font-weight: 700; }
@@ -292,6 +293,7 @@
     .form-group input, .form-group textarea, .form-group select {
       width: 100%; padding: 10px; border-radius: 12px; border: 1px solid var(--card-border);
       background: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
+      position: relative; z-index: 102;
     }
 
     .toggle-switch-wrapper {
@@ -304,6 +306,7 @@
     .btn-submit {
       width: 100%; padding: 12px; background: var(--accent-main); color: white;
       border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 15px;
+      position: relative; z-index: 102;
     }
 
     .btn-link-flat {
@@ -316,7 +319,7 @@
     .hidden { display: none !important; }
   </style>
 </head>
-<body id="bodyTag" class="theme-pastel-orange font-poppins">
+<body id="bodyTag" class="theme-white font-poppins">
 
   <div class="app-container">
 
@@ -553,18 +556,23 @@
     <div class="modal-box">
       <h3 class="modal-title">✏️ Edit Pet Tag Details</h3>
 
-      <!-- PIN PROTECTION TOGGLE -->
+      <!-- PIN PROTECTION TOGGLE & CUSTOM PIN CHANGE -->
       <div class="form-section" style="margin-top: 0; padding-top: 0; border-top: none;">
         <div class="toggle-switch-wrapper">
           <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-main);">🔒 Passcode Lock Protection</span>
           <label><input type="checkbox" id="togglePinProtection" checked></label>
         </div>
+        <div class="form-group" style="margin-top: 6px;">
+          <label>Set Custom 4-Digit PIN</label>
+          <input type="password" id="editCustomPin" maxlength="4" placeholder="Change PIN (Current: 1234)" style="text-align: center; letter-spacing: 4px;">
+        </div>
       </div>
 
-      <!-- 10 PASTEL COLOR OPTIONS -->
+      <!-- 10 PASTEL COLOR OPTIONS (DEFAULT: CLEAN WHITE) -->
       <div class="form-group">
-        <label>Color Theme (10 Pastel Colors)</label>
+        <label>Color Theme</label>
         <select id="editTheme" onchange="changeTheme(this.value)">
+          <option value="theme-white" selected>Clean White (Default)</option>
           <option value="theme-pastel-orange">Pastel Orange</option>
           <option value="theme-pastel-blue">Pastel Blue</option>
           <option value="theme-pastel-yellow">Pastel Yellow</option>
@@ -593,7 +601,7 @@
         </select>
       </div>
 
-      <!-- PROFILE PHOTO FILE UPLOAD WITH AUTOMATIC COMPRESSOR -->
+      <!-- PROFILE PHOTO FILE UPLOAD -->
       <div class="form-group">
         <label>Change Profile Photo</label>
         <input type="file" id="fileAvatar" accept="image/*" onchange="previewCompressedLocalImage(this, 'displayAvatar', 400)">
@@ -683,7 +691,7 @@
         <textarea id="editAbout" rows="2"></textarea>
       </div>
 
-      <!-- GALLERY PHOTOS EASY UPLOAD WITH AUTOMATIC COMPRESSOR -->
+      <!-- GALLERY PHOTOS EASY UPLOAD -->
       <div class="form-section">
         <div class="form-section-title">📷 Easy Gallery Photo Picker (Max 3)</div>
         <div class="form-group">
@@ -700,21 +708,21 @@
         </div>
       </div>
 
-      <!-- LOCATION SEARCH WITH WORKING MAP PIN -->
+      <!-- LOCATION SEARCH WITH FULLY WORKING CLICKABLE INPUT & PIN BUTTON -->
       <div class="form-section">
         <div class="form-section-title">📍 Search & Pin Location</div>
         <div class="form-group">
           <label>Address / City Name</label>
           <input type="text" id="editAddress" placeholder="e.g. Quezon City, Metro Manila">
         </div>
-        <button type="button" onclick="updateMapLocation()" class="btn-submit" style="background:var(--accent-light); color:var(--accent-main); margin-top:0;">
+        <button type="button" onclick="updateMapLocation(event)" class="btn-submit" style="background:var(--accent-light); color:var(--text-main); margin-top:0;">
           <i class="fa-solid fa-magnifying-glass-location"></i> Search Map Location
         </button>
       </div>
 
       <div style="display: flex; gap: 8px; margin-top: 15px;">
-        <button onclick="closeModal('editorModal')" class="btn-submit" style="background:var(--accent-light); color:var(--text-main);">Cancel</button>
-        <button onclick="savePetDetails()" class="btn-submit">Save Changes</button>
+        <button type="button" onclick="closeModal('editorModal')" class="btn-submit" style="background:var(--accent-light); color:var(--text-main);">Cancel</button>
+        <button type="button" onclick="savePetDetails()" class="btn-submit">Save Changes</button>
       </div>
     </div>
   </div>
@@ -785,7 +793,6 @@
       }
     }
 
-    /* AUTOMATIC CLIENT-SIDE IMAGE COMPRESSOR (INIAYOS ANG BLINKING/FLICKERING ISSUE) */
     function previewCompressedLocalImage(input, targetImgId, maxDim = 400) {
       if (input.files && input.files[0]) {
         const file = input.files[0];
@@ -818,7 +825,6 @@
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
 
-            // Compress to optimized JPEG format
             const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
             document.getElementById(targetImgId).src = compressedDataUrl;
           };
@@ -827,9 +833,13 @@
       }
     }
 
-    /* INIAYOS ANG MAP LOCATION SEARCH FUNCTION */
-    function updateMapLocation() {
-      const address = document.getElementById('editAddress').value.trim();
+    /* INIAYOS ANG ADDRESS INPUT & SEARCH MAP FUNCTION */
+    function updateMapLocation(evt) {
+      if(evt) evt.preventDefault();
+      const addressInput = document.getElementById('editAddress');
+      if(!addressInput) return;
+
+      const address = addressInput.value.trim();
       if(address !== "") {
         const encoded = encodeURIComponent(address);
         document.getElementById('displayMapIframe').src = `https://maps.google.com/maps?q=${encoded}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
@@ -839,6 +849,7 @@
 
     function populateEditorForm() {
       document.getElementById('togglePinProtection').checked = isPinProtectionActive;
+      document.getElementById('editCustomPin').value = securityPin;
       document.getElementById('editName').value = document.getElementById('displayName').innerText;
       document.getElementById('editBreed').value = document.getElementById('displayBreed').innerText;
       document.getElementById('editAge').value = document.getElementById('displayAge').innerText;
@@ -874,7 +885,12 @@
     function savePetDetails() {
       const newPhone = document.getElementById('editPhone').value.trim();
 
+      // Save Custom PIN & PIN Protection Toggle
       isPinProtectionActive = document.getElementById('togglePinProtection').checked;
+      const newPinInput = document.getElementById('editCustomPin').value.trim();
+      if (newPinInput.length === 4) {
+        securityPin = newPinInput;
+      }
 
       document.getElementById('displayName').innerText = document.getElementById('editName').value;
       document.getElementById('displayBreed').innerText = document.getElementById('editBreed').value;
