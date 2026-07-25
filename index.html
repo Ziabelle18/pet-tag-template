@@ -146,7 +146,7 @@
     .pet-name { font-size: 2rem; color: var(--text-main); line-height: 1.1; font-weight: 700; }
     .pet-sub { font-size: 0.85rem; color: var(--text-sub); margin-top: 4px; font-weight: 500; }
 
-    .status-badges { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
+    .status-badges { display: flex; justify-content: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
 
     .status-badge {
       background: var(--accent-light);
@@ -158,6 +158,32 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
+
+    /* SOCIAL MEDIA LINKS SECTION */
+    .social-links-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .social-icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      border: 1px solid var(--card-border);
+      color: var(--accent-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: transform 0.2s ease, background 0.2s ease;
+      box-shadow: var(--shadow-soft);
+    }
+    .social-icon-btn:hover { transform: scale(1.1); }
 
     /* QUICK CALL & MESSAGE BUTTONS */
     .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
@@ -268,27 +294,6 @@
       background: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
     }
 
-    .file-input-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn-file-custom {
-      background: var(--accent-light);
-      color: var(--accent-main);
-      border: 1px solid var(--card-border);
-      padding: 8px 12px;
-      border-radius: 10px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
     .toggle-switch-wrapper {
       display: flex;
       align-items: center;
@@ -302,6 +307,8 @@
     }
 
     .lightbox-img { max-width: 90vw; max-height: 80vh; border-radius: 16px; }
+
+    .hidden { display: none !important; }
   </style>
 </head>
 <body id="bodyTag" class="theme-pastel-orange font-poppins">
@@ -337,10 +344,19 @@
         <h1 id="displayName" class="pet-name">Milo</h1>
         <p class="pet-sub">🐾 <span id="displayBreed">Golden Retriever</span> • <span id="displayAge">2 Years Old</span></p>
 
+        <!-- EDITABLE BADGES -->
         <div class="status-badges">
-          <span class="status-badge">SAFE</span>
-          <span class="status-badge" style="background:#dcfce7; color:#15803d;">FRIENDLY</span>
-          <span id="displayGenderBadge" class="status-badge" style="background:#e0f2fe; color:#0369a1;">MALE ♂</span>
+          <span id="displayBadge1" class="status-badge">SAFE</span>
+          <span id="displayBadge2" class="status-badge" style="background:#dcfce7; color:#15803d;">FRIENDLY</span>
+          <span id="displayBadge3" class="status-badge" style="background:#e0f2fe; color:#0369a1;">MALE ♂</span>
+        </div>
+
+        <!-- SOCIAL MEDIA LINKS -->
+        <div class="social-links-bar" id="socialLinksBar">
+          <a id="linkFacebook" href="#" target="_blank" class="social-icon-btn hidden" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a id="linkInstagram" href="#" target="_blank" class="social-icon-btn hidden" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a id="linkViber" href="#" target="_blank" class="social-icon-btn hidden" title="Viber"><i class="fa-brands fa-viber"></i></a>
+          <a id="linkWhatsapp" href="#" target="_blank" class="social-icon-btn hidden" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
         </div>
       </div>
 
@@ -512,7 +528,7 @@
     <div class="modal-box">
       <h3 class="modal-title">✏️ Edit Pet Tag Details</h3>
 
-      <!-- PIN CODE PROTECTION TOGGLE (ON / OFF) -->
+      <!-- PIN PROTECTION TOGGLE -->
       <div class="form-section" style="margin-top: 0; padding-top: 0; border-top: none;">
         <div class="toggle-switch-wrapper">
           <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-main);">🔒 Passcode Lock Protection</span>
@@ -552,6 +568,12 @@
         </select>
       </div>
 
+      <!-- PROFILE PHOTO FILE UPLOAD -->
+      <div class="form-group">
+        <label>Change Profile Photo</label>
+        <input type="file" id="fileAvatar" accept="image/*" onchange="previewLocalImage(this, 'displayAvatar')">
+      </div>
+
       <div class="form-group">
         <label>Pet Name</label>
         <input type="text" id="editName">
@@ -567,12 +589,50 @@
         <input type="text" id="editAge">
       </div>
 
+      <!-- EDITABLE BADGES -->
+      <div class="form-section">
+        <div class="form-section-title">🏷️ Status Badges</div>
+        <div class="form-group">
+          <label>Badge 1 Text</label>
+          <input type="text" id="editBadge1" placeholder="e.g. SAFE">
+        </div>
+        <div class="form-group">
+          <label>Badge 2 Text</label>
+          <input type="text" id="editBadge2" placeholder="e.g. FRIENDLY">
+        </div>
+        <div class="form-group">
+          <label>Badge 3 Text (Gender / Status)</label>
+          <input type="text" id="editBadge3" placeholder="e.g. MALE ♂">
+        </div>
+      </div>
+
+      <!-- SOCIAL MEDIA LINKS EDIT -->
+      <div class="form-section">
+        <div class="form-section-title">🌐 Social Media Links</div>
+        <div class="form-group">
+          <label>Facebook Profile / Page URL</label>
+          <input type="text" id="editFacebook" placeholder="https://facebook.com/username">
+        </div>
+        <div class="form-group">
+          <label>Instagram Username / URL</label>
+          <input type="text" id="editInstagram" placeholder="https://instagram.com/username">
+        </div>
+        <div class="form-group">
+          <label>Viber Number or Link</label>
+          <input type="text" id="editViber" placeholder="+639123456789">
+        </div>
+        <div class="form-group">
+          <label>WhatsApp Number or Link</label>
+          <input type="text" id="editWhatsapp" placeholder="+639123456789">
+        </div>
+      </div>
+
       <div class="form-group">
         <label>Owner Phone (Call/SMS)</label>
         <input type="text" id="editPhone">
       </div>
 
-      <!-- MICROCHIP ID TOGGLE (ON / OFF) -->
+      <!-- MICROCHIP ID TOGGLE -->
       <div class="form-section">
         <div class="toggle-switch-wrapper">
           <span class="form-section-title" style="margin-bottom:0;">Microchip Status</span>
@@ -598,7 +658,7 @@
         <textarea id="editAbout" rows="2"></textarea>
       </div>
 
-      <!-- PHOTO GALLERY EASY IMAGE FILE UPLOAD -->
+      <!-- GALLERY PHOTOS EASY UPLOAD -->
       <div class="form-section">
         <div class="form-section-title">📷 Easy Gallery Photo Picker (Max 3)</div>
         <div class="form-group">
@@ -615,14 +675,14 @@
         </div>
       </div>
 
-      <!-- INTERACTIVE LOCATION SEARCH & GOOGLE MAPS PIN -->
+      <!-- LOCATION SEARCH -->
       <div class="form-section">
         <div class="form-section-title">📍 Search & Pin Location</div>
         <div class="form-group">
           <label>Address / City Name</label>
           <input type="text" id="editAddress" placeholder="e.g. Quezon City, Metro Manila">
         </div>
-        <button type="button" onclick="updateMapLocation()" class="btn-file-custom" style="width: 100%; justify-content: center; margin-bottom: 8px;">
+        <button type="button" onclick="updateMapLocation()" class="btn-submit" style="background:var(--accent-light); color:var(--accent-main); margin-top:0;">
           <i class="fa-solid fa-magnifying-glass-location"></i> Search Map Location
         </button>
       </div>
@@ -644,7 +704,6 @@
     const SECURITY_PIN = "1234";
     let isPinProtectionActive = true;
 
-    // 1. PIN PROTECTION CHECK
     function handleEditClick() {
       if (!isPinProtectionActive) {
         populateEditorForm();
@@ -667,7 +726,6 @@
       }
     }
 
-    // 2. MICROCHIP ON / OFF TOGGLE LOGIC
     function handleChipToggleChange() {
       const isChecked = document.getElementById('toggleMicrochip').checked;
       const chipInput = document.getElementById('editChip');
@@ -681,7 +739,6 @@
       }
     }
 
-    // 3. EASY FILE IMAGE PREVIEW (NO URL NEEDED)
     function previewLocalImage(input, targetImgId) {
       if (input.files && input.files[0]) {
         const reader = new FileReader();
@@ -692,7 +749,6 @@
       }
     }
 
-    // 4. MAP SEARCH & PIN FUNCTION
     function updateMapLocation() {
       const address = document.getElementById('editAddress').value.trim();
       if(address !== "") {
@@ -707,13 +763,24 @@
       document.getElementById('editName').value = document.getElementById('displayName').innerText;
       document.getElementById('editBreed').value = document.getElementById('displayBreed').innerText;
       document.getElementById('editAge').value = document.getElementById('displayAge').innerText;
+
+      // Badges
+      document.getElementById('editBadge1').value = document.getElementById('displayBadge1').innerText;
+      document.getElementById('editBadge2').value = document.getElementById('displayBadge2').innerText;
+      document.getElementById('editBadge3').value = document.getElementById('displayBadge3').innerText;
+
+      // Social Media
+      document.getElementById('editFacebook').value = document.getElementById('linkFacebook').dataset.raw || '';
+      document.getElementById('editInstagram').value = document.getElementById('linkInstagram').dataset.raw || '';
+      document.getElementById('editViber').value = document.getElementById('linkViber').dataset.raw || '';
+      document.getElementById('editWhatsapp').value = document.getElementById('linkWhatsapp').dataset.raw || '';
+
       document.getElementById('editPhone').value = document.getElementById('linkCall').href.replace('tel:', '');
       document.getElementById('editMedical').value = document.getElementById('displayMedical').innerText;
       document.getElementById('editAllergies').value = document.getElementById('displayAllergies').innerText;
       document.getElementById('editAbout').value = document.getElementById('displayAbout').innerText;
       document.getElementById('editAddress').value = document.getElementById('displayAddress').innerText;
 
-      // Microchip Status Check
       const currentChipText = document.getElementById('displayChip').innerText;
       if (currentChipText === "None" || currentChipText === "N/A" || currentChipText === "") {
         document.getElementById('toggleMicrochip').checked = false;
@@ -728,13 +795,24 @@
     function savePetDetails() {
       const newPhone = document.getElementById('editPhone').value.trim();
 
-      // Save PIN Protection Toggle
       isPinProtectionActive = document.getElementById('togglePinProtection').checked;
 
       document.getElementById('displayName').innerText = document.getElementById('editName').value;
       document.getElementById('displayBreed').innerText = document.getElementById('editBreed').value;
       document.getElementById('displayAge').innerText = document.getElementById('editAge').value;
-      
+
+      // Save Badges
+      document.getElementById('displayBadge1').innerText = document.getElementById('editBadge1').value || 'SAFE';
+      document.getElementById('displayBadge2').innerText = document.getElementById('editBadge2').value || 'FRIENDLY';
+      document.getElementById('displayBadge3').innerText = document.getElementById('editBadge3').value || 'PET';
+
+      // Save Social Media Links
+      updateSocialLink('linkFacebook', document.getElementById('editFacebook').value, 'https://facebook.com/');
+      updateSocialLink('linkInstagram', document.getElementById('editInstagram').value, 'https://instagram.com/');
+      updateSocialLink('linkViber', document.getElementById('editViber').value, 'viber://chat?number=');
+      updateSocialLink('linkWhatsapp', document.getElementById('editWhatsapp').value, 'https://wa.me/');
+
+      // Action Links
       document.getElementById('linkCall').href = "tel:" + newPhone;
       document.getElementById('linkSms').href = "sms:" + newPhone;
       document.getElementById('linkCallLost').href = "tel:" + newPhone;
@@ -744,21 +822,29 @@
       document.getElementById('displayAllergies').innerText = document.getElementById('editAllergies').value;
       document.getElementById('displayAbout').innerText = document.getElementById('editAbout').value;
 
-      // Save Microchip Status
+      // Microchip
       const hasChip = document.getElementById('toggleMicrochip').checked;
       const chipVal = document.getElementById('editChip').value.trim();
+      document.getElementById('displayChip').innerText = (hasChip && chipVal !== "") ? chipVal : "None";
 
-      if (hasChip && chipVal !== "") {
-        document.getElementById('displayChip').innerText = chipVal;
-      } else {
-        document.getElementById('displayChip').innerText = "None"; // Aesthetic fallback
-      }
-
-      // Save Location Address & Search
       updateMapLocation();
 
       closeModal('editorModal');
       alert("🐾 Pet details successfully saved!");
+    }
+
+    function updateSocialLink(elemId, val, prefix) {
+      const elem = document.getElementById(elemId);
+      const cleanVal = val.trim();
+      if(cleanVal !== "") {
+        elem.dataset.raw = cleanVal;
+        elem.href = cleanVal.startsWith('http') ? cleanVal : (prefix + cleanVal);
+        elem.classList.remove('hidden');
+      } else {
+        elem.dataset.raw = "";
+        elem.href = "#";
+        elem.classList.add('hidden');
+      }
     }
 
     function openModal(id) { document.getElementById(id).classList.add('active'); }
