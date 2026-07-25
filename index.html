@@ -201,7 +201,8 @@
     /* CHECKLIST / VACCINATIONS */
     .check-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .check-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 600; color: var(--text-main); }
-    .check-item i { color: var(--accent-badge); }
+    .check-item i.active { color: var(--accent-badge); }
+    .check-item i.inactive { color: #cbd5e1; }
 
     /* LOST PET BANNER */
     .lost-banner { background: #fef9c3; border: 1px solid #fef08a; text-align: center; }
@@ -210,12 +211,25 @@
     .lost-title { color: #ca8a04; font-size: 1.2rem; margin-bottom: 4px; font-weight: 700; }
     .lost-desc { font-size: 0.8rem; color: var(--text-sub); margin-bottom: 12px; }
 
-    /* PHOTO GALLERY */
-    .gallery-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
-    .gallery-scroll::-webkit-scrollbar { display: none; }
+    /* CENTERED PHOTO GALLERY (MAX 3 PHOTOS) */
+    .gallery-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 4px;
+    }
 
-    .gallery-img { width: 90px; height: 90px; border-radius: 16px; object-fit: cover; flex-shrink: 0; cursor: pointer; border: 2px solid var(--card-border); transition: transform 0.2s ease; }
-    .gallery-img:hover { transform: scale(1.05); }
+    .gallery-img {
+      width: 95px; height: 95px;
+      border-radius: 18px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid var(--card-border);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: var(--shadow-soft);
+    }
+    .gallery-img:hover { transform: scale(1.06); }
 
     /* MAP PLACEHOLDER */
     .map-box { width: 100%; height: 140px; border-radius: 16px; overflow: hidden; margin-bottom: 10px; border: 1px solid var(--card-border); }
@@ -240,6 +254,13 @@
 
     .modal-title { font-size: 1.2rem; margin-bottom: 12px; text-align: center; font-weight: 700; }
 
+    .form-section {
+      border-top: 1px dashed var(--card-border);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+    .form-section-title { font-size: 0.8rem; font-weight: 700; color: var(--accent-main); margin-bottom: 8px; text-transform: uppercase; }
+
     .form-group { margin-bottom: 10px; text-align: left; }
     .form-group label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-sub); margin-bottom: 4px; }
     .form-group input, .form-group textarea, .form-group select {
@@ -247,9 +268,16 @@
       background: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
     }
 
+    .checkbox-group {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px;
+    }
+    .checkbox-item {
+      display: flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+    }
+
     .btn-submit {
       width: 100%; padding: 12px; background: var(--accent-main); color: white;
-      border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 10px;
+      border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 15px;
     }
 
     .lightbox-img { max-width: 90vw; max-height: 80vh; border-radius: 16px; }
@@ -370,17 +398,17 @@
         </p>
       </div>
 
-      <!-- VACCINATION STATUS -->
+      <!-- VACCINATION STATUS (EDITABLE VIA EDITOR) -->
       <div class="glass-card">
         <div class="section-title">
           <i class="fa-solid fa-shield-cat"></i>
           <span>Vaccination Status</span>
         </div>
         <div class="check-list">
-          <div class="check-item"><i class="fa-solid fa-circle-check"></i> <span>Rabies</span></div>
-          <div class="check-item"><i class="fa-solid fa-circle-check"></i> <span>DHPP</span></div>
-          <div class="check-item"><i class="fa-solid fa-circle-check"></i> <span>Dewormed</span></div>
-          <div class="check-item"><i class="fa-solid fa-circle-check"></i> <span>Flea & Tick</span></div>
+          <div class="check-item"><i id="vaxRabiesIcon" class="fa-solid fa-circle-check active"></i> <span>Rabies</span></div>
+          <div class="check-item"><i id="vaxDhppIcon" class="fa-solid fa-circle-check active"></i> <span>DHPP</span></div>
+          <div class="check-item"><i id="vaxDewormIcon" class="fa-solid fa-circle-check active"></i> <span>Dewormed</span></div>
+          <div class="check-item"><i id="vaxFleaIcon" class="fa-solid fa-circle-check active"></i> <span>Flea & Tick</span></div>
         </div>
       </div>
 
@@ -394,27 +422,27 @@
         </a>
       </div>
 
-      <!-- PHOTO GALLERY -->
+      <!-- PHOTO GALLERY (CENTERED - EXACTLY 3 PHOTOS) -->
       <div class="glass-card">
-        <div class="section-title">
+        <div class="section-title" style="justify-content: center;">
           <i class="fa-solid fa-camera"></i>
           <span>Photo Gallery</span>
         </div>
-        <div class="gallery-scroll">
-          <img class="gallery-img" src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=300" onclick="openLightbox(this.src)">
-          <img class="gallery-img" src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=300" onclick="openLightbox(this.src)">
-          <img class="gallery-img" src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=300" onclick="openLightbox(this.src)">
+        <div class="gallery-container">
+          <img id="displayGallery1" class="gallery-img" src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=300" onclick="openLightbox(this.src)">
+          <img id="displayGallery2" class="gallery-img" src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=300" onclick="openLightbox(this.src)">
+          <img id="displayGallery3" class="gallery-img" src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=300" onclick="openLightbox(this.src)">
         </div>
       </div>
 
-      <!-- LOCATION / HOME AREA MAP -->
+      <!-- LOCATION / HOME AREA MAP (EDITABLE VIA EDITOR) -->
       <div class="glass-card">
         <div class="section-title">
           <i class="fa-solid fa-location-dot"></i>
           <span>Home Location</span>
         </div>
         <div class="map-box">
-          <iframe src="https://maps.google.com/maps?q=Quezon%20City&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+          <iframe id="displayMapIframe" src="https://maps.google.com/maps?q=Quezon%20City&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
         </div>
         <p id="displayAddress" style="font-size:0.8rem; color:var(--text-sub); text-align:center;">Quezon City, Metro Manila, Philippines</p>
       </div>
@@ -455,7 +483,7 @@
     </div>
   </div>
 
-  <!-- PET DETAILS EDITOR MODAL (ANG EDIT PANEL LANG ANG MAPAPALITAN) -->
+  <!-- PET DETAILS EDITOR MODAL (ANG 3 REQUESTED SECTIONS LANG ANG BAGO) -->
   <div id="editorModal" class="modal-overlay">
     <div class="modal-box">
       <h3 class="modal-title">✏️ Edit Pet Tag Details</h3>
@@ -534,7 +562,56 @@
 
       <div class="form-group">
         <label>About Pet</label>
-        <textarea id="editAbout" rows="3"></textarea>
+        <textarea id="editAbout" rows="2"></textarea>
+      </div>
+
+      <!-- NEWLY ADDED EDITABLE 1: VACCINATION STATUS CHECKBOXES -->
+      <div class="form-section">
+        <div class="form-section-title">💉 Vaccination Status</div>
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" id="editVaxRabies"> Rabies
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="editVaxDhpp"> DHPP
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="editVaxDeworm"> Dewormed
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="editVaxFlea"> Flea & Tick
+          </label>
+        </div>
+      </div>
+
+      <!-- NEWLY ADDED EDITABLE 2: 3 PHOTO GALLERY URLS -->
+      <div class="form-section">
+        <div class="form-section-title">🖼️ Photo Gallery (Up to 3 Photos)</div>
+        <div class="form-group">
+          <label>Photo 1 URL</label>
+          <input type="text" id="editGallery1">
+        </div>
+        <div class="form-group">
+          <label>Photo 2 URL</label>
+          <input type="text" id="editGallery2">
+        </div>
+        <div class="form-group">
+          <label>Photo 3 URL</label>
+          <input type="text" id="editGallery3">
+        </div>
+      </div>
+
+      <!-- NEWLY ADDED EDITABLE 3: HOME LOCATION & MAP EMBED -->
+      <div class="form-section">
+        <div class="form-section-title">📍 Home Location & Map</div>
+        <div class="form-group">
+          <label>Location Text / Address</label>
+          <input type="text" id="editAddress">
+        </div>
+        <div class="form-group">
+          <label>Google Maps Embed iFrame Link / Search Term</label>
+          <input type="text" id="editMapSearch" placeholder="e.g. Quezon City">
+        </div>
       </div>
 
       <div style="display: flex; gap: 8px; margin-top: 15px;">
@@ -580,6 +657,20 @@
       document.getElementById('editAllergies').value = document.getElementById('displayAllergies').innerText;
       document.getElementById('editChip').value = document.getElementById('displayChip').innerText;
       document.getElementById('editAbout').value = document.getElementById('displayAbout').innerText;
+
+      // Populate 1: Vaccinations Checkboxes
+      document.getElementById('editVaxRabies').checked = document.getElementById('vaxRabiesIcon').classList.contains('active');
+      document.getElementById('editVaxDhpp').checked = document.getElementById('vaxDhppIcon').classList.contains('active');
+      document.getElementById('editVaxDeworm').checked = document.getElementById('vaxDewormIcon').classList.contains('active');
+      document.getElementById('editVaxFlea').checked = document.getElementById('vaxFleaIcon').classList.contains('active');
+
+      // Populate 2: Gallery Photos
+      document.getElementById('editGallery1').value = document.getElementById('displayGallery1').src;
+      document.getElementById('editGallery2').value = document.getElementById('displayGallery2').src;
+      document.getElementById('editGallery3').value = document.getElementById('displayGallery3').src;
+
+      // Populate 3: Location Details
+      document.getElementById('editAddress').value = document.getElementById('displayAddress').innerText;
     }
 
     function savePetDetails() {
@@ -600,8 +691,38 @@
       document.getElementById('displayChip').innerText = document.getElementById('editChip').value;
       document.getElementById('displayAbout').innerText = document.getElementById('editAbout').value;
 
+      // Save 1: Vaccinations Status
+      updateVaxIcon('vaxRabiesIcon', document.getElementById('editVaxRabies').checked);
+      updateVaxIcon('vaxDhppIcon', document.getElementById('editVaxDhpp').checked);
+      updateVaxIcon('vaxDewormIcon', document.getElementById('editVaxDeworm').checked);
+      updateVaxIcon('vaxFleaIcon', document.getElementById('editVaxFlea').checked);
+
+      // Save 2: Gallery Photos (Up to 3)
+      if(document.getElementById('editGallery1').value.trim() !== "") document.getElementById('displayGallery1').src = document.getElementById('editGallery1').value;
+      if(document.getElementById('editGallery2').value.trim() !== "") document.getElementById('displayGallery2').src = document.getElementById('editGallery2').value;
+      if(document.getElementById('editGallery3').value.trim() !== "") document.getElementById('displayGallery3').src = document.getElementById('editGallery3').value;
+
+      // Save 3: Location Details & Dynamic Map
+      const newAddress = document.getElementById('editAddress').value.trim();
+      const newMapSearch = document.getElementById('editMapSearch').value.trim();
+      document.getElementById('displayAddress').innerText = newAddress;
+
+      if(newMapSearch !== "") {
+        const encodedLoc = encodeURIComponent(newMapSearch);
+        document.getElementById('displayMapIframe').src = `https://maps.google.com/maps?q=${encodedLoc}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+      }
+
       closeModal('editorModal');
       alert("🐾 Pet details successfully saved!");
+    }
+
+    function updateVaxIcon(iconId, isChecked) {
+      const icon = document.getElementById(iconId);
+      if(isChecked) {
+        icon.className = "fa-solid fa-circle-check active";
+      } else {
+        icon.className = "fa-solid fa-circle-xmark inactive";
+      }
     }
 
     function openModal(id) { document.getElementById(id).classList.add('active'); }
