@@ -265,7 +265,7 @@
     /* STICKY BOTTOM CALL BUTTON */
     .sticky-bottom-btn { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 380px; z-index: 80; }
 
-    /* MODAL POPUPS (CLEAN TOUCH SCROLL CONTAINER) */
+    /* MODAL POPUPS (CLEAN SCROLL CONTAINER) */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.6);
       backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
@@ -277,7 +277,7 @@
 
     .modal-box {
       background: var(--bg-color); border: 1px solid var(--card-border); border-radius: 24px;
-      padding: 24px 20px 40px 20px; width: 100%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      padding: 24px 20px 30px 20px; width: 100%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
       max-height: 88vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
       position: relative; pointer-events: auto;
     }
@@ -323,12 +323,6 @@
       width: 100%; padding: 12px; background: var(--accent-main); color: white;
       border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 12px;
       display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-
-    .btn-preview-map {
-      width: 100%; padding: 10px; background: var(--accent-light); color: var(--text-main);
-      border: 1px solid var(--card-border); border-radius: 12px; font-weight: 600; font-size: 0.8rem;
-      cursor: pointer; margin-top: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;
     }
 
     .btn-link-flat {
@@ -759,15 +753,12 @@
         </div>
       </div>
 
-      <!-- REAL-TIME AUTO-UPDATING LOCATION WITH DEDICATED PREVIEW BUTTON -->
+      <!-- SIMPLE ADDRESS INPUT ONLY (UPDATES AUTOMATICALLY ON SAVE) -->
       <div class="form-section">
         <div class="form-section-title">📍 Address & Map Location</div>
         <div class="form-group">
           <label>Address / City Name</label>
-          <input type="text" id="editAddress" placeholder="e.g. Quezon City, Metro Manila" oninput="updateMapLocation()" onchange="updateMapLocation()">
-          <button type="button" onclick="updateMapLocation()" class="btn-preview-map">
-            <i class="fa-solid fa-magnifying-glass-location"></i> Preview Map Location
-          </button>
+          <input type="text" id="editAddress" placeholder="e.g. Quezon City, Metro Manila">
         </div>
       </div>
 
@@ -899,7 +890,7 @@
       }
     }
 
-    /* REAL-TIME AUTO MAP LOCATION UPDATE FUNCTION */
+    /* MAP LOCATION UPDATE FUNCTION */
     function updateMapLocation() {
       const addressInput = document.getElementById('editAddress');
       if(!addressInput) return;
