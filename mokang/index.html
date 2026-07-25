@@ -13,6 +13,10 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- Firebase SDKs (Modular Script via CDN) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <style>
     /* CUSTOM FONT DECLARATIONS WITH RELIABLE FALLBACKS */
     @font-face { font-family: 'Brown Sugar'; src: local('Brown Sugar'), local('BrownSugar'), url('https://fonts.cdnfonts.com/s/93121/BrownSugar.woff') format('woff'); }
@@ -1128,8 +1132,34 @@
     <img id="lightboxImg" class="lightbox-img" src="">
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
+  <!-- JAVASCRIPT LOGIC WITH FIREBASE CLOUD SYNC -->
   <script>
+    /* FIREBASE CONFIGURATION - PRE-CONFIGURED WITH YOUR REALTIME DATABASE URL */
+    const firebaseConfig = {
+      databaseURL: "https://pettags-36165-default-rtdb.firebaseio.com"
+    };
+
+    let db = null;
+    if (firebaseConfig.databaseURL && firebaseConfig.databaseURL !== "YOUR_FIREBASE_DATABASE_URL_HERE") {
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.database();
+    }
+
+    /* AUTOMATIC FOLDER NAME DETECTOR FOR UNIQUE PET ID */
+    function getPetFolderKey() {
+      const pathParts = window.location.pathname.split('/').filter(p => p.length > 0);
+      if (pathParts.length > 0) {
+        const lastPart = pathParts[pathParts.length - 1];
+        if (lastPart.includes('.html')) {
+          return pathParts.length > 1 ? pathParts[pathParts.length - 2] : "default_pet";
+        }
+        return lastPart;
+      }
+      return "default_pet";
+    }
+
+    const currentPetId = getPetFolderKey();
+
     let securityPin = "1234";
     const MASTER_RESET_KEY = "ZDigital2026";
     let isPinProtectionActive = true;
@@ -1167,6 +1197,7 @@
       const enteredKey = document.getElementById('inputResetKey').value.trim();
       if (enteredKey === MASTER_RESET_KEY) {
         securityPin = "1234";
+        savePetDetailsToCloud();
         closeModal('resetModal');
         alert("🔓 PIN reset successful! Default PIN is now 1234.");
         populateEditorForm();
@@ -1365,8 +1396,134 @@
 
       updateMapLocation();
 
+      /* SAVE PERSISTENT DATA TO CLOUD & LOCALSTORAGE */
+      savePetDetailsToCloud();
+
       closeModal('editorModal');
       alert("🐾 Pet details successfully saved!");
+    }
+
+    /* CLOUD & LOCALSTORAGE FUNCTIONS FOR CROSS-PHONE SYNC */
+    function getProfileDataObject() {
+      return {
+        securityPin: securityPin,
+        isPinProtectionActive: isPinProtectionActive,
+        themeClass: document.body.className,
+        avatar: document.getElementById('displayAvatar').src,
+        name: document.getElementById('displayName').innerText,
+        breed: document.getElementById('displayBreed').innerText,
+        age: document.getElementById('displayAge').innerText,
+        badge1: document.getElementById('displayBadge1').innerText,
+        badge2: document.getElementById('displayBadge2').innerText,
+        badge3: document.getElementById('displayBadge3').innerText,
+        weight: document.getElementById('displayWeight').innerText,
+        chip: document.getElementById('displayChip').innerText,
+        treat: document.getElementById('displayTreat').innerText,
+        toy: document.getElementById('displayToy').innerText,
+        facebook: document.getElementById('linkFacebook').dataset.raw || '',
+        instagram: document.getElementById('linkInstagram').dataset.raw || '',
+        viber: document.getElementById('linkViber').dataset.raw || '',
+        whatsapp: document.getElementById('linkWhatsapp').dataset.raw || '',
+        phone: document.getElementById('linkCall').href.replace('tel:', ''),
+        medical: document.getElementById('displayMedical').innerText,
+        allergies: document.getElementById('displayAllergies').innerText,
+        vet: document.getElementById('displayVet').innerText,
+        about: document.getElementById('displayAbout').innerText,
+        vaxRabies: document.getElementById('vaxRabiesIcon').classList.contains('active'),
+        vaxDhpp: document.getElementById('vaxDhppIcon').classList.contains('active'),
+        vaxDeworm: document.getElementById('vaxDewormIcon').classList.contains('active'),
+        vaxFlea: document.getElementById('vaxFleaIcon').classList.contains('active'),
+        gallery1: document.getElementById('displayGallery1').src,
+        gallery2: document.getElementById('displayGallery2').src,
+        gallery3: document.getElementById('displayGallery3').src,
+        address: document.getElementById('displayAddress').innerText
+      };
+    }
+
+    function savePetDetailsToCloud() {
+      const data = getProfileDataObject();
+      localStorage.setItem('nfcPetTag_' + currentPetId, JSON.stringify(data));
+
+      if (db) {
+        db.ref('pets/' + currentPetId).set(data);
+      }
+    }
+
+    function applyDataToUI(data) {
+      if (!data) return;
+
+      if (data.securityPin) securityPin = data.securityPin;
+      if (data.isPinProtectionActive !== undefined) isPinProtectionActive = data.isPinProtectionActive;
+
+      if (data.themeClass) document.body.className = data.themeClass;
+      if (data.avatar) document.getElementById('displayAvatar').src = data.avatar;
+
+      if (data.name) document.getElementById('displayName').innerText = data.name;
+      if (data.breed) document.getElementById('displayBreed').innerText = data.breed;
+      if (data.age) document.getElementById('displayAge').innerText = data.age;
+
+      if (data.badge1) document.getElementById('displayBadge1').innerText = data.badge1;
+      if (data.badge2) document.getElementById('displayBadge2').innerText = data.badge2;
+      if (data.badge3) document.getElementById('displayBadge3').innerText = data.badge3;
+
+      if (data.weight) document.getElementById('displayWeight').innerText = data.weight;
+      if (data.chip) document.getElementById('displayChip').innerText = data.chip;
+      if (data.treat) document.getElementById('displayTreat').innerText = data.treat;
+      if (data.toy) document.getElementById('displayToy').innerText = data.toy;
+
+      if (data.facebook !== undefined) updateSocialLink('linkFacebook', data.facebook, 'https://facebook.com/');
+      if (data.instagram !== undefined) updateSocialLink('linkInstagram', data.instagram, 'https://instagram.com/');
+      if (data.viber !== undefined) updateSocialLink('linkViber', data.viber, 'viber://chat?number=');
+      if (data.whatsapp !== undefined) updateSocialLink('linkWhatsapp', data.whatsapp, 'https://wa.me/');
+
+      if (data.phone) {
+        document.getElementById('linkCall').href = "tel:" + data.phone;
+        document.getElementById('linkSms').href = "sms:" + data.phone;
+        document.getElementById('linkCallLost').href = "tel:" + data.phone;
+        document.getElementById('linkCallSticky').href = "tel:" + data.phone;
+      }
+
+      if (data.medical) document.getElementById('displayMedical').innerText = data.medical;
+      if (data.allergies) document.getElementById('displayAllergies').innerText = data.allergies;
+      if (data.vet) document.getElementById('displayVet').innerText = data.vet;
+
+      if (data.about) document.getElementById('displayAbout').innerText = data.about;
+
+      updateVaxIcon('vaxRabiesIcon', !!data.vaxRabies);
+      updateVaxIcon('vaxDhppIcon', !!data.vaxDhpp);
+      updateVaxIcon('vaxDewormIcon', !!data.vaxDeworm);
+      updateVaxIcon('vaxFleaIcon', !!data.vaxFlea);
+
+      if (data.gallery1) document.getElementById('displayGallery1').src = data.gallery1;
+      if (data.gallery2) document.getElementById('displayGallery2').src = data.gallery2;
+      if (data.gallery3) document.getElementById('displayGallery3').src = data.gallery3;
+
+      if (data.address) {
+        document.getElementById('displayAddress').innerText = data.address;
+        const encoded = encodeURIComponent(data.address);
+        document.getElementById('displayMapIframe').src = `https://maps.google.com/maps?q=${encoded}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+      }
+    }
+
+    function loadPetDetailsFromCloud() {
+      // Fast initial load from LocalStorage if present on device
+      const localData = localStorage.getItem('nfcPetTag_' + currentPetId);
+      if (localData) {
+        try { applyDataToUI(JSON.parse(localData)); } catch(e){}
+      }
+
+      // Fetch latest global data from Firebase Realtime Database
+      if (db) {
+        db.ref('pets/' + currentPetId).once('value').then(snapshot => {
+          if (snapshot.exists()) {
+            const cloudData = snapshot.val();
+            applyDataToUI(cloudData);
+            localStorage.setItem('nfcPetTag_' + currentPetId, JSON.stringify(cloudData));
+          }
+        }).catch(err => {
+          console.warn("Cloud sync offline, using local data", err);
+        });
+      }
     }
 
     function updateSocialLink(elemId, val, prefix) {
@@ -1399,6 +1556,7 @@
       } else {
         icon.className = "fa-solid fa-moon";
       }
+      savePetDetailsToCloud();
     }
 
     function changeTheme(themeClass) {
@@ -1424,6 +1582,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      /* LOAD SAVED PET PROFILE FROM FIREBASE CLOUD / LOCALSTORAGE */
+      loadPetDetailsFromCloud();
+
       const clickableCards = document.querySelectorAll('.glass-card, .grid-box, .btn-action, .badge-nfc');
       clickableCards.forEach(card => {
         card.addEventListener('click', function(e) {
