@@ -4,35 +4,120 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pet Tag - Digital ID</title>
+  
+  <!-- Google Fonts for Vision Board Typography Options -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Fredoka:wght@500;700&family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons for Social Media -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
+    /* CSS Variables for Dynamic Themes & Fonts */
+    :root {
+      --theme-grad: linear-gradient(135deg, #ff7e5f, #feb47b);
+      --btn-bg: #25d366;
+      --font-family: 'Poppins', sans-serif;
+    }
+
+    /* Preset Themes */
+    .theme-coral { --theme-grad: linear-gradient(135deg, #ff7e5f, #feb47b); --btn-bg: #ff6b4a; }
+    .theme-ocean { --theme-grad: linear-gradient(135deg, #2b5876, #4e4376); --btn-bg: #0088cc; }
+    .theme-forest { --theme-grad: linear-gradient(135deg, #11998e, #38ef7d); --btn-bg: #10b981; }
+    .theme-purple { --theme-grad: linear-gradient(135deg, #8e2de2, #4a00e0); --btn-bg: #7c3aed; }
+    .theme-rose { --theme-grad: linear-gradient(135deg, #ff9a9e, #fecfef); --btn-bg: #ec4899; }
+
+    /* Preset Fonts */
+    .font-sans { --font-family: 'Poppins', sans-serif; }
+    .font-round { --font-family: 'Fredoka', sans-serif; }
+    .font-serif { --font-family: 'Playfair Display', serif; }
+    .font-script { --font-family: 'Caveat', cursive; }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: var(--font-family);
+      transition: all 0.3s ease;
     }
+
     body {
-      background-color: #f4f6f9;
+      background-color: #f0f2f5;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
       min-height: 100vh;
       padding: 20px;
     }
+
+    /* Controls Panel for Customization */
+    .controls-panel {
+      background: white;
+      padding: 15px 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .control-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .theme-options {
+      display: flex;
+      gap: 8px;
+    }
+
+    .theme-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid white;
+      box-shadow: 0 0 0 1px #ccc;
+    }
+
+    .select-input {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    /* Pet Card Styling */
     .card {
       background: #ffffff;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      border-radius: 24px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
       max-width: 400px;
       width: 100%;
       overflow: hidden;
       text-align: center;
     }
+
     .header {
-      background: linear-gradient(135deg, #ff7e5f, #feb47b);
-      padding: 30px 20px;
+      background: var(--theme-grad);
+      padding: 35px 20px 25px 20px;
       color: white;
+      position: relative;
     }
+
     .pet-photo {
       width: 110px;
       height: 110px;
@@ -40,77 +125,151 @@
       border: 4px solid white;
       object-fit: cover;
       margin-bottom: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
     }
+
     .pet-name {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 5px;
+      margin-bottom: 2px;
+      line-height: 1.2;
     }
+
     .breed {
       font-size: 0.95rem;
-      opacity: 0.9;
+      opacity: 0.95;
+      font-weight: 500;
     }
+
     .content {
       padding: 25px 20px;
     }
+
     .info-group {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       text-align: left;
     }
+
     .info-label {
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: #888;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       font-weight: 600;
     }
+
     .info-value {
       font-size: 1rem;
-      color: #333;
-      font-weight: 500;
+      color: #2c3e50;
+      font-weight: 600;
     }
+
+    .medical-note {
+      background-color: #fff9e6;
+      color: #8a6d3b;
+      padding: 12px 15px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      text-align: left;
+      border-left: 4px solid #ffe066;
+      line-height: 1.4;
+    }
+
+    /* Buttons & Social Media Section */
     .call-btn {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       width: 100%;
-      background-color: #25d366;
+      background: var(--btn-bg);
       color: white;
       text-decoration: none;
       padding: 14px;
-      border-radius: 12px;
+      border-radius: 14px;
       font-weight: 600;
       font-size: 1.05rem;
-      margin-top: 15px;
-      transition: background 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
     }
-    .call-btn:hover {
-      background-color: #1ebd59;
+
+    .social-section {
+      border-top: 1px solid #f0f0f0;
+      padding-top: 15px;
     }
-    .medical-note {
-      background-color: #fff3cd;
-      color: #856404;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      margin-top: 15px;
-      text-align: left;
-      border-left: 4px solid #ffeeba;
+
+    .social-title {
+      font-size: 0.8rem;
+      color: #999;
+      margin-bottom: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .social-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #f4f6f9;
+      color: #555;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-3px);
+      background: var(--btn-bg);
+      color: white;
     }
   </style>
 </head>
-<body>
+<body class="theme-coral font-sans">
 
+  <!-- Interactive Controls (Theme & Font Switcher) -->
+  <div class="controls-panel">
+    <div class="control-group">
+      <span class="control-label">🎨 Choose Theme:</span>
+      <div class="theme-options">
+        <div class="theme-dot" style="background: linear-gradient(135deg, #ff7e5f, #feb47b);" onclick="setTheme('theme-coral')"></div>
+        <div class="theme-dot" style="background: linear-gradient(135deg, #2b5876, #4e4376);" onclick="setTheme('theme-ocean')"></div>
+        <div class="theme-dot" style="background: linear-gradient(135deg, #11998e, #38ef7d);" onclick="setTheme('theme-forest')"></div>
+        <div class="theme-dot" style="background: linear-gradient(135deg, #8e2de2, #4a00e0);" onclick="setTheme('theme-purple')"></div>
+        <div class="theme-dot" style="background: linear-gradient(135deg, #ff9a9e, #fecfef);" onclick="setTheme('theme-rose')"></div>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <span class="control-label">✍️ Choose Font:</span>
+      <select class="select-input" onchange="setFont(this.value)">
+        <option value="font-sans">Modern Sans (Poppins)</option>
+        <option value="font-round">Playful (Fredoka)</option>
+        <option value="font-serif">Classic Serif (Playfair)</option>
+        <option value="font-script">Handwriting (Caveat)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Pet Digital ID Card -->
   <div class="card">
-    <!-- Header Section -->
     <div class="header">
-      <!-- Pwede itong palitan ng actual photo URL ng alaga -->
-      <img src="https://via.placeholder.com/150" alt="Pet Photo" class="pet-photo">
+      <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=300" alt="Pet Photo" class="pet-photo">
       <h1 class="pet-name">Milo</h1>
       <p class="breed">Golden Retriever</p>
     </div>
 
-    <!-- Details Section -->
     <div class="content">
       <div class="info-group">
         <div class="info-label">Owner Name</div>
@@ -118,19 +277,53 @@
       </div>
 
       <div class="info-group">
-        <div class="info-label">Address / Location</div>
+        <div class="info-label">Home Address / Area</div>
         <div class="info-value">Quezon City, Metro Manila</div>
       </div>
 
-      <!-- Emergency Medical Note (Optional) -->
       <div class="medical-note">
-        <strong>⚠️ Note:</strong> Friendly, but easily scared by loud noises. Requires daily medication.
+        <strong>⚠️ Important Note:</strong> Friendly, but easily scared by loud noises. Requires daily medication.
       </div>
 
-      <!-- Quick Call Button -->
-      <a href="tel:+639123456789" class="call-btn">📞 Call Owner Now</a>
+      <!-- Main Action Call Button -->
+      <a href="tel:+639123456789" class="call-btn">
+        <i class="fa-solid fa-phone"></i> Call Owner Now
+      </a>
+
+      <!-- Social Media & Extra Contact Section -->
+      <div class="social-section">
+        <div class="social-title">Other Ways to Contact Owner</div>
+        <div class="social-links">
+          <a href="https://m.me/yourusername" target="_blank" class="social-icon" title="Messenger">
+            <i class="fa-brands fa-facebook-messenger"></i>
+          </a>
+          <a href="https://instagram.com/yourusername" target="_blank" class="social-icon" title="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="viber://chat?number=%2B639123456789" class="social-icon" title="Viber">
+            <i class="fa-brands fa-viber"></i>
+          </a>
+          <a href="mailto:owner@email.com" class="social-icon" title="Email">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
+
+  <!-- Switcher JavaScript -->
+  <script>
+    function setTheme(themeName) {
+      document.body.className = document.body.className.replace(/theme-\w+/g, '');
+      document.body.classList.add(themeName);
+    }
+
+    function setFont(fontName) {
+      document.body.className = document.body.className.replace(/font-\w+/g, '');
+      document.body.classList.add(fontName);
+    }
+  </script>
 
 </body>
 </html>
