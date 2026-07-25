@@ -413,7 +413,7 @@
       margin-bottom: 8px;
     }
 
-    /* AESTHETIC CUSTOM CHECKBOXES & TOGGLES (GOOD-BYE BORING BLUE BOXES) */
+    /* AESTHETIC CUSTOM CHECKBOXES & TOGGLES */
     .checkbox-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -869,6 +869,34 @@
         </div>
       </div>
 
+      <!-- PET QUICK DETAILS EDITABLE SECTION -->
+      <div class="form-section">
+        <div class="form-section-title">🐾 Pet Quick Details</div>
+        <div class="form-group">
+          <label>Weight</label>
+          <input type="text" id="editWeight" placeholder="e.g. 28 kg">
+        </div>
+        <div class="form-group">
+          <label>Favorite Treat</label>
+          <input type="text" id="editTreat" placeholder="e.g. Salmon Bites">
+        </div>
+        <div class="form-group">
+          <label>Favorite Toy</label>
+          <input type="text" id="editToy" placeholder="e.g. Squeaky Ball">
+        </div>
+        <!-- MICROCHIP ID TOGGLE WITH AESTHETIC SWITCH -->
+        <div class="toggle-switch-wrapper" style="margin-top:10px;">
+          <span style="font-size:0.75rem; font-weight:600; color:var(--text-sub);">Microchip Status</span>
+          <label class="custom-toggle-switch">
+            <input type="checkbox" id="toggleMicrochip" onchange="handleChipToggleChange()" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="form-group" id="chipInputBox" style="margin-top:6px;">
+          <input type="text" id="editChip" placeholder="Enter Microchip Number">
+        </div>
+      </div>
+
       <!-- SOCIAL MEDIA LINKS EDIT -->
       <div class="form-section">
         <div class="form-section-title">🌐 Social Media Links</div>
@@ -895,28 +923,21 @@
         <input type="text" id="editPhone">
       </div>
 
-      <!-- MICROCHIP ID TOGGLE WITH AESTHETIC SWITCH -->
+      <!-- MEDICAL & VETERINARIAN EDITABLE SECTION -->
       <div class="form-section">
-        <div class="toggle-switch-wrapper">
-          <span class="form-section-title" style="margin-bottom:0;">Microchip Status</span>
-          <label class="custom-toggle-switch">
-            <input type="checkbox" id="toggleMicrochip" onchange="handleChipToggleChange()" checked>
-            <span class="toggle-slider"></span>
-          </label>
+        <div class="form-section-title">🚨 Emergency & Health Info</div>
+        <div class="form-group">
+          <label>Medical Conditions</label>
+          <input type="text" id="editMedical">
         </div>
-        <div class="form-group" id="chipInputBox" style="margin-top:6px;">
-          <input type="text" id="editChip" placeholder="Enter Microchip Number">
+        <div class="form-group">
+          <label>Allergies</label>
+          <input type="text" id="editAllergies">
         </div>
-      </div>
-
-      <div class="form-group">
-        <label>Medical Conditions</label>
-        <input type="text" id="editMedical">
-      </div>
-
-      <div class="form-group">
-        <label>Allergies</label>
-        <input type="text" id="editAllergies">
+        <div class="form-group">
+          <label>Veterinarian Contact Info</label>
+          <input type="text" id="editVet" placeholder="e.g. Central Pet Clinic (+63987654321)">
+        </div>
       </div>
 
       <div class="form-group">
@@ -1129,14 +1150,23 @@
       document.getElementById('editBadge2').value = document.getElementById('displayBadge2').innerText;
       document.getElementById('editBadge3').value = document.getElementById('displayBadge3').innerText;
 
+      /* POPULATE PET QUICK DETAILS */
+      document.getElementById('editWeight').value = document.getElementById('displayWeight').innerText;
+      document.getElementById('editTreat').value = document.getElementById('displayTreat').innerText;
+      document.getElementById('editToy').value = document.getElementById('displayToy').innerText;
+
       document.getElementById('editFacebook').value = document.getElementById('linkFacebook').dataset.raw || '';
       document.getElementById('editInstagram').value = document.getElementById('linkInstagram').dataset.raw || '';
       document.getElementById('editViber').value = document.getElementById('linkViber').dataset.raw || '';
       document.getElementById('editWhatsapp').value = document.getElementById('linkWhatsapp').dataset.raw || '';
 
       document.getElementById('editPhone').value = document.getElementById('linkCall').href.replace('tel:', '');
+      
+      /* POPULATE MEDICAL & VET DETAILS */
       document.getElementById('editMedical').value = document.getElementById('displayMedical').innerText;
       document.getElementById('editAllergies').value = document.getElementById('displayAllergies').innerText;
+      document.getElementById('editVet').value = document.getElementById('displayVet').innerText;
+
       document.getElementById('editAbout').value = document.getElementById('displayAbout').innerText;
       document.getElementById('editAddress').value = document.getElementById('displayAddress').innerText;
 
@@ -1183,6 +1213,11 @@
       document.getElementById('displayBadge2').innerText = document.getElementById('editBadge2').value || 'FRIENDLY';
       document.getElementById('displayBadge3').innerText = document.getElementById('editBadge3').value || 'PET';
 
+      /* SAVE PET QUICK DETAILS */
+      document.getElementById('displayWeight').innerText = document.getElementById('editWeight').value || 'N/A';
+      document.getElementById('displayTreat').innerText = document.getElementById('editTreat').value || 'N/A';
+      document.getElementById('displayToy').innerText = document.getElementById('editToy').value || 'N/A';
+
       updateSocialLink('linkFacebook', document.getElementById('editFacebook').value, 'https://facebook.com/');
       updateSocialLink('linkInstagram', document.getElementById('editInstagram').value, 'https://instagram.com/');
       updateSocialLink('linkViber', document.getElementById('editViber').value, 'viber://chat?number=');
@@ -1193,8 +1228,11 @@
       document.getElementById('linkCallLost').href = "tel:" + newPhone;
       document.getElementById('linkCallSticky').href = "tel:" + newPhone;
 
+      /* SAVE MEDICAL & VET DETAILS */
       document.getElementById('displayMedical').innerText = document.getElementById('editMedical').value;
       document.getElementById('displayAllergies').innerText = document.getElementById('editAllergies').value;
+      document.getElementById('displayVet').innerText = document.getElementById('editVet').value || 'N/A';
+
       document.getElementById('displayAbout').innerText = document.getElementById('editAbout').value;
 
       /* SAVE VACCINATION STATUS */
