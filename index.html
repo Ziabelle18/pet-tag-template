@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pet Tag - Digital ID</title>
+  <title>Pet Tag - Digital ID Builder</title>
   
-  <!-- Google Fonts for Vision Board Typography Options -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Fredoka:wght@500;700&family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- FontAwesome Icons for Social Media -->
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* CSS Variables for Dynamic Themes & Fonts */
     :root {
       --theme-grad: linear-gradient(135deg, #ff7e5f, #feb47b);
-      --btn-bg: #25d366;
-      --font-family: 'Poppins', sans-serif;
+      --btn-bg: #ff6b4a;
+      --font-family: 'Fredoka', sans-serif;
     }
 
     /* Preset Themes */
@@ -39,7 +38,7 @@
       margin: 0;
       padding: 0;
       font-family: var(--font-family);
-      transition: all 0.3s ease;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
     body {
@@ -51,21 +50,36 @@
       padding: 20px;
     }
 
-    /* Controls Panel for Customization */
+    /* Controls Panel */
     .controls-panel {
       background: white;
-      padding: 15px 20px;
-      border-radius: 15px;
-      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 18px;
+      margin-bottom: 25px;
       width: 100%;
-      max-width: 400px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      max-width: 420px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 15px;
+    }
+
+    .panel-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #333;
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 8px;
+      margin-bottom: 5px;
     }
 
     .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .control-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -73,9 +87,22 @@
     }
 
     .control-label {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: #555;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .input-field:focus {
+      border-color: #ff7e5f;
     }
 
     .theme-options {
@@ -84,20 +111,12 @@
     }
 
     .theme-dot {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       cursor: pointer;
       border: 2px solid white;
       box-shadow: 0 0 0 1px #ccc;
-    }
-
-    .select-input {
-      padding: 6px 10px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      font-size: 0.85rem;
-      outline: none;
     }
 
     /* Pet Card Styling */
@@ -118,6 +137,11 @@
       position: relative;
     }
 
+    .pet-photo-container {
+      position: relative;
+      display: inline-block;
+    }
+
     .pet-photo {
       width: 110px;
       height: 110px;
@@ -126,6 +150,7 @@
       object-fit: cover;
       margin-bottom: 10px;
       box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      background: #fff;
     }
 
     .pet-name {
@@ -236,12 +261,14 @@
     }
   </style>
 </head>
-<body class="theme-coral font-sans">
+<body class="theme-coral font-round">
 
-  <!-- Interactive Controls (Theme & Font Switcher) -->
+  <!-- Interactive Editor Panel -->
   <div class="controls-panel">
-    <div class="control-group">
-      <span class="control-label">🎨 Choose Theme:</span>
+    <div class="panel-title">🎨 Design Settings</div>
+    
+    <div class="control-row">
+      <span class="control-label">Choose Theme:</span>
       <div class="theme-options">
         <div class="theme-dot" style="background: linear-gradient(135deg, #ff7e5f, #feb47b);" onclick="setTheme('theme-coral')"></div>
         <div class="theme-dot" style="background: linear-gradient(135deg, #2b5876, #4e4376);" onclick="setTheme('theme-ocean')"></div>
@@ -251,42 +278,90 @@
       </div>
     </div>
 
-    <div class="control-group">
-      <span class="control-label">✍️ Choose Font:</span>
-      <select class="select-input" onchange="setFont(this.value)">
+    <div class="control-row">
+      <span class="control-label">Choose Font:</span>
+      <select class="input-field" style="width: 60%;" onchange="setFont(this.value)">
+        <option value="font-round" selected>Playful (Fredoka)</option>
         <option value="font-sans">Modern Sans (Poppins)</option>
-        <option value="font-round">Playful (Fredoka)</option>
         <option value="font-serif">Classic Serif (Playfair)</option>
         <option value="font-script">Handwriting (Caveat)</option>
       </select>
     </div>
+
+    <div class="panel-title" style="margin-top: 10px;">✏️ Pet Details Editor</div>
+
+    <div class="control-group">
+      <span class="control-label">Upload Photo:</span>
+      <input type="file" id="photoInput" accept="image/*" class="input-field" onchange="updatePhoto(event)">
+    </div>
+
+    <div class="control-row">
+      <input type="text" id="inputPetName" class="input-field" value="Milo" placeholder="Pet Name" oninput="updateText('displayPetName', this.value)">
+      <input type="text" id="inputBreed" class="input-field" value="Golden Retriever" placeholder="Breed" oninput="updateText('displayBreed', this.value)">
+    </div>
+
+    <div class="control-group">
+      <input type="text" id="inputOwner" class="input-field" value="Maria Perez" placeholder="Owner Name" oninput="updateText('displayOwner', this.value)">
+    </div>
+
+    <div class="control-group">
+      <input type="text" id="inputAddress" class="input-field" value="Quezon City, Metro Manila" placeholder="Address / Location" oninput="updateText('displayAddress', this.value)">
+    </div>
+
+    <div class="control-group">
+      <input type="text" id="inputNote" class="input-field" value="Friendly, but easily scared by loud noises. Requires daily medication." placeholder="Medical / Emergency Note" oninput="updateText('displayNote', this.value)">
+    </div>
+
+    <div class="control-group">
+      <input type="text" id="inputPhone" class="input-field" value="+639123456789" placeholder="Phone Number" oninput="updatePhone(this.value)">
+    </div>
+
+    <div class="panel-title" style="margin-top: 10px;">💬 Social Links</div>
+
+    <div class="control-group">
+      <input type="text" id="inputMessenger" class="input-field" placeholder="Messenger Link / Username" oninput="updateSocial('linkMessenger', this.value, 'https://m.me/')">
+    </div>
+
+    <div class="control-group">
+      <input type="text" id="inputInstagram" class="input-field" placeholder="Instagram Username" oninput="updateSocial('linkInstagram', this.value, 'https://instagram.com/')">
+    </div>
+
+    <div class="control-group">
+      <input type="text" id="inputViber" class="input-field" placeholder="Viber Number (e.g. 639123456789)" oninput="updateSocial('linkViber', this.value, 'viber://chat?number=%2B')">
+    </div>
+
+    <div class="control-group">
+      <input type="text" id="inputEmail" class="input-field" placeholder="Email Address" oninput="updateSocial('linkEmail', this.value, 'mailto:')">
+    </div>
   </div>
 
-  <!-- Pet Digital ID Card -->
+  <!-- Live Preview Card -->
   <div class="card">
     <div class="header">
-      <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=300" alt="Pet Photo" class="pet-photo">
-      <h1 class="pet-name">Milo</h1>
-      <p class="breed">Golden Retriever</p>
+      <div class="pet-photo-container">
+        <img id="displayPhoto" src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=300" alt="Pet Photo" class="pet-photo">
+      </div>
+      <h1 id="displayPetName" class="pet-name">Milo</h1>
+      <p id="displayBreed" class="breed">Golden Retriever</p>
     </div>
 
     <div class="content">
       <div class="info-group">
         <div class="info-label">Owner Name</div>
-        <div class="info-value">Maria Perez</div>
+        <div id="displayOwner" class="info-value">Maria Perez</div>
       </div>
 
       <div class="info-group">
         <div class="info-label">Home Address / Area</div>
-        <div class="info-value">Quezon City, Metro Manila</div>
+        <div id="displayAddress" class="info-value">Quezon City, Metro Manila</div>
       </div>
 
       <div class="medical-note">
-        <strong>⚠️ Important Note:</strong> Friendly, but easily scared by loud noises. Requires daily medication.
+        <strong>⚠️ Important Note:</strong> <span id="displayNote">Friendly, but easily scared by loud noises. Requires daily medication.</span>
       </div>
 
       <!-- Main Action Call Button -->
-      <a href="tel:+639123456789" class="call-btn">
+      <a id="displayCallBtn" href="tel:+639123456789" class="call-btn">
         <i class="fa-solid fa-phone"></i> Call Owner Now
       </a>
 
@@ -294,16 +369,16 @@
       <div class="social-section">
         <div class="social-title">Other Ways to Contact Owner</div>
         <div class="social-links">
-          <a href="https://m.me/yourusername" target="_blank" class="social-icon" title="Messenger">
+          <a id="linkMessenger" href="https://m.me/" target="_blank" class="social-icon" title="Messenger">
             <i class="fa-brands fa-facebook-messenger"></i>
           </a>
-          <a href="https://instagram.com/yourusername" target="_blank" class="social-icon" title="Instagram">
+          <a id="linkInstagram" href="https://instagram.com/" target="_blank" class="social-icon" title="Instagram">
             <i class="fa-brands fa-instagram"></i>
           </a>
-          <a href="viber://chat?number=%2B639123456789" class="social-icon" title="Viber">
+          <a id="linkViber" href="viber://chat?number=" class="social-icon" title="Viber">
             <i class="fa-brands fa-viber"></i>
           </a>
-          <a href="mailto:owner@email.com" class="social-icon" title="Email">
+          <a id="linkEmail" href="mailto:" class="social-icon" title="Email">
             <i class="fa-solid fa-envelope"></i>
           </a>
         </div>
@@ -312,7 +387,7 @@
     </div>
   </div>
 
-  <!-- Switcher JavaScript -->
+  <!-- Live Update Logic -->
   <script>
     function setTheme(themeName) {
       document.body.className = document.body.className.replace(/theme-\w+/g, '');
@@ -322,6 +397,30 @@
     function setFont(fontName) {
       document.body.className = document.body.className.replace(/font-\w+/g, '');
       document.body.classList.add(fontName);
+    }
+
+    function updateText(elementId, value) {
+      document.getElementById(elementId).innerText = value || '—';
+    }
+
+    function updatePhone(value) {
+      document.getElementById('displayCallBtn').href = 'tel:' + value;
+    }
+
+    function updatePhoto(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('displayPhoto').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function updateSocial(elementId, value, prefix) {
+      const cleanValue = value.trim();
+      document.getElementById(elementId).href = cleanValue ? (prefix + cleanValue) : '#';
     }
   </script>
 
