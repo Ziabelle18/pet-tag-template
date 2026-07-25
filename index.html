@@ -306,6 +306,11 @@
       border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 15px;
     }
 
+    .btn-link-flat {
+      background: none; border: none; color: var(--accent-main);
+      font-size: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: underline; margin-top: 8px; display: inline-block;
+    }
+
     .lightbox-img { max-width: 90vw; max-height: 80vh; border-radius: 16px; }
 
     .hidden { display: none !important; }
@@ -520,6 +525,26 @@
         <button onclick="closeModal('passcodeModal')" class="btn-submit" style="background:var(--accent-light); color:var(--text-main);">Cancel</button>
         <button onclick="verifyPin()" class="btn-submit">Unlock</button>
       </div>
+      <button onclick="openResetModal()" class="btn-link-flat">Forgot Passcode?</button>
+    </div>
+  </div>
+
+  <!-- RESET PASSCODE MODAL -->
+  <div id="resetModal" class="modal-overlay">
+    <div class="modal-box" style="text-align: center;">
+      <i class="fa-solid fa-key" style="font-size: 2rem; color: var(--accent-main); margin-bottom: 10px;"></i>
+      <h3 class="modal-title">Reset Security PIN</h3>
+      <p style="font-size: 0.78rem; color: var(--text-sub); margin-bottom: 15px;">Enter Master Reset Code to reset PIN to default (1234).</p>
+
+      <div class="form-group">
+        <input type="text" id="inputResetKey" placeholder="Enter Reset Code" style="text-align: center; font-size: 0.9rem;">
+      </div>
+      <p id="resetError" style="color:#ef4444; font-size:0.75rem; display:none; margin-bottom:10px; font-weight:600;">Invalid Master Reset Code!</p>
+
+      <div style="display: flex; gap: 8px;">
+        <button onclick="closeModal('resetModal')" class="btn-submit" style="background:var(--accent-light); color:var(--text-main);">Cancel</button>
+        <button onclick="verifyResetKey()" class="btn-submit">Reset PIN</button>
+      </div>
     </div>
   </div>
 
@@ -568,10 +593,10 @@
         </select>
       </div>
 
-      <!-- PROFILE PHOTO FILE UPLOAD -->
+      <!-- PROFILE PHOTO FILE UPLOAD WITH AUTOMATIC COMPRESSOR -->
       <div class="form-group">
         <label>Change Profile Photo</label>
-        <input type="file" id="fileAvatar" accept="image/*" onchange="previewLocalImage(this, 'displayAvatar')">
+        <input type="file" id="fileAvatar" accept="image/*" onchange="previewCompressedLocalImage(this, 'displayAvatar', 400)">
       </div>
 
       <div class="form-group">
@@ -658,24 +683,24 @@
         <textarea id="editAbout" rows="2"></textarea>
       </div>
 
-      <!-- GALLERY PHOTOS EASY UPLOAD -->
+      <!-- GALLERY PHOTOS EASY UPLOAD WITH AUTOMATIC COMPRESSOR -->
       <div class="form-section">
         <div class="form-section-title">📷 Easy Gallery Photo Picker (Max 3)</div>
         <div class="form-group">
           <label>Photo 1</label>
-          <input type="file" id="fileGallery1" accept="image/*" onchange="previewLocalImage(this, 'displayGallery1')">
+          <input type="file" id="fileGallery1" accept="image/*" onchange="previewCompressedLocalImage(this, 'displayGallery1', 350)">
         </div>
         <div class="form-group">
           <label>Photo 2</label>
-          <input type="file" id="fileGallery2" accept="image/*" onchange="previewLocalImage(this, 'displayGallery2')">
+          <input type="file" id="fileGallery2" accept="image/*" onchange="previewCompressedLocalImage(this, 'displayGallery2', 350)">
         </div>
         <div class="form-group">
           <label>Photo 3</label>
-          <input type="file" id="fileGallery3" accept="image/*" onchange="previewLocalImage(this, 'displayGallery3')">
+          <input type="file" id="fileGallery3" accept="image/*" onchange="previewCompressedLocalImage(this, 'displayGallery3', 350)">
         </div>
       </div>
 
-      <!-- LOCATION SEARCH -->
+      <!-- LOCATION SEARCH WITH WORKING MAP PIN -->
       <div class="form-section">
         <div class="form-section-title">📍 Search & Pin Location</div>
         <div class="form-group">
@@ -701,7 +726,8 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    const SECURITY_PIN = "1234";
+    let securityPin = "1234";
+    const MASTER_RESET_KEY = "ZDigital2026";
     let isPinProtectionActive = true;
 
     function handleEditClick() {
@@ -717,12 +743,32 @@
 
     function verifyPin() {
       const enteredPin = document.getElementById('inputPin').value.trim();
-      if (enteredPin === SECURITY_PIN) {
+      if (enteredPin === securityPin) {
         closeModal('passcodeModal');
         populateEditorForm();
         openModal('editorModal');
       } else {
         document.getElementById('pinError').style.display = 'block';
+      }
+    }
+
+    function openResetModal() {
+      closeModal('passcodeModal');
+      document.getElementById('inputResetKey').value = '';
+      document.getElementById('resetError').style.display = 'none';
+      openModal('resetModal');
+    }
+
+    function verifyResetKey() {
+      const enteredKey = document.getElementById('inputResetKey').value.trim();
+      if (enteredKey === MASTER_RESET_KEY) {
+        securityPin = "1234"; // Reset to default PIN
+        closeModal('resetModal');
+        alert("🔓 PIN reset successful! Default PIN is now 1234.");
+        populateEditorForm();
+        openModal('editorModal');
+      } else {
+        document.getElementById('resetError').style.display = 'block';
       }
     }
 
@@ -739,16 +785,49 @@
       }
     }
 
-    function previewLocalImage(input, targetImgId) {
+    /* AUTOMATIC CLIENT-SIDE IMAGE COMPRESSOR (INIAYOS ANG BLINKING/FLICKERING ISSUE) */
+    function previewCompressedLocalImage(input, targetImgId, maxDim = 400) {
       if (input.files && input.files[0]) {
+        const file = input.files[0];
         const reader = new FileReader();
+
         reader.onload = function(e) {
-          document.getElementById(targetImgId).src = e.target.result;
-        }
-        reader.readAsDataURL(input.files[0]);
+          const img = new Image();
+          img.src = e.target.result;
+
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > maxDim) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              }
+            } else {
+              if (height > maxDim) {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Compress to optimized JPEG format
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+            document.getElementById(targetImgId).src = compressedDataUrl;
+          };
+        };
+        reader.readAsDataURL(file);
       }
     }
 
+    /* INIAYOS ANG MAP LOCATION SEARCH FUNCTION */
     function updateMapLocation() {
       const address = document.getElementById('editAddress').value.trim();
       if(address !== "") {
