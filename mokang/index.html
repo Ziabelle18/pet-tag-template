@@ -1,1 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Digital NFC Pet Profile Tag</title>
+
+  <!-- Google Fonts & Custom Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Fredoka:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&family=Poppins:wght@400;500;600;700&family=Quicksand:wght@500;600;700&family=Sacramento&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* CUSTOM FONT DECLARATIONS WITH RELIABLE FALLBACKS */
+    @font-face { font-family: 'Brown Sugar'; src: local('Brown Sugar'), local('BrownSugar'), url('https://fonts.cdnfonts.com/s/93121/BrownSugar.woff') format('woff'); }
+    @font-face { font-family: 'Quiche Real'; src: local('Quiche Sans'), url('https://fonts.cdnfonts.com/s/29424/QuicheSans-Bold.woff') format('woff'); }
+    @font-face { font-family: 'Safira March'; src: local('Safira March'), url('https://fonts.cdnfonts.com/s/85631/SafiraMarch.woff') format('woff'); }
+    @font-face { font-family: 'The Seasons'; src: local('The Seasons'), local('TheSeasons'), url('https://fonts.cdnfonts.com/s/72813/TheSeasons-Regular.woff') format('woff'); }
+    @font-face { font-family: 'Alta'; src: local('Alta'), url('https://fonts.cdnfonts.com/s/29224/Alta-Regular.woff') format('woff'); }
+
+    :root {
+      /* DEFAULT THEME: CLEAN WHITE */
+      --bg-color: #ffffff;
+      --card-bg: rgba(248, 250, 252, 0.95);
+      --card-border: rgba(226, 232, 240, 0.9);
+      --text-main: #1e293b;
+      --text-sub: #64748b;
+      --accent-main: #0f172a;
+      --accent-light: #f1f5f9;
+      --accent-badge: #22c55e;
+      --blob-shadow: rgba(15, 23, 42, 0.06);
+      --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.05);
+      --font-family: 'Poppins', sans-serif;
+      --font-scale: 1; /* DYNAMIC FONT SIZE SCALE */
+    }
+
+    /* --- COLOR THEMES --- */
+    body.theme-white         { --bg-color: #ffffff; --card-bg: rgba(248, 250, 252, 0.95); --card-border: #e2e8f0; --accent-main: #0f172a; --accent-light: #f1f5f9; --blob-shadow: rgba(15, 23, 42, 0.06); }
+    body.theme-pastel-orange { --bg-color: #fff8f5; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #ffd3bd; --accent-main: #ff8e6e; --accent-light: #fff0eb; --blob-shadow: rgba(255, 142, 110, 0.12); }
+    body.theme-pastel-blue   { --bg-color: #f0f8ff; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #bfe0ff; --accent-main: #3b82f6; --accent-light: #eff6ff; --blob-shadow: rgba(59, 130, 246, 0.12); }
+    body.theme-pastel-yellow { --bg-color: #fefde8; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #fef08a; --accent-main: #eab308; --accent-light: #fefce8; --blob-shadow: rgba(234, 179, 8, 0.12); }
+    body.theme-pastel-pink   { --bg-color: #fdf2f8; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #fbcfe8; --accent-main: #ec4899; --accent-light: #fce7f3; --blob-shadow: rgba(236, 72, 153, 0.12); }
+    body.theme-pastel-beige  { --bg-color: #fdfbf7; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #e6dfd5; --accent-main: #b09e80; --accent-light: #f5f0eb; --blob-shadow: rgba(176, 158, 128, 0.12); }
+    body.theme-pastel-gray   { --bg-color: #f8fafc; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #cbd5e1; --accent-main: #64748b; --accent-light: #f1f5f9; --blob-shadow: rgba(100, 116, 139, 0.12); }
+    body.theme-pastel-purple { --bg-color: #faf5ff; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #e9d5ff; --accent-main: #a855f7; --accent-light: #f3e8ff; --blob-shadow: rgba(168, 85, 247, 0.12); }
+    body.theme-pastel-sage   { --bg-color: #f4f7f4; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #c8d6af; --accent-main: #7c9473; --accent-light: #e8efe8; --blob-shadow: rgba(124, 148, 115, 0.12); }
+    body.theme-pastel-red    { --bg-color: #fff5f5; --card-bg: rgba(255, 255, 255, 0.94); --card-border: #fecaca; --accent-main: #f87171; --accent-light: #fef2f2; --blob-shadow: rgba(248, 113, 113, 0.12); }
+
+    /* FONT CLASSES */
+    body.font-poppins      { --font-family: 'Poppins', sans-serif; }
+    body.font-brown-sugar  { --font-family: 'Brown Sugar', 'Playfair Display', serif; }
+    body.font-quiche       { --font-family: 'Quiche Real', 'Fredoka', sans-serif; }
+    body.font-caveat       { --font-family: 'Caveat', cursive; }
+    body.font-quicksand    { --font-family: 'Quicksand', sans-serif; }
+    body.font-safira-march { --font-family: 'Safira March', serif; }
+    body.font-the-seasons  { --font-family: 'The Seasons', serif; }
+    body.font-alta         { --font-family: 'Alta', sans-serif; }
+
+    /* CITY FONTS */
+    body.font-paris   { --font-family: 'Playfair Display', serif; }
+    body.font-moscow  { --font-family: 'Syne', sans-serif; }
+    body.font-venice  { --font-family: 'Great Vibes', cursive; }
+    body.font-vienna  { --font-family: 'Cinzel', serif; }
+    body.font-dublin  { --font-family: 'Sacramento', cursive; }
+    body.font-athens  { --font-family: 'Montserrat', sans-serif; }
+    body.font-genoa   { --font-family: 'Fredoka', sans-serif; }
+    body.font-london  { --font-family: 'Cormorant Garamond', serif; }
+
+    /* FONT SIZING OPTIONS */
+    body.fsize-normal { --font-scale: 1; }
+    body.fsize-medium { --font-scale: 1.15; }
+    body.fsize-large  { --font-scale: 1.3; }
+
+    /* AUTO SCALING FOR INTRINSICALLY SMALL FONTS */
+    body.font-caveat,
+    body.font-dublin,
+    body.font-venice,
+    body.font-london {
+      font-size: calc(1.12 * var(--font-scale));
+    }
+
+    /* DARK MODE OVERRIDES */
+    body.dark-mode {
+      --bg-color: #121110;
+      --card-bg: rgba(28, 25, 23, 0.92);
+      --card-border: rgba(68, 64, 60, 0.8);
+      --text-main: #f1f5f9;
+      --text-sub: #cbd5e1;
+      --accent-light: #292524;
+      --blob-shadow: rgba(0, 0, 0, 0.3);
+      --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    body.dark-mode .pet-name,
+    body.dark-mode .section-title,
+    body.dark-mode .val,
+    body.dark-mode .info-val,
+    body.dark-mode label,
+    body.dark-mode .form-section-title {
+      color: #f1f5f9 !important;
+    }
+
+    body.dark-mode .pet-sub,
+    body.dark-mode .info-label,
+    body.dark-mode .lbl,
+    body.dark-mode p {
+      color: #cbd5e1 !important;
+    }
+
+    body.dark-mode input[type="text"],
+    body.dark-mode input[type="password"],
+    body.dark-mode textarea,
+    body.dark-mode select {
+      background-color: #1c1917 !important;
+      color: #f1f5f9 !important;
+      border-color: #44403c !important;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; outline: none; }
+
+    body {
+      background-color: var(--bg-color);
+      font-family: var(--font-family);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 15px 10px 90px 10px;
+      transition: background-color 0.3s ease;
+      background-image: radial-gradient(rgba(150, 150, 150, 0.12) 1.5px, transparent 0);
+      background-size: 20px 20px;
+    }
+
+    /* MAIN CONTAINER */
+    .app-container { width: 100%; max-width: 420px; position: relative; }
+
+    /* TOP ACTION BAR */
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+
+    .badge-nfc {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: calc(0.72rem * var(--font-scale));
+      font-weight: 700;
+      color: var(--accent-main);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 15px var(--blob-shadow);
+      display: flex; align-items: center; gap: 6px;
+    }
+    body.dark-mode .badge-nfc { color: #f1f5f9; }
+
+    .btn-icon {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      color: var(--text-main);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px var(--blob-shadow);
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s ease;
+    }
+
+    .btn-icon:active { transform: scale(0.92); }
+
+    /* SMOOTH S-CURVE WAVY CARDS */
+    .glass-card {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 42px 18px 45px 20px / 20px 45px 18px 42px;
+      padding: 22px 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 25px var(--blob-shadow);
+      position: relative;
+      transform: translate3d(0, 0, 0);
+      will-change: transform;
+      animation: floatWavyCard 6s ease-in-out infinite alternate;
+    }
+
+    .glass-card:nth-child(even) {
+      border-radius: 20px 45px 18px 42px / 42px 18px 45px 20px;
+      animation-delay: -3s;
+    }
+
+    @keyframes floatWavyCard {
+      0% { transform: translate3d(0, 0px, 0) rotate(0deg); }
+      50% { transform: translate3d(0, -3px, 0) rotate(0.4deg); }
+      100% { transform: translate3d(0, 3px, 0) rotate(-0.4deg); }
+    }
+
+    /* PROFILE HEADER CARD */
+    .profile-card { text-align: center; position: relative; overflow: hidden; }
+
+    .avatar-wrapper { position: relative; width: 124px; height: 124px; margin: 0 auto 12px auto; }
+
+    .pet-avatar {
+      width: 100%; height: 100%;
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      object-fit: cover;
+      border: 4px solid var(--accent-main);
+      box-shadow: 0 8px 20px var(--blob-shadow);
+      transform: translate3d(0,0,0);
+      will-change: transform;
+      animation: morphAvatarBlob 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes morphAvatarBlob {
+      0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; transform: rotate(0deg); }
+      50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; transform: rotate(3deg); }
+      100% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; transform: rotate(-3deg); }
+    }
+
+    .pet-name { font-size: calc(2rem * var(--font-scale)); color: var(--text-main); line-height: 1.1; font-weight: 700; }
+    .pet-sub { font-size: calc(0.85rem * var(--font-scale)); color: var(--text-sub); margin-top: 4px; font-weight: 500; }
+
+    .status-badges { display: flex; justify-content: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+
+    .status-badge {
+      background: var(--accent-light);
+      color: var(--accent-main);
+      font-size: calc(0.72rem * var(--font-scale));
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 25px 12px 25px 12px / 12px 25px 12px 25px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1.5px solid var(--card-border);
+    }
+    body.dark-mode .status-badge { color: #f1f5f9; }
+
+    /* SOCIAL MEDIA LINKS SECTION */
+    .social-links-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .social-icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      border: 1.5px solid var(--card-border);
+      color: var(--accent-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: transform 0.2s ease, background 0.2s ease;
+      box-shadow: 0 4px 10px var(--blob-shadow);
+    }
+    body.dark-mode .social-icon-btn { color: #f1f5f9; }
+    .social-icon-btn:hover { transform: scale(1.1); }
+
+    /* QUICK CALL & MESSAGE BUTTONS */
+    .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+
+    .btn-action {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px;
+      border-radius: 28px 14px 28px 14px / 14px 28px 14px 28px;
+      text-decoration: none;
+      font-weight: 600; font-size: calc(0.9rem * var(--font-scale));
+      transition: transform 0.2s ease, filter 0.2s ease;
+      box-shadow: 0 6px 15px var(--blob-shadow);
+    }
+
+    .btn-action:active { transform: scale(0.96); }
+    .btn-call { background-color: var(--accent-main); color: #ffffff !important; }
+    .btn-msg { background-color: var(--accent-light); color: var(--accent-main) !important; border: 1.5px solid var(--card-border); }
+    body.dark-mode .btn-msg { color: #f1f5f9 !important; }
+
+    /* SECTION TITLES */
+    .section-title { font-size: calc(1.1rem * var(--font-scale)); color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
+    .section-title i { color: var(--accent-main); }
+    body.dark-mode .section-title i { color: #f1f5f9; }
+
+    /* EMERGENCY CARD */
+    .emergency-card { background: rgba(254, 242, 242, 0.92); border: 2px solid rgba(254, 202, 202, 0.9); }
+    body.dark-mode .emergency-card { background: rgba(45, 20, 20, 0.85); border-color: rgba(127, 29, 29, 0.6); }
+
+    .emergency-title { color: #dc2626 !important; }
+    .emergency-title i { color: #dc2626 !important; }
+
+    .info-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .info-item { display: flex; justify-content: space-between; font-size: calc(0.85rem * var(--font-scale)); padding-bottom: 6px; border-bottom: 1px dashed var(--card-border); }
+    .info-item:last-child { border-bottom: none; }
+    .info-label { color: var(--text-sub); font-weight: 500; }
+    .info-val { color: var(--text-main); font-weight: 600; text-align: right; }
+
+    /* GRID INFO CARDS WITH DYNAMIC FONT SIZING */
+    .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    
+    .grid-box {
+      background: var(--accent-light);
+      padding: 12px;
+      border-radius: 28px 14px 28px 14px / 14px 28px 14px 28px;
+      text-align: center;
+      border: 1.5px solid var(--card-border);
+      box-shadow: 0 4px 10px var(--blob-shadow);
+      transform: translate3d(0,0,0);
+      will-change: transform;
+      animation: floatWavyGrid 5s ease-in-out infinite alternate;
+    }
+    .grid-box:nth-child(even) {
+      border-radius: 14px 28px 14px 28px / 28px 14px 28px 14px;
+      animation-delay: -2.5s;
+    }
+
+    @keyframes floatWavyGrid {
+      0% { transform: translate3d(0, 0px, 0); }
+      100% { transform: translate3d(0, -3px, 0); }
+    }
+
+    .grid-box i { font-size: 1.2rem; color: var(--accent-main); margin-bottom: 4px; }
+    body.dark-mode .grid-box i { color: #f1f5f9; }
+    .grid-box .lbl { font-size: calc(0.72rem * var(--font-scale)); color: var(--text-sub); font-weight: 500; }
+    .grid-box .val { font-size: calc(0.88rem * var(--font-scale)); color: var(--text-main); font-weight: 700; word-break: break-word; }
+
+    /* CHECKLIST / VACCINATIONS */
+    .check-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .check-item { display: flex; align-items: center; gap: 8px; font-size: calc(0.85rem * var(--font-scale)); font-weight: 600; color: var(--text-main); }
+    body.dark-mode .check-item { color: #f1f5f9; }
+    .check-item i.active { color: var(--accent-badge); }
+    .check-item i.inactive { color: #94a3b8; }
+
+    /* LOST PET BANNER */
+    .lost-banner {
+      background: #fef9c3;
+      border: 2px solid #fef08a;
+      text-align: center;
+    }
+    body.dark-mode .lost-banner { background: #3f3c11; border-color: #713f12; }
+
+    .lost-title { color: #ca8a04; font-size: calc(1.2rem * var(--font-scale)); margin-bottom: 4px; font-weight: 700; }
+    .lost-desc { font-size: calc(0.8rem * var(--font-scale)); color: var(--text-sub); margin-bottom: 12px; }
+
+    /* CENTERED PHOTO GALLERY */
+    .gallery-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 4px;
+    }
+
+    .gallery-img {
+      width: 95px; height: 95px;
+      border-radius: 28px 12px 28px 12px / 12px 28px 12px 28px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid var(--card-border);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 12px var(--blob-shadow);
+    }
+    .gallery-img:hover { transform: scale(1.06); }
+
+    /* MAP PLACEHOLDER */
+    .map-box {
+      width: 100%; height: 140px;
+      border-radius: 26px;
+      overflow: hidden; margin-bottom: 10px; border: 2px solid var(--card-border);
+    }
+    .map-box iframe { width: 100%; height: 100%; border: 0; }
+
+    /* STICKY BOTTOM CALL BUTTON */
+    .sticky-bottom-btn { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 380px; z-index: 80; }
+
+    /* MODAL POPUPS */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      display: none; align-items: center; justify-content: center;
+      z-index: 9999; padding: 15px; opacity: 0; transition: opacity 0.25s ease;
+      pointer-events: none;
+    }
+    .modal-overlay.active { display: flex !important; opacity: 1; pointer-events: auto; }
+
+    .modal-box {
+      background: var(--bg-color); border: 2px solid var(--card-border);
+      border-radius: 32px 18px 32px 18px / 18px 32px 18px 32px;
+      padding: 24px 20px 30px 20px; width: 100%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      max-height: 88vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
+      position: relative; pointer-events: auto;
+    }
+
+    .modal-title { font-size: 1.2rem; margin-bottom: 12px; text-align: center; font-weight: 700; }
+
+    .form-section {
+      border-top: 1px dashed var(--card-border);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+    .form-section-title { font-size: 0.8rem; font-weight: 700; color: var(--accent-main); margin-bottom: 8px; text-transform: uppercase; }
+
+    .form-group { margin-bottom: 12px; text-align: left; }
+    .form-group label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-sub); margin-bottom: 4px; }
+    
+    .form-group input[type="text"], 
+    .form-group input[type="password"], 
+    .form-group textarea {
+      width: 100%; padding: 10px 12px; border-radius: 16px; border: 1.5px solid var(--card-border);
+      background: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
+      box-sizing: border-box; display: block;
+    }
+
+    /* DROPDOWN SELECT STYLING */
+    .form-group select {
+      width: 100%; padding: 10px 36px 10px 12px; border-radius: 16px; border: 1.5px solid var(--card-border);
+      background-color: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
+      box-sizing: border-box; display: block; cursor: pointer;
+      appearance: none; -webkit-appearance: none; -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+    }
+
+    .toggle-switch-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    /* AESTHETIC CUSTOM CHECKBOXES & TOGGLES */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .custom-checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .custom-checkbox-label input[type="checkbox"] {
+      display: none;
+    }
+
+    .custom-check-box {
+      width: 22px;
+      height: 22px;
+      border-radius: 8px;
+      border: 2px solid var(--card-border);
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: transparent;
+      font-size: 0.75rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 6px var(--blob-shadow);
+    }
+
+    .custom-checkbox-label input[type="checkbox"]:checked + .custom-check-box {
+      background: var(--accent-main);
+      border-color: var(--accent-main);
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+
+    body.dark-mode .custom-checkbox-label input[type="checkbox"]:checked + .custom-check-box {
+      color: #121110;
+      background: #f1f5f9;
+      border-color: #f1f5f9;
+    }
+
+    /* Custom Toggle Switch */
+    .custom-toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .custom-toggle-switch input { display: none; }
+    
+    .toggle-slider {
+      position: absolute; inset: 0;
+      background-color: #cbd5e1;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .toggle-slider:before {
+      position: absolute; content: "";
+      height: 18px; width: 18px;
+      left: 3px; bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .custom-toggle-switch input:checked + .toggle-slider {
+      background-color: var(--accent-badge);
+    }
+    .custom-toggle-switch input:checked + .toggle-slider:before {
+      transform: translateX(20px);
+    }
+
+    .btn-submit {
+      width: 100%; padding: 12px; background: var(--accent-main); color: white;
+      border: none; border-radius: 20px;
+      font-weight: 700; cursor: pointer; margin-top: 12px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      box-shadow: 0 4px 12px var(--blob-shadow);
+    }
+
+    .btn-link-flat {
+      background: none; border: none; color: var(--accent-main);
+      font-size: 0.75rem; font-weight: 600; cursor: pointer; text-decoration: underline; margin-top: 8px; display: inline-block;
+    }
+    body.dark-mode .btn-link-flat { color: #f1f5f9; }
+
+    .pin-input-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .pin-eye-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: var(--text-sub);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 4px;
+    }
+
+    .lightbox-img { max-width: 90vw; max-height: 80vh; border-radius: 20px; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body id="bodyTag" class="theme-white font-poppins fsize-normal">
+
+  <div class="app-container">
+
+    <!-- TOP ACTION BAR -->
+    <div class="top-bar">
+      <div class="badge-nfc">
+        <i class="fa-solid fa-wifi"></i>
+        <span>NFC PET TAG</span>
+      </div>
+
+      <div style="display: flex; gap: 8px;">
+        <button type="button" class="btn-icon" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+          <i id="darkIcon" class="fa-solid fa-moon"></i>
+        </button>
+        <!-- Security Unlock Button -->
+        <button type="button" class="btn-icon" onclick="handleEditClick()" title="Edit Pet Details">
+          <i id="lockIcon" class="fa-solid fa-lock"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- 1. LIVE PET DASHBOARD VIEW (Naka-lock at Naka-display by Default) -->
+    <div id="petDashboard">
+
+      <!-- PROFILE HEADER -->
+      <div class="glass-card profile-card">
+        <div class="avatar-wrapper">
+          <img id="displayAvatar" class="pet-avatar" src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=400" alt="Pet Avatar">
+        </div>
+        <h1 id="displayName" class="pet-name">Milo</h1>
+        <p class="pet-sub">🐾 <span id="displayBreed">Golden Retriever</span> • <span id="displayAge">2 Years Old</span></p>
+
+        <!-- EDITABLE BADGES -->
+        <div class="status-badges">
+          <span id="displayBadge1" class="status-badge">SAFE</span>
+          <span id="displayBadge2" class="status-badge" style="background:#dcfce7; color:#15803d;">FRIENDLY</span>
+          <span id="displayBadge3" class="status-badge" style="background:#e0f2fe; color:#0369a1;">MALE ♂</span>
+        </div>
+
+        <!-- SOCIAL MEDIA LINKS -->
+        <div class="social-links-bar" id="socialLinksBar">
+          <a id="linkFacebook" href="#" target="_blank" class="social-icon-btn hidden" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a id="linkInstagram" href="#" target="_blank" class="social-icon-btn hidden" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a id="linkViber" href="#" target="_blank" class="social-icon-btn hidden" title="Viber"><i class="fa-brands fa-viber"></i></a>
+          <a id="linkWhatsapp" href="#" target="_blank" class="social-icon-btn hidden" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+        </div>
+      </div>
+
+      <!-- OWNER QUICK ACTIONS -->
+      <div class="quick-actions">
+        <a id="linkCall" href="tel:+639123456789" class="btn-action btn-call">
+          <i class="fa-solid fa-phone"></i>
+          <span>Call Owner</span>
+        </a>
+        <a id="linkSms" href="sms:+639123456789" class="btn-action btn-msg">
+          <i class="fa-solid fa-comment-dots"></i>
+          <span>Message</span>
+        </a>
+      </div>
+
+      <!-- EMERGENCY CARD -->
+      <div class="glass-card emergency-card">
+        <div class="section-title emergency-title">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Emergency Information</span>
+        </div>
+        <ul class="info-list">
+          <li class="info-item">
+            <span class="info-label">Medical Conditions:</span>
+            <span id="displayMedical" class="info-val">Sensitive Stomach</span>
+          </li>
+          <li class="info-item">
+            <span class="info-label">Allergies:</span>
+            <span id="displayAllergies" class="info-val">Chicken Flavored Food</span>
+          </li>
+          <li class="info-item">
+            <span class="info-label">Veterinarian:</span>
+            <span id="displayVet" class="info-val">Central Pet Clinic (+63987654321)</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- PET INFORMATION GRID -->
+      <div class="glass-card">
+        <div class="section-title">
+          <i class="fa-solid fa-paw"></i>
+          <span>Pet Quick Details</span>
+        </div>
+        <div class="info-grid">
+          <div class="grid-box">
+            <i class="fa-solid fa-weight-hanging"></i>
+            <div class="lbl">Weight</div>
+            <div id="displayWeight" class="val">28 kg</div>
+          </div>
+
+          <!-- MICROCHIP WITH AUTOMATIC ON/OFF STATUS -->
+          <div class="grid-box">
+            <i class="fa-solid fa-microchip"></i>
+            <div class="lbl">Microchip ID</div>
+            <div id="displayChip" class="val">985141002341</div>
+          </div>
+
+          <div class="grid-box">
+            <i class="fa-solid fa-bone"></i>
+            <div class="lbl">Favorite Treat</div>
+            <div id="displayTreat" class="val">Salmon Bites</div>
+          </div>
+          <div class="grid-box">
+            <i class="fa-solid fa-baseball"></i>
+            <div class="lbl">Favorite Toy</div>
+            <div id="displayToy" class="val">Squeaky Ball</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABOUT ME -->
+      <div class="glass-card">
+        <div class="section-title">
+          <i class="fa-solid fa-heart"></i>
+          <span>About Me</span>
+        </div>
+        <p id="displayAbout" style="font-size:calc(0.85rem * var(--font-scale)); color:var(--text-sub); line-height:1.5;">
+          Hi! I am Milo. I am super friendly and love belly rubs. If you found me wandering around, please contact my family immediately so I can go back home!
+        </p>
+      </div>
+
+      <!-- VACCINATION STATUS DISPLAY -->
+      <div class="glass-card">
+        <div class="section-title">
+          <i class="fa-solid fa-shield-cat"></i>
+          <span>Vaccination Status</span>
+        </div>
+        <div class="check-list">
+          <div class="check-item"><i id="vaxRabiesIcon" class="fa-solid fa-circle-check active"></i> <span>Rabies</span></div>
+          <div class="check-item"><i id="vaxDhppIcon" class="fa-solid fa-circle-check active"></i> <span>DHPP</span></div>
+          <div class="check-item"><i id="vaxDewormIcon" class="fa-solid fa-circle-check active"></i> <span>Dewormed</span></div>
+          <div class="check-item"><i id="vaxFleaIcon" class="fa-solid fa-circle-check active"></i> <span>Flea & Tick</span></div>
+        </div>
+      </div>
+
+      <!-- LOST PET SECTION BANNER -->
+      <div class="glass-card lost-banner">
+        <div class="lost-title">🚨 IF I'M LOST...</div>
+        <p class="lost-desc">Please call my owner immediately. I might be scared but I am very gentle and friendly!</p>
+        <a id="linkCallLost" href="tel:+639123456789" class="btn-action btn-call" style="margin: 0 auto; max-width: 220px;">
+          <i class="fa-solid fa-phone"></i>
+          <span>Call Owner Now</span>
+        </a>
+      </div>
+
+      <!-- PHOTO GALLERY (CENTERED 3 PHOTOS) -->
+      <div class="glass-card">
+        <div class="section-title" style="justify-content: center;">
+          <i class="fa-solid fa-camera"></i>
+          <span>Photo Gallery</span>
+        </div>
+        <div class="gallery-container">
+          <img id="displayGallery1" class="gallery-img" src="https://images.unsplash.com/photo-1552053831-71594a27632d?w=300" onclick="openLightbox(this.src)">
+          <img id="displayGallery2" class="gallery-img" src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?w=300" onclick="openLightbox(this.src)">
+          <img id="displayGallery3" class="gallery-img" src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=300" onclick="openLightbox(this.src)">
+        </div>
+      </div>
+
+      <!-- LOCATION / HOME AREA MAP -->
+      <div class="glass-card">
+        <div class="section-title">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>Home Location</span>
+        </div>
+        <div class="map-box">
+          <iframe id="displayMapIframe" src="https://maps.google.com/maps?q=Quezon%20City&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+        </div>
+        <p id="displayAddress" style="font-size:calc(0.8rem * var(--font-scale)); color:var(--text-sub); text-align:center;">Quezon City, Metro Manila, Philippines</p>
+      </div>
+
+      <!-- FOOTER -->
+      <div style="text-align: center; padding: 15px; font-size: 0.75rem; color: var(--text-sub);">
+        Made with ❤️ for our furry best friends
+      </div>
+
+    </div>
+
+    <!-- STICKY FLOATING CALL BUTTON -->
+    <div class="sticky-bottom-btn">
+      <a id="linkCallSticky" href="tel:+639123456789" class="btn-action btn-call">
+        <i class="fa-solid fa-phone-volume"></i>
+        <span>Emergency Call Owner</span>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- PASSCODE UNLOCK MODAL WITH SHOW/HIDE EYE ICON -->
+  <div id="passcodeModal" class="modal-overlay">
+    <div class="modal-box" style="text-align: center;">
+      <i class="fa-solid fa-lock" style="font-size: 2rem; color: var(--accent-main); margin-bottom: 10px;"></i>
+      <h3 class="modal-title">Enter Passcode</h3>
+      <p style="font-size: 0.78rem; color: var(--text-sub); margin-bottom: 15px;">Enter 4-digit security PIN to edit pet details.</p>
+
+      <div class="form-group pin-input-container">
+        <input type="password" id="inputPin" maxlength="4" placeholder="Default PIN: 1234" style="text-align: center; letter-spacing: 5px; font-size: 1.1rem; padding-right: 40px;">
+        <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('inputPin', 'eyeIconLogin')">
+          <i id="eyeIconLogin" class="fa-solid fa-eye"></i>
+        </button>
+      </div>
+      <p id="pinError" style="color:#ef4444; font-size:0.75rem; display:none; margin-bottom:10px; font-weight:600;">Invalid Security PIN!</p>
+
+      <div style="display: flex; gap: 8px;">
+        <button type="button" onclick="closeModal('passcodeModal')" class="btn-submit" style="background:var(--accent-light); color:var(--text-main);">Cancel</button>
+        <button type="button" onclick="verifyPin()" class="btn-submit">Unlock</button>
+      </div>
+      <button type="button" onclick="openResetModal()" class="btn-link-flat">Forgot Passcode?</button>
+    </div>
+  </div>
+
+  <!-- RESET PASSCODE MODAL WITH SHOW/HIDE EYE ICON -->
+  <div id="resetModal" class="modal-overlay">
+    <div class="modal-box" style="text-align: center;">
+      <i class="fa-solid fa-key" style="font-size: 2rem; color: var(--accent-main); margin-bottom: 10px;"></i>
+      <h3 class="modal-title">Reset Security PIN</h3>
+      <p style="font-size: 0.78rem; color: var(--text-sub); margin-bottom: 15px;">Enter Master Reset Code to reset PIN to default (1234).</p>
+
+      <div class="form-group pin-input-container">
+        <input type="password" id="inputResetKey" placeholder="Enter Reset Code" style="text-align: center; font-size: 0.9rem; padding-right: 40px;">
+        <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('inputResetKey', 'eyeIconReset')">
+          <i id="eyeIconReset" class="fa-solid fa-eye"></i>
+        </button>
+      </div>
+      <p id="resetError" style="color:#ef4444; font-size:0.75rem; display:none; margin-bottom:10px; font-weight:600;">Invalid Master Reset Code!</p>
+
+      <div style="display: flex; gap: 8px;">
+        <button type="button" onclick="closeModal('resetModal')" class="btn-submit" style="background:var(--accent-light); color:var(--text-main);">Cancel</button>
+        <button type="button" onclick="verifyResetKey()" class="btn-submit">Reset PIN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PET DETAILS EDITOR MODAL -->
+  <div id="editorModal" class="modal-overlay">
+    <div class="modal-box">
+      <h3 class="modal-title">✏️ Edit Pet Tag Details</h3>
+
+      <!-- PIN PROTECTION TOGGLE & CUSTOM PIN CHANGE WITH EYE ICON -->
+      <div class="form-section" style="margin-top: 0; padding-top: 0; border-top: none;">
+        <div class="toggle-switch-wrapper">
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-main);">🔒 Passcode Lock Protection</span>
+          <label class="custom-toggle-switch">
+            <input type="checkbox" id="togglePinProtection" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="form-group" style="margin-top: 6px;">
+          <label>Set Custom 4-Digit PIN</label>
+          <div class="pin-input-container">
+            <input type="password" id="editCustomPin" maxlength="4" placeholder="Change PIN (Current: 1234)" style="text-align: center; letter-spacing: 4px; padding-right: 40px;">
+            <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('editCustomPin', 'eyeIconCustomPin')">
+              <i id="eyeIconCustomPin" class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLOR OPTIONS (SOFT CLEAN NAMES) -->
+      <div class="form-group">
+        <label>Color Theme</label>
+        <select id="editTheme" onchange="changeTheme(this.value)">
+          <option value="theme-white" selected>Clean White (Default)</option>
+          <option value="theme-pastel-orange">Soft Orange</option>
+          <option value="theme-pastel-blue">Soft Blue</option>
+          <option value="theme-pastel-yellow">Soft Yellow</option>
+          <option value="theme-pastel-pink">Soft Pink</option>
+          <option value="theme-pastel-beige">Soft Beige</option>
+          <option value="theme-pastel-gray">Soft Gray</option>
+          <option value="theme-pastel-purple">Soft Purple</option>
+          <option value="theme-pastel-sage">Soft Sage Green</option>
+          <option value="theme-pastel-red">Soft Red</option>
+        </select>
+      </div>
+
+      <!-- 16 FONT OPTIONS (ORIGINALS FIXED + 8 NEW CITIES) -->
+      <div class="form-group">
+        <label>Typography Font Style</label>
+        <select id="editFont" onchange="changeFont(this.value)">
+          <option value="font-poppins">Poppins (Clean Modern)</option>
+          <option value="font-brown-sugar">Brown Sugar (Aesthetic Elegance)</option>
+          <option value="font-quiche">Quiche (Chic Soft)</option>
+          <option value="font-caveat">Caveat (Cute Handwritten)</option>
+          <option value="font-quicksand">Quicksand (Soft Rounded)</option>
+          <option value="font-safira-march">Safira March (Luxury Serif)</option>
+          <option value="font-the-seasons">The Seasons (Classic Vintage)</option>
+          <option value="font-alta">Alta (Minimalist High Fashion)</option>
+          <option value="font-paris">Paris (Romantic Serif)</option>
+          <option value="font-moscow">Moscow (Bold Modern)</option>
+          <option value="font-venice">Venice (Artistic Calligraphy)</option>
+          <option value="font-vienna">Vienna (Classic Heritage)</option>
+          <option value="font-dublin">Dublin (Charming Cursive)</option>
+          <option value="font-athens">Athens (Geometric Clean)</option>
+          <option value="font-genoa">Genoa (Playful Round)</option>
+          <option value="font-london">London (Editorial Fashion)</option>
+        </select>
+      </div>
+
+      <!-- FONT SIZE OPTION SELECTOR -->
+      <div class="form-group">
+        <label>Font Size Scaling</label>
+        <select id="editFontSize" onchange="changeFontSize(this.value)">
+          <option value="fsize-normal" selected>Normal Size (Default)</option>
+          <option value="fsize-medium">Medium (+15% Larger)</option>
+          <option value="fsize-large">Large (+30% Extra Large)</option>
+        </select>
+      </div>
+
+      <!-- PROFILE PHOTO FILE UPLOAD -->
+      <div class="form-group">
+        <label>Change Profile Photo</label>
+        <input type="file" id="fileAvatar" accept="image/*" onchange="previewCompressedLocalImage(this, 'displayAvatar', 400)">
+      </div>
+
+      <div class="form-group">
+        <label>Pet Name</label>
+        <input type="text" id="editName">
+      </div>
+
+      <div class="form-group">
+        <label>Breed</label>
+        <input type="text" id="editBreed">
+      </div>
+
+      <div class="form-group">
+        <label>Age</label>
+        <input type="text" id="editAge">
+      </div>
+
+      <!-- EDITABLE BADGES -->
+      <div class="form-section">
+        <div class="form-section-title">🏷️ Status Badges</div>
+        <div class="form-group">
+          <label>Badge 1 Text</label>
+          <input type="text" id="editBadge1" placeholder="e.g. SAFE">
+        </div>
+        <div class="form-group">
+          <label>Badge 2 Text</label>
+          <input type="text" id="editBadge2" placeholder="e.g. FRIENDLY">
+        </div>
+        <div class="form-group">
+          <label>Badge 3 Text (Gender / Status)</label>
+          <input type="text" id="editBadge3" placeholder="e.g. MALE ♂">
+        </div>
+      </div>
+
+      <!-- PET QUICK DETAILS EDITABLE SECTION -->
+      <div class="form-section">
+        <div class="form-section-title">🐾 Pet Quick Details</div>
+        <div class="form-group">
+          <label>Weight</label>
+          <input type="text" id="editWeight" placeholder="e.g. 28 kg">
+        </div>
+        <div class="form-group">
+          <label>Favorite Treat</label>
+          <input type="text" id="editTreat" placeholder="e.g. Salmon Bites">
+        </div>
+        <div class="form-group">
+          <label>Favorite Toy</label>
+          <input type="text" id="editToy" placeholder="e.g. Squeaky Ball">
+        </div>
+        <!-- MICROCHIP ID TOGGLE WITH AESTHETIC SWITCH -->
+        <div class="toggle-switch-wrapper" style="margin-top:10px;">
+          <span style="font-size:0.75rem; font-weight:600; color:var(--text-sub);">Microchip Status</span>
+          <label class="custom-toggle-switch">
+            <input type="checkbox" id="toggleMicrochip" onchange="handleChipToggleChange()" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="form-group" id="chipInputBox" style="margin-top:6px;">
+          <input type="text" id="editChip" placeholder="Enter Microchip Number">
+        </div>
+      </div>
+
+      <!-- SOCIAL MEDIA LINKS EDIT -->
+      <div class="form-section">
+        <div class="form-section-title">🌐 Social Media Links</div>
+        <div class="form-group">
+          <label>Facebook Profile / Page URL</label>
+          <input type="text" id="editFacebook" placeholder="https://facebook.com/username">
+        </div>
+        <div class="form-group">
+          <label>Instagram Username / URL</label>
+          <input type="text" id="editInstagram" placeholder="https://instagram.com/username">
+        </div>
+        <div class="form-group">
+          <label>Viber Number or Link</label>
+          <input type="text" id="editViber" placeholder="+639123456789">
+        </div>
+        <div class="form-group">
+          <label>WhatsApp Number or Link</label>
+          <input type="text" id="editWhatsapp" placeholder="+639123456789">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Owner Phone (Call/SMS)</label>
+        <input type="text" id="editPhone">
+      </div>
+
+      <!-- MEDICAL & VETERINARIAN EDITABLE SECTION -->
+      <div class="form-section">
+        <div class="form-section-title">🚨 Emergency & Health Info</div>
+        <div class="form-group">
+          <label>Medical Conditions</label>
+          <input type="text" id="editMedical">
+        </div>
+        <div class="form-group">
+          <label>Allergies</label>
+          <input type="text" id="editAllergies">
+        </div>
+        <div class="form-group">
+          <label>Veterinarian Contact Info</label>
+          <input type="text" id="editVet" placeholder="e.g. Central Pet Clinic (+63987654321)">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>About Pet</label>
+        <textarea id="editAbout" rows="2"></textarea>
+      </div>
+
+      <!-- VACCINATION STATUS EDITABLE SECTION WITH AESTHETIC CUSTOM CHECKBOXES -->
+      <div class="form-section">
+        <div class="form-section-title">💉 Vaccination Status</div>
+        <div class="checkbox-grid">
+          <label class="custom-checkbox-label">
+            <input type="checkbox" id="editVaxRabies" checked>
+            <div class="custom-check-box"><i class="fa-solid fa-check"></i></div>
+            <span>Rabies</span>
+          </label>
+          <label class="custom-checkbox-label">
+            <input type="checkbox" id="editVaxDhpp" checked>
+            <div class="custom-check-box"><i class="fa-solid fa-check"></i></div>
+            <span>DHPP</span>
+          </label>
+          <label class="custom-checkbox-label">
+            <input type="checkbox" id="editVaxDeworm" checked>
+            <div class="custom-check-box"><i class="fa-solid fa-check"></i></div>
+            <span>Dewormed</span>
+          </label>
+          <label class="custom-checkbox-label">
+            <input type="checkbox" id="editVaxFlea" checked>
+            <div class="custom-check-box"><i class="fa-solid fa-check"></i></div>
+            <span>Flea & Tick</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- GALLERY PHOTOS EASY UPLOAD -->
+      <div class="form-section">
+        <div class="form-section-title">📷 Easy Gallery Photo Picker (Max 3)</div>
+        <div class="form-group">
+          <label>Photo 1</label>
+          <input type="file" id="fileGallery1" accept="image/*" onchange="previewCompressedLocalImage(this, 'displayGallery1', 350)">
+        </div>
+        <div class="form-group">
+          <label>Photo 2</label>
+          <input type="file" id="fileGallery2" accept="image/*" onchange="previewCompressedLocalImage(this, 'displayGallery2', 350)">
+        </div>
+        <div class="form-group">
+          <label>Photo 3</label>
+          <input type="file" id="fileGallery3" accept="image/*" onchange="previewCompressedLocalImage(this, 'displayGallery3', 350)">
+        </div>
+      </div>
+
+      <!-- SIMPLE ADDRESS INPUT ONLY -->
+      <div class="form-section">
+        <div class="form-section-title">📍 Address & Map Location</div>
+        <div class="form-group">
+          <label>Address / City Name</label>
+          <input type="text" id="editAddress" placeholder="e.g. Quezon City, Metro Manila">
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-top: 18px;">
+        <button type="button" onclick="closeModal('editorModal')" class="btn-submit" style="background:var(--accent-light); color:var(--text-main);">Cancel</button>
+        <button type="button" onclick="savePetDetails()" class="btn-submit">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX MODAL -->
+  <div id="lightboxModal" class="modal-overlay" onclick="closeModal('lightboxModal')">
+    <img id="lightboxImg" class="lightbox-img" src="">
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    let securityPin = "1234";
+    const MASTER_RESET_KEY = "ZDigital2026";
+    let isPinProtectionActive = true;
+
+    function handleEditClick() {
+      if (!isPinProtectionActive) {
+        populateEditorForm();
+        openModal('editorModal');
+      } else {
+        document.getElementById('inputPin').value = '';
+        document.getElementById('pinError').style.display = 'none';
+        openModal('passcodeModal');
+      }
+    }
+
+    function verifyPin() {
+      const enteredPin = document.getElementById('inputPin').value.trim();
+      if (enteredPin === securityPin) {
+        closeModal('passcodeModal');
+        populateEditorForm();
+        openModal('editorModal');
+      } else {
+        document.getElementById('pinError').style.display = 'block';
+      }
+    }
+
+    function openResetModal() {
+      closeModal('passcodeModal');
+      document.getElementById('inputResetKey').value = '';
+      document.getElementById('resetError').style.display = 'none';
+      openModal('resetModal');
+    }
+
+    function verifyResetKey() {
+      const enteredKey = document.getElementById('inputResetKey').value.trim();
+      if (enteredKey === MASTER_RESET_KEY) {
+        securityPin = "1234";
+        closeModal('resetModal');
+        alert("🔓 PIN reset successful! Default PIN is now 1234.");
+        populateEditorForm();
+        openModal('editorModal');
+      } else {
+        document.getElementById('resetError').style.display = 'block';
+      }
+    }
+
+    /* SHOW / HIDE PIN VISIBILITY TOGGLE */
+    function togglePinVisibility(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+
+    function handleChipToggleChange() {
+      const isChecked = document.getElementById('toggleMicrochip').checked;
+      const chipInput = document.getElementById('editChip');
+      if (isChecked) {
+        chipInput.disabled = false;
+        chipInput.placeholder = "Enter Microchip Number";
+      } else {
+        chipInput.disabled = true;
+        chipInput.value = "";
+        chipInput.placeholder = "Disabled (N/A)";
+      }
+    }
+
+    function previewCompressedLocalImage(input, targetImgId, maxDim = 400) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          const img = new Image();
+          img.src = e.target.result;
+
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > maxDim) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              }
+            } else {
+              if (height > maxDim) {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+            document.getElementById(targetImgId).src = compressedDataUrl;
+          };
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    /* MAP LOCATION UPDATE FUNCTION */
+    function updateMapLocation() {
+      const addressInput = document.getElementById('editAddress');
+      if(!addressInput) return;
+
+      const address = addressInput.value.trim();
+      if(address !== "") {
+        const encoded = encodeURIComponent(address);
+        document.getElementById('displayMapIframe').src = `https://maps.google.com/maps?q=${encoded}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+        document.getElementById('displayAddress').innerText = address;
+      }
+    }
+
+    function populateEditorForm() {
+      document.getElementById('togglePinProtection').checked = isPinProtectionActive;
+      document.getElementById('editCustomPin').value = securityPin;
+      document.getElementById('editName').value = document.getElementById('displayName').innerText;
+      document.getElementById('editBreed').value = document.getElementById('displayBreed').innerText;
+      document.getElementById('editAge').value = document.getElementById('displayAge').innerText;
+
+      document.getElementById('editBadge1').value = document.getElementById('displayBadge1').innerText;
+      document.getElementById('editBadge2').value = document.getElementById('displayBadge2').innerText;
+      document.getElementById('editBadge3').value = document.getElementById('displayBadge3').innerText;
+
+      /* POPULATE PET QUICK DETAILS */
+      document.getElementById('editWeight').value = document.getElementById('displayWeight').innerText;
+      document.getElementById('editTreat').value = document.getElementById('displayTreat').innerText;
+      document.getElementById('editToy').value = document.getElementById('displayToy').innerText;
+
+      document.getElementById('editFacebook').value = document.getElementById('linkFacebook').dataset.raw || '';
+      document.getElementById('editInstagram').value = document.getElementById('linkInstagram').dataset.raw || '';
+      document.getElementById('editViber').value = document.getElementById('linkViber').dataset.raw || '';
+      document.getElementById('editWhatsapp').value = document.getElementById('linkWhatsapp').dataset.raw || '';
+
+      document.getElementById('editPhone').value = document.getElementById('linkCall').href.replace('tel:', '');
+      
+      /* POPULATE MEDICAL & VET DETAILS */
+      document.getElementById('editMedical').value = document.getElementById('displayMedical').innerText;
+      document.getElementById('editAllergies').value = document.getElementById('displayAllergies').innerText;
+      document.getElementById('editVet').value = document.getElementById('displayVet').innerText;
+
+      document.getElementById('editAbout').value = document.getElementById('displayAbout').innerText;
+      document.getElementById('editAddress').value = document.getElementById('displayAddress').innerText;
+
+      /* POPULATE VACCINATION STATUS CHECKBOXES */
+      document.getElementById('editVaxRabies').checked = document.getElementById('vaxRabiesIcon').classList.contains('active');
+      document.getElementById('editVaxDhpp').checked = document.getElementById('vaxDhppIcon').classList.contains('active');
+      document.getElementById('editVaxDeworm').checked = document.getElementById('vaxDewormIcon').classList.contains('active');
+      document.getElementById('editVaxFlea').checked = document.getElementById('vaxFleaIcon').classList.contains('active');
+
+      const currentChipText = document.getElementById('displayChip').innerText;
+      if (currentChipText === "None" || currentChipText === "N/A" || currentChipText === "") {
+        document.getElementById('toggleMicrochip').checked = false;
+        handleChipToggleChange();
+      } else {
+        document.getElementById('toggleMicrochip').checked = true;
+        handleChipToggleChange();
+        document.getElementById('editChip').value = currentChipText;
+      }
+    }
+
+    function updateVaxIcon(iconId, isChecked) {
+      const icon = document.getElementById(iconId);
+      if (isChecked) {
+        icon.className = "fa-solid fa-circle-check active";
+      } else {
+        icon.className = "fa-solid fa-circle-xmark inactive";
+      }
+    }
+
+    function savePetDetails() {
+      const newPhone = document.getElementById('editPhone').value.trim();
+
+      isPinProtectionActive = document.getElementById('togglePinProtection').checked;
+      const newPinInput = document.getElementById('editCustomPin').value.trim();
+      if (newPinInput.length === 4) {
+        securityPin = newPinInput;
+      }
+
+      document.getElementById('displayName').innerText = document.getElementById('editName').value;
+      document.getElementById('displayBreed').innerText = document.getElementById('editBreed').value;
+      document.getElementById('displayAge').innerText = document.getElementById('editAge').value;
+
+      document.getElementById('displayBadge1').innerText = document.getElementById('editBadge1').value || 'SAFE';
+      document.getElementById('displayBadge2').innerText = document.getElementById('editBadge2').value || 'FRIENDLY';
+      document.getElementById('displayBadge3').innerText = document.getElementById('editBadge3').value || 'PET';
+
+      /* SAVE PET QUICK DETAILS */
+      document.getElementById('displayWeight').innerText = document.getElementById('editWeight').value || 'N/A';
+      document.getElementById('displayTreat').innerText = document.getElementById('editTreat').value || 'N/A';
+      document.getElementById('displayToy').innerText = document.getElementById('editToy').value || 'N/A';
+
+      updateSocialLink('linkFacebook', document.getElementById('editFacebook').value, 'https://facebook.com/');
+      updateSocialLink('linkInstagram', document.getElementById('editInstagram').value, 'https://instagram.com/');
+      updateSocialLink('linkViber', document.getElementById('editViber').value, 'viber://chat?number=');
+      updateSocialLink('linkWhatsapp', document.getElementById('editWhatsapp').value, 'https://wa.me/');
+
+      document.getElementById('linkCall').href = "tel:" + newPhone;
+      document.getElementById('linkSms').href = "sms:" + newPhone;
+      document.getElementById('linkCallLost').href = "tel:" + newPhone;
+      document.getElementById('linkCallSticky').href = "tel:" + newPhone;
+
+      /* SAVE MEDICAL & VET DETAILS */
+      document.getElementById('displayMedical').innerText = document.getElementById('editMedical').value;
+      document.getElementById('displayAllergies').innerText = document.getElementById('editAllergies').value;
+      document.getElementById('displayVet').innerText = document.getElementById('editVet').value || 'N/A';
+
+      document.getElementById('displayAbout').innerText = document.getElementById('editAbout').value;
+
+      /* SAVE VACCINATION STATUS */
+      updateVaxIcon('vaxRabiesIcon', document.getElementById('editVaxRabies').checked);
+      updateVaxIcon('vaxDhppIcon', document.getElementById('editVaxDhpp').checked);
+      updateVaxIcon('vaxDewormIcon', document.getElementById('editVaxDeworm').checked);
+      updateVaxIcon('vaxFleaIcon', document.getElementById('editVaxFlea').checked);
+
+      const hasChip = document.getElementById('toggleMicrochip').checked;
+      const chipVal = document.getElementById('editChip').value.trim();
+      document.getElementById('displayChip').innerText = (hasChip && chipVal !== "") ? chipVal : "None";
+
+      updateMapLocation();
+
+      closeModal('editorModal');
+      alert("🐾 Pet details successfully saved!");
+    }
+
+    function updateSocialLink(elemId, val, prefix) {
+      const elem = document.getElementById(elemId);
+      const cleanVal = val.trim();
+      if(cleanVal !== "") {
+        elem.dataset.raw = cleanVal;
+        elem.href = cleanVal.startsWith('http') ? cleanVal : (prefix + cleanVal);
+        elem.classList.remove('hidden');
+      } else {
+        elem.dataset.raw = "";
+        elem.href = "#";
+        elem.classList.add('hidden');
+      }
+    }
+
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      openModal('lightboxModal');
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const icon = document.getElementById('darkIcon');
+      if (document.body.classList.contains('dark-mode')) {
+        icon.className = "fa-solid fa-sun";
+      } else {
+        icon.className = "fa-solid fa-moon";
+      }
+    }
+
+    function changeTheme(themeClass) {
+      document.body.className = document.body.className.replace(/theme-\S+/g, '').trim();
+      document.body.classList.add(themeClass);
+    }
+
+    function changeFont(fontClass) {
+      document.body.className = document.body.className.replace(/font-(?!poppins|brown-sugar|quiche|caveat|quicksand|safira-march|the-seasons|alta|paris|moscow|venice|vienna|dublin|athens|genoa|london)\S+/g, '').replace(/\bfont-\S+/g, '').trim();
+      document.body.classList.add(fontClass);
+    }
+
+    function changeFontSize(sizeClass) {
+      document.body.className = document.body.className.replace(/fsize-\S+/g, '').trim();
+      document.body.classList.add(sizeClass);
+    }
+  </script>
+
+</body>
+</html>
 
