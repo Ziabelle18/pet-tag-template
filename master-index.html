@@ -623,7 +623,7 @@
       </div>
     </div>
 
-    <!-- 1. LIVE PET DASHBOARD VIEW (Naka-lock at Naka-display by Default) -->
+    <!-- 1. LIVE PET DASHBOARD VIEW -->
     <div id="petDashboard">
 
       <!-- PROFILE HEADER -->
@@ -895,7 +895,7 @@
         <div class="form-group" style="margin-top: 6px;">
           <label>Set Custom 4-Digit PIN</label>
           <div class="pin-input-container">
-            <input type="password" id="editCustomPin" maxlength="4" placeholder="Change PIN (Current: 1234)" style="text-align: center; letter-spacing: 4px; padding-right: 40px;">
+            <input type="password" id="editCustomPin" maxlength="4" placeholder="Change PIN" style="text-align: center; letter-spacing: 4px; padding-right: 40px;">
             <button type="button" class="pin-eye-btn" onclick="togglePinVisibility('editCustomPin', 'eyeIconCustomPin')">
               <i id="eyeIconCustomPin" class="fa-solid fa-eye"></i>
             </button>
@@ -903,11 +903,11 @@
         </div>
       </div>
 
-      <!-- COLOR OPTIONS (SOFT CLEAN NAMES) -->
+      <!-- COLOR OPTIONS -->
       <div class="form-group">
         <label>Color Theme</label>
         <select id="editTheme" onchange="changeTheme(this.value)">
-          <option value="theme-white" selected>Clean White (Default)</option>
+          <option value="theme-white">Clean White (Default)</option>
           <option value="theme-pastel-orange">Soft Orange</option>
           <option value="theme-pastel-blue">Soft Blue</option>
           <option value="theme-pastel-yellow">Soft Yellow</option>
@@ -920,7 +920,7 @@
         </select>
       </div>
 
-      <!-- 16 FONT OPTIONS (ORIGINALS FIXED + 8 NEW CITIES) -->
+      <!-- 16 FONT OPTIONS -->
       <div class="form-group">
         <label>Typography Font Style</label>
         <select id="editFont" onchange="changeFont(this.value)">
@@ -947,7 +947,7 @@
       <div class="form-group">
         <label>Font Size Scaling</label>
         <select id="editFontSize" onchange="changeFontSize(this.value)">
-          <option value="fsize-normal" selected>Normal Size (Default)</option>
+          <option value="fsize-normal">Normal Size (Default)</option>
           <option value="fsize-medium">Medium (+15% Larger)</option>
           <option value="fsize-large">Large (+30% Extra Large)</option>
         </select>
@@ -1067,7 +1067,7 @@
         <textarea id="editAbout" rows="2"></textarea>
       </div>
 
-      <!-- VACCINATION STATUS EDITABLE SECTION WITH AESTHETIC CUSTOM CHECKBOXES -->
+      <!-- VACCINATION STATUS EDITABLE SECTION -->
       <div class="form-section">
         <div class="form-section-title">💉 Vaccination Status</div>
         <div class="checkbox-grid">
@@ -1132,9 +1132,9 @@
     <img id="lightboxImg" class="lightbox-img" src="">
   </div>
 
-  <!-- JAVASCRIPT LOGIC WITH FIREBASE CLOUD SYNC -->
+  <!-- JAVASCRIPT LOGIC -->
   <script>
-    /* FIREBASE CONFIGURATION - PRE-CONFIGURED WITH YOUR REALTIME DATABASE URL */
+    /* FIREBASE CONFIGURATION */
     const firebaseConfig = {
       databaseURL: "https://pettags-36165-default-rtdb.firebaseio.com"
     };
@@ -1291,6 +1291,18 @@
     function populateEditorForm() {
       document.getElementById('togglePinProtection').checked = isPinProtectionActive;
       document.getElementById('editCustomPin').value = securityPin;
+      document.getElementById('editCustomPin').placeholder = `Change PIN (Current: ${securityPin})`;
+
+      /* DYNAMICALLY SELECT CURRENT THEME, FONT, AND FONT SIZE IN DROPDOWNS */
+      const classes = Array.from(document.body.classList);
+      const currentTheme = classes.find(c => c.startsWith('theme-')) || 'theme-white';
+      const currentFont = classes.find(c => c.startsWith('font-')) || 'font-poppins';
+      const currentFsize = classes.find(c => c.startsWith('fsize-')) || 'fsize-normal';
+
+      document.getElementById('editTheme').value = currentTheme;
+      document.getElementById('editFont').value = currentFont;
+      document.getElementById('editFontSize').value = currentFsize;
+
       document.getElementById('editName').value = document.getElementById('displayName').innerText;
       document.getElementById('editBreed').value = document.getElementById('displayBreed').innerText;
       document.getElementById('editAge').value = document.getElementById('displayAge').innerText;
@@ -1353,6 +1365,11 @@
       if (newPinInput.length === 4) {
         securityPin = newPinInput;
       }
+
+      /* APPLY SELECTED THEME, FONT, AND FONT SIZE */
+      changeTheme(document.getElementById('editTheme').value);
+      changeFont(document.getElementById('editFont').value);
+      changeFontSize(document.getElementById('editFontSize').value);
 
       document.getElementById('displayName').innerText = document.getElementById('editName').value;
       document.getElementById('displayBreed').innerText = document.getElementById('editBreed').value;
