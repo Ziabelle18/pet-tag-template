@@ -265,19 +265,20 @@
     /* STICKY BOTTOM CALL BUTTON */
     .sticky-bottom-btn { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 380px; z-index: 80; }
 
-    /* MODAL POPUPS */
+    /* MODAL POPUPS (DISPLAY NONE WHEN INACTIVE TO PREVENT TOUCH BLOCKING) */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center;
-      z-index: 100; padding: 15px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      display: none; align-items: center; justify-content: center;
+      z-index: 9999; padding: 15px; opacity: 0; transition: opacity 0.25s ease;
     }
-    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    .modal-overlay.active { display: flex !important; opacity: 1; }
 
     .modal-box {
       background: var(--bg-color); border: 1px solid var(--card-border); border-radius: 24px;
-      padding: 24px; width: 100%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      max-height: 85vh; overflow-y: auto; position: relative; z-index: 105;
-      -webkit-overflow-scrolling: touch; pointer-events: auto;
+      padding: 24px 20px 30px 20px; width: 100%; max-width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      max-height: 85vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+      position: relative; z-index: 10000;
     }
 
     .modal-title { font-size: 1.2rem; margin-bottom: 12px; text-align: center; font-weight: 700; }
@@ -286,17 +287,15 @@
       border-top: 1px dashed var(--card-border);
       padding-top: 12px;
       margin-top: 12px;
-      position: relative;
-      z-index: 102;
     }
     .form-section-title { font-size: 0.8rem; font-weight: 700; color: var(--accent-main); margin-bottom: 8px; text-transform: uppercase; }
 
-    .form-group { margin-bottom: 10px; text-align: left; position: relative; z-index: 103; }
+    .form-group { margin-bottom: 12px; text-align: left; }
     .form-group label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-sub); margin-bottom: 4px; }
     .form-group input, .form-group textarea, .form-group select {
-      width: 100%; padding: 10px; border-radius: 12px; border: 1px solid var(--card-border);
+      width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--card-border);
       background: var(--card-bg); color: var(--text-main); font-family: var(--font-family); font-size: 0.85rem;
-      position: relative; z-index: 104;
+      box-sizing: border-box; display: block; -webkit-appearance: none;
     }
 
     .toggle-switch-wrapper {
@@ -308,8 +307,8 @@
 
     .btn-submit {
       width: 100%; padding: 12px; background: var(--accent-main); color: white;
-      border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 15px;
-      position: relative; z-index: 105;
+      border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: 12px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
     }
 
     .btn-link-flat {
@@ -321,6 +320,7 @@
       position: relative;
       display: flex;
       align-items: center;
+      width: 100%;
     }
 
     .pin-eye-btn {
@@ -330,8 +330,8 @@
       border: none;
       color: var(--text-sub);
       cursor: pointer;
-      font-size: 0.9rem;
-      z-index: 106;
+      font-size: 1rem;
+      padding: 4px;
     }
 
     .lightbox-img { max-width: 90vw; max-height: 80vh; border-radius: 16px; }
@@ -351,11 +351,11 @@
       </div>
 
       <div style="display: flex; gap: 8px;">
-        <button class="btn-icon" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+        <button type="button" class="btn-icon" onclick="toggleDarkMode()" title="Toggle Dark Mode">
           <i id="darkIcon" class="fa-solid fa-moon"></i>
         </button>
         <!-- Security Unlock Button -->
-        <button class="btn-icon" onclick="handleEditClick()" title="Edit Pet Details">
+        <button type="button" class="btn-icon" onclick="handleEditClick()" title="Edit Pet Details">
           <i id="lockIcon" class="fa-solid fa-lock"></i>
         </button>
       </div>
@@ -548,10 +548,10 @@
       <p id="pinError" style="color:#ef4444; font-size:0.75rem; display:none; margin-bottom:10px; font-weight:600;">Invalid Security PIN!</p>
 
       <div style="display: flex; gap: 8px;">
-        <button onclick="closeModal('passcodeModal')" class="btn-submit" style="background:var(--accent-light); color:var(--text-main);">Cancel</button>
-        <button onclick="verifyPin()" class="btn-submit">Unlock</button>
+        <button type="button" onclick="closeModal('passcodeModal')" class="btn-submit" style="background:var(--accent-light); color:var(--text-main);">Cancel</button>
+        <button type="button" onclick="verifyPin()" class="btn-submit">Unlock</button>
       </div>
-      <button onclick="openResetModal()" class="btn-link-flat">Forgot Passcode?</button>
+      <button type="button" onclick="openResetModal()" class="btn-link-flat">Forgot Passcode?</button>
     </div>
   </div>
 
@@ -571,8 +571,8 @@
       <p id="resetError" style="color:#ef4444; font-size:0.75rem; display:none; margin-bottom:10px; font-weight:600;">Invalid Master Reset Code!</p>
 
       <div style="display: flex; gap: 8px;">
-        <button onclick="closeModal('resetModal')" class="btn-submit" style="background:var(--accent-light); color:var(--text-main);">Cancel</button>
-        <button onclick="verifyResetKey()" class="btn-submit">Reset PIN</button>
+        <button type="button" onclick="closeModal('resetModal')" class="btn-submit" style="background:var(--accent-light); color:var(--text-main);">Cancel</button>
+        <button type="button" onclick="verifyResetKey()" class="btn-submit">Reset PIN</button>
       </div>
     </div>
   </div>
@@ -739,7 +739,7 @@
         </div>
       </div>
 
-      <!-- LOCATION SEARCH (INIAYOS ANG CLICKABILITY) -->
+      <!-- LOCATION SEARCH WITH WORKING INPUT & BUTTON -->
       <div class="form-section">
         <div class="form-section-title">📍 Search & Pin Location</div>
         <div class="form-group">
@@ -880,7 +880,10 @@
     }
 
     function updateMapLocation(evt) {
-      if(evt) evt.preventDefault();
+      if(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
       const addressInput = document.getElementById('editAddress');
       if(!addressInput) return;
 
